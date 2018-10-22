@@ -5,9 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>HTML5的变化</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
 </head>
 <body>
   <main id="content">
+    <section>
       <h1>基本元素</h1>
       <small>小字印刷体，通常用于标注免责声明、注意事项、法律法规和版权声明等。</small>
       <br>
@@ -16,6 +23,52 @@
       <div>
         <del>被删除的元素</del>和<ins>添加的元素</ins>经常结合使用。
       </div>
+      <span>声明一个变量：<var>variable</var></span>
+      <br>  
+      <p>--! img标签配合map、area元素定义图片映射，是指对应图片的某一区域，点击时就会跳转到定义的地址</p>
+      <p>表格中col在colgroup中，对应表格中的th和td的属性或者样式</p>
+      <div contenteditable="true">属性contenteditable使普通元素中的文本也能像表单一样被编辑</div>
+      <div>designMode属性，通过document.designMode来控制'on'或者'off'，作用相当于全局的contentEditable属性。</div>
+      <div hidden>这是一个hidden隐藏的元素，当然也可以使用CSS控制。</div>
+      <textarea name="spellcheck" cols="30" rows="3" spellcheck="true" focus>spellcheck属性用于检查拼写错误，如spellchekc。</textarea>
+    </section>
+    <section>
+      <h1>新增加的元素</h1>
+      <div>语义化元素：article、section、nav、aside、header、hgroup、footer、figure、figcaption，以上元素与文档结构相关。<mark>mark标记</mark>和<time datetime="2011-02-28">时间</time>也是语义相关的两个元素。</div>
+      <details>
+        <summary>摘要</summary>
+        <p>只有chrome支持的details和summary标签，表示摘要和信息详情。</p>
+      </details>
+      <div>特殊功能标签：计数仪表-<meter value="3" min="0" max="10">十分之三</meter> 进度条-<progress value="22" max="100"></progress> 
+      </div>
+      <div>
+        <h2>meta标签与元数据</h2>
+        <p>
+          meta标签的三个属性：
+          <ul>
+            <li>http-equiv：元信息的名称，其指定的名称具有指定意义。</li>
+            <li>name：指定元信息的名称，可以随意指定。</li>
+            <li>content：元信息的值。</li>
+          </ul>
+        </p>
+        <p>
+          http-equiv的几个值：
+          <ul>
+            <li>Expires：指定网页的过期时间，一旦过期则需要重新访问服务器。-Date格式数据</li>
+            <li>Pragma：指定是否缓存页面，是否可脱机访问页面。-no-cache</li>
+            <li>Refresh：指定浏览器多长时间自动刷新页面，单位为秒。-2</li>
+            <li>Set-Cookie：设置Cookie保存时间。</li>
+            <li>Content-Type：设置页面内容类型和所用字符集。-text/html;charset=utf-8 （可以简写成最后一部分。）</li>
+          </ul>
+        </p>
+      </div>
+      <div>拖动事件：
+        <p style="width: 50px; height: 50px;background: #666;" draggable="true">可拖动</p>
+        <script>
+          // 处理拖动的时间
+        </script>
+      </div>
+    </section>
   </main>
 </body>
 </html>
