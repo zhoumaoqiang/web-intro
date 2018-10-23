@@ -14,6 +14,7 @@
 </head>
 <body>
   <main id="content">
+    <!-- // 基本元素 -->
     <section>
       <h1>基本元素</h1>
       <small>小字印刷体，通常用于标注免责声明、注意事项、法律法规和版权声明等。</small>
@@ -32,6 +33,7 @@
       <div hidden>这是一个hidden隐藏的元素，当然也可以使用CSS控制。</div>
       <textarea name="spellcheck" cols="30" rows="3" spellcheck="true" focus>spellcheck属性用于检查拼写错误，如spellchekc。</textarea>
     </section>
+    <!-- // 新增元素 -->
     <section>
       <h1>新增加的元素</h1>
       <div>语义化元素：article、section、nav、aside、header、hgroup、footer、figure、figcaption，以上元素与文档结构相关。<mark>mark标记</mark>和<time datetime="2011-02-28">时间</time>也是语义相关的两个元素。</div>
@@ -63,10 +65,48 @@
         </p>
       </div>
       <div>拖动事件：
-        <p style="width: 50px; height: 50px;background: #666;" draggable="true">可拖动</p>
+        <p id="drag" style="width: 50px; height: 50px;background: #666;" draggable="true">可拖动</p>
         <script>
-          // 处理拖动的时间
+          // 处理拖动的事件
+          let dom = document.getElementById('drag');
+          document.ondragstart = function(e) {
+            // 拖动事件可以携带数据，使用setData方法，除此之外，dataTransfer还有一些属性和方法用于定义拖动事件
+            e.dataTransfer.setData('text/plain', 'go to see');
+          };
+          document.ondragover = function() {
+            // 取消拖动的默认效果
+            return false;
+          };
+          document.ondrop = function(e) {
+            // 定位元素为拖动位置
+            dom.style.position = 'absolute';
+            dom.style.left = e.pageX + 'px';
+            dom.style.top = e.pageY + 'px';
+          };
         </script>
+      </div>
+
+    </section>
+    <!-- // 表单元素 -->
+    <section>
+      <h1>表单元素</h1>
+      <p>form中的表单元素，传递时以name和value关联的值进行传输，输出类型有普通url编码方式，二进制流以及邮件类型的编码方式。</p>
+      <p>input标签类型：text、password、hidden、radio、checkbox、image、file、submit、reset、button。新增类型包括：color、date、time、datetime、datetime-local、week、month、email、tel、url、number、range、search。</p>
+      <p>button定义按钮，可以在其中放入自己想要定义的文本信息，不要在其中图像映射，会有干扰。</p>
+      <p>select和option配合使用，生成下拉列表。option还能进行分组放入optgroup中，设置multiple属性即可多选。</p>
+      <p>textarea生成多行文本域。</p>
+      <p>output，显示相关联元素的值，请求时不会发出数据。</p>
+      <div>
+        新增属性：
+        <ul>
+          <li>表单元素的form属性，与form元素的id相关联，可以同时提交form表单外的表单元素内容。</li>
+          <li>autofocus，自动聚焦。</li>
+          <li>placeholder，占位符，无输入时显示的文本内容。</li>
+          <li>list属性，与datalist相关联，输入时匹配datalist中的内容，给出提示。</li>
+        </ul>
+      </div>
+      <div>
+        文件上传功能：
       </div>
     </section>
   </main>
