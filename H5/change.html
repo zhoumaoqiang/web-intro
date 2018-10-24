@@ -107,7 +107,42 @@
       </div>
       <div>
         文件上传功能：
+        <input type="file">
+        <p>file输入框增加了属性accept（文件类型）和multiple（多选）两个属性，获取该表单节点的fileList属性可以获取上传表单的file对象，file对象携带有name、type、size等属性。</p>
+        <p>浏览器自生携带有FileReader对象，获取文件可以通过方法：
+          <ul>
+            <li>readAsText(file, encoding)：以文本文件的方式来读取文件，默认编码字符集为utf-8。</li>
+            <li>readAsBinaryString(file)：以二进制的方式来读取文件。</li>
+            <li>readAsDataURL(file)：采用base64的方式将文件内容编码成DataURL格式的字符串。</li>
+          </ul>
+          文件读取是异步的方法，可以使用abort()方法来停止，监听的方法有：
+          <ul>
+            <li>onloadstart：开始读取</li>
+            <li>onprogress：正在读取</li>
+            <li>onload：读取成功</li>
+            <li>onloadend：无论成功与否，读取完成后触发</li>
+            <li>onerror：读取失败触发</li>
+          </ul>
+        </p>
+        <p>input具有校验方法checkValidity()和自定义错误secCustomValidity()的方法。如果form设置novalidate属性，那么校验就会失效了。</p>
       </div>
+    </section>
+    <!-- // 绘图支持 -->
+    <section>
+      <h1>canvas绘图</h1>
+      <p>
+        获取CanvasRenderingContext2D对象,该对象提供了大量绘制的方法:
+        <ul>
+          <li>矩形：fillRect、strokeRect</li>
+          <li>文本：fillText、strokeText</li>
+          <li>路径：arc（圆弧）、arcTo（添加圆弧）、bezierCurveTo（贝济埃曲线）、lineTo（添加线段）、quadraticCurveTo（二次曲线）、rect（添加矩形）</li>
+          <li>图片：drawImage</li>
+          <li>变形：translate（位移）、scale（缩放）、rotate（旋转）、save（保存）、restore（恢复保存）</li>
+          <li>渐变：createLinearGradient(x,y,x_end,y_end) + addColorStop(offset, color) = 线性渐变；createRadialGradient(x,y,r,x_end,y_end,r_end) + addColorStop(offset, color) = 线性渐变；</li>
+          <li>图片贴图：createPattern(image, repeat-style)，获取图片和重复方式，当作画笔进行绘制。</li>
+          <li>输出：toDataURL()，二进制的保存形式，传入image/png输出位对应格式。转换时保存为字符串形式。</li>
+        </ul>
+      </p>
     </section>
   </main>
 </body>
