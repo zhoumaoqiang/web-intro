@@ -4,3 +4,28 @@
   margin: 0;
   padding: 0;
 }
+/* 选择器 */
+p {
+  font-size: 14px;
+}
+p[name=attr-selector] {
+  color: #00f;
+}
+.class-selector {
+  color: #0f0;
+}
+#idSelector {
+  color: #f00;
+}
+h2 span {
+  color: #0ff;
+}
+h2 > span {
+  color: #f0f;
+}
+p ~ .brother-selector {
+  color: #ff0;
+}
+.fake-selector::first-letter {
+  color: aquamarine;
+}
