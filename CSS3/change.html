@@ -33,8 +33,29 @@
       <p>UI元素伪类选择器：link、visited、active、hover、focus、enabled、disabled、checked、default、read-only、read-write、::selection。最后一个前面有两个冒号，表示被选中的元素，firefox支持。</p>
       <p>特殊的伪类选择器：not、target。</p>
 
-      <p>浏览器CSS前缀：-ms-(IE)、-moz-(firefox)、-o-、-webkit-</p>
-      
+      <p>浏览器CSS前缀：-ms-(IE)、-moz-(firefox)、-o-(opera)、-webkit-(chrome、safari)</p>
+    </section>
+    <!-- 字体和文本 -->
+    <section>
+      <h1>字体和文本</h1>
+      <ul>
+        <li><h2>字体相关属性</h2></li>
+        <li>font：复合属性，包括font-style、font-variant、font-weight、font-size、line-height、font-family的复合属性值。</li>
+        <li>color：字体颜色，值为颜色名、十六进制颜色值、rgb()、rgba()、hsl()、hsla()</li>
+        <li>font-family：设置文字的字体，需要浏览器内嵌字体的支持，或者引入字体，多个字体以优先找到的字体为准。</li>
+        <li>font-size：xx-small、x-small、small、medium、large、x-large、xx-large、larger、smaller、直接设置大小。</li>
+        <li>font-size-adjust：对不同字体的字体尺寸进行微调。</li>
+        <li>font-stretch：字体横向拉伸，默认为normal，可以设置narrower或者wider。</li>
+        <li>font-style：字体风格，normal、italic、oblique（正常、斜体、倾斜）。</li>
+        <li>font-weight：字体粗细，值为100-900、lighter、normal、bold、bolder。</li>
+        <li>text-derection：装饰线，none、blink、underline、line-through、overline（无、闪烁、下划线、删除线、上划线）。</li>
+        <li>font-variant：字体大写字母的格式，normal、small-caps（正常，小型的大写字母）。</li>
+        <li>text-shadow：字体阴影。一组值为color、xoffset、yoffset、length / xoffset、yoffset、radius、color，同组的值使用空格分隔。可以给文字添加多组阴影，每组使用逗号分隔。</li>
+        <li>text-transform：字体的大小写，值为none、capitalize、uppercase、lowercase。</li>
+        <li>line-height：行高，负值的行高可以展示出阴影效果，可用于控制IFC。</li>
+        <li>letter-spacing：字符之间的间隔，值为normal或者具体的数值。</li>
+        <li>word-spacing：单词之间的间隔。</li>
+      </ul>
     </section>
   </main>
 </body>
