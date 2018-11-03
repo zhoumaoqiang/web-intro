@@ -68,6 +68,27 @@
         <li>white-space：对空格的处理方式，normal(边界自动换行)、nowrap(不换行)。</li>
         <li>word-wrap：文本的换行方式，normal、break-word(允许单词中间换行)。</li>
       </ul>
+      <p>
+        定义字体：
+        <pre>
+          @font-face {
+            font-family: fontname;
+            src: local(localfont), url(url) format(fontformat);
+            sRules
+          } 
+        </pre>
+        sRules代表字体样式的设置，如粗体、斜体等这样同一个fontname可以对应正常、粗体、斜体，就不用在使用的时候单独标注字体。src对应local部分可以不写，写上是表明优先使用本地的字体。
+      </p>
+    </section>
+    <section>
+      <h1>背景、边框、边距</h1>
+      <ul>
+        <li><h2>背景相关属性</h2></li>
+        <li>background: 复合属性。</li>
+        <li>background-color：背景颜色，没有背景图片时显示的背景颜色。</li>
+
+      </ul>
+
     </section>
   </main>
 </body>
