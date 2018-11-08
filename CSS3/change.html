@@ -122,9 +122,46 @@
       <h1>盒模型与布局</h1>
       <ul>
         <li><h2>布局</h2></li>
-        <li>float：</li>
-        <li>clear：</li>
-        <li>clip：</li>
+        <li>float：浮动的元素相当于display被设置为block，这些浮动的块组件会紧贴并靠近边框。值有left、right。</li>
+        <li>clear：去除浮动，值有none、left、right、both。</li>
+        <li>clip：对元素进行裁剪，值为auto或者rect函数。</li>
+        <li>overflow：对元素溢出部分的处理，值为visible、auto、hidden、scroll。</li>
+        <li>overflow-x和overflow-y：表示x、y方向溢出的处理。</li>
+        <li>visibility和display。</li>
+        <li>
+          <ul>
+            <li><h3>表格中display的值</h3></li>
+            <li>table：表格</li>
+            <li>table-caption：表格标题</li>
+            <li>table-cell：表格单元格</li>
+            <li>table-column</li>
+            <li>table-column-group</li>
+            <li>table-header-group</li>
+            <li>table-footer-group</li>
+            <li>table-row</li>
+            <li>table-row-group</li>
+    
+          </ul>
+        </li>
+        <li>box-shadow</li>
+      </ul>
+      <ul>
+        <li><h2>分列效果</h2></li>
+        <li>columns：包括column-width和column-count，指定列的宽度和数量。</li>
+        <li>column-rule：复合属性，包括column-rule-width、column-rule-style和column-rule-color，列的分割线的线型包括none、dotted、dashed、solid、double、groove、ridge、inset、outset。</li>
+        <li>column-gap：指定长度为各列之间的间距。</li>
+        <li>column-fill：控制各列的高度，值为auto或者balance（以最高的列为准）。</li>
+      </ul>
+    </section>
+    <section>
+      <h1>表格、列表、光标</h1>
+      <ul>
+        <li><h2>表格样式的相关属性</h2></li>
+        <li>border-collapse：控制表格两个单元格是合并还是分开的，即应用边框的时候是两条边框还是一条，值为seperate或者collapse。</li>
+        <li>border-spacing：当单元格分开的时候，分开的间距。</li>
+        <li>caption-side：用于设置表格标题的位置，默认为顶部，值为top、right、left、bottom。</li>
+        <li>empty-cells也是单元格分开时生效，指单元格没有内容时是否显示边框，值为none或者show。</li>
+        <li>table-layout：表格的宽度适配方式，值为auto或者fixed。</li>
       </ul>
     </section>
   </main>
