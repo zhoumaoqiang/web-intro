@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="shortcut icon" href="../assets/icons/favicon.ico" type="image/x-icon">
+  <title>实用冷门元素</title>
+  <style>
+    section {
+      margin-bottom: 40px;
+      padding: 0 30px;
+    }
+    section>h2 {
+      padding-left: 20px;
+      position: relative;
+      margin: 0 0 15px;
+      font-size: 18px;
+    }
+    section>h2::before {
+      content: "";
+      width: 10px;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      background-color: aqua;
+    }
+    p {
+      text-indent: 30px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section>
+      <h2>图片自定义区域</h2>
+      <p>area标签用于在图片上标定一块区域，对应某一个链接。点击的时候会显示outline，点击下面的图形会显示信息。</p>
+      <div>   
+        <img src="../assets/H5/coldElements/area.jpg" usemap="#imagemap" alt="imagemap" />
+  
+        <map name="imagemap" id="imagemap">
+          <area shape="circle" coords="150,50,50" href ="javascript: alert('1')" alt="circle1" />
+          <area shape="circle" coords="450,150,100" href ="javascript: alert('2')" alt="circle2" />
+          <area shape="rect" coords="0,150,150,250" href ="javascript: alert('3')" alt="rect1" />
+        </map>
+      </div>
+    </section>
+    <section>
+      <h2>表格列样式控制</h2>
+      <p>col元素放在表格中，可以布置表格列的基本布局，否则表格的宽度以制表符的匹配数量拓展。</p>
+      <div>
+          <table border="1" style="border-collapse:collapse;">
+            <colgroup>
+              <col width="100px" />
+              <col width="200px" />
+              <col width="300px" />
+            </colgroup>
+            <tr>
+              <td>ISBN</td>
+              <td>Title</td>
+              <td>Price</td>
+            </tr>
+            <tr>
+              <td>3476896</td>
+              <td>My first HTML</td>
+              <td>$53</td>
+            </tr>
+          </table>
+      </div>
+    </section>
+    <section>
+      <h2>进度条</h2>
+      <p>下面是两种可以表示进度的写法：</p>
+      <div>
+        <meter value="3" min="0" max="10">十分之三</meter> <br>
+        <progress value="25" max="100"></progress>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
