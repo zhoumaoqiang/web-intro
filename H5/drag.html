@@ -35,6 +35,13 @@
         height: 100px;
         border: 1px solid #000;
         margin-right: 30px;
+        vertical-align: top;
+      }
+      .drop-el {
+        width: 500px;
+        height: 300px;
+        border: 1px solid #333;
+        background-color: #eee;
       }
     </style>
 </head>
@@ -46,13 +53,15 @@
     </section>
     <section>
       <h2>放入元素</h2>
-      <p>将一个外部元素放入另一个元素中，也就是dragstart、drag、drop依次触发，由于图片本身就是允许拖拽的元素，所以对drop事件最好有个判断，避免误操作。</p>
+      <p>将一个外部元素放入另一个元素中，也就是dragstart、drag、dragover、drop依次触发，由于图片本身就是允许拖拽的元素，所以对drop事件最好有个判断，避免误操作。</p>
+      <p>图一没有添加draggable属性，img标签默认支持拖拽，所以可以拖动。如果像图二标注draggable为false，那么将不支持拖拽。后面两个span标签就同大多数标签一样，原本是不支持拖拽的，但是第一个区块标注draggable为true，那么就会支持拖拽。将四个元素都添加相同的事件绑定，操作拖动过程中的数据。</p>
+      <p></p>
       <div>
         <div class="drag-el">
-          <img class="dragger-img1" src="" alt="">
-          <img class="dragger-img2" src="" alt="" draggable="false">
-          <span class="dragger1 dragger-block" draggable="true"></span>
-          <span class="dragger2 dragger-block" draggable="false"></span>
+          <img class="dragger-img1" src="../assets/H5/drag/img1.jpg" alt="disdraggable">
+          <img class="dragger-img2" src="../assets/H5/drag/img2.jpg" alt="draggable" draggable="false">
+          <span class="dragger1 dragger-block" draggable="true" style="background-color: #4271fb;">dragger1</span>
+          <span class="dragger2 dragger-block" style="background-color: #15f426;">dragger2</span>
         </div>
         <div class="drop-el"></div>
       </div>
@@ -60,7 +69,36 @@
   </main>
   <script>
     window.onload = function() {
+      var dragger_img1 = document.querySelector('.dragger-img1');
+      var dragger_img2 = document.querySelector('.dragger-img2');
+      var dragger1 = document.querySelector('.dragger1');
+      var dragger2 = document.querySelector('.dragger2');
+      var dropper = document.querySelector('.drop-el');
+      var draggers = [dragger_img1, dragger_img2, dragger1, dragger2];
+      // 依次绑定拖入放置元素的事件
+      draggers.forEach(function(dragger) {
+
+        dragger.addEventListener('dragstart', function(evt) {
+          console.log(evt)
+          evt.dataTransfer.setData('el-name', this.className);
+        });
+
+        dragger.addEventListener('drag', function(evt) {
+
+        });
+
+      });
+
+      // 必不可少，只有阻止容器停止拖放的默认行为（不作处理），才能触发drop事件
+      dropper.addEventListener('dragover', function(evt) {
+        evt.preventDefault();
+      });
+
+      dropper.addEventListener('drop', function(evt) {
       
+        console.log(evt)
+        this.innerText = evt.dataTransfer.getData('el-name')
+      });
     }
   </script>
 </body>
