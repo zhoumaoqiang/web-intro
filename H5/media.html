@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>媒体——音频和视频</title>
+</head>
+<body>
+  <main>
+    <header>
+      <p>HTML5已经支持使用video标签和audio标签播放视频和音频，而可以不再依靠第三方插件（Flash）。</p>
+      <div> 
+        <h2>视频</h2>
+        <video src="../assets/H5/media/video.mp4" controls>
+          <p>你的浏览器不支持 <code>video</code> 标签.</p>
+        </video>
+        <div> 
+          <label>视频</label>
+          <input type="button" value="控制器" id="videoControls">
+          <input type="button" value="自动播放" id="videoAutoplay">
+          <input type="button" value="循环播放" id="videoLoop">
+          <select id="videoPreload">
+            <option value="none">不缓冲</option>
+            <option value="auto">缓冲音频文件</option>
+            <option value="metadata">缓冲元数据</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <h2>音频</h2>
+        <audio src="../assets/H5/media/Beautiful In White.mp3" controls>
+          <p>你的浏览器不支持 <code>audio</code> 标签.</p>
+        </audio>
+        <div>
+          <input type="button" value="控制器" id="audioControls">
+          <input type="button" value="自动播放" id="audioAutoplay">
+          <input type="button" value="循环播放" id="audioLoop">
+        </div>
+      </div>
+    </header>
+  </main>
+</body>
+</html>
