@@ -36,9 +36,19 @@
           <input type="button" value="控制器" id="audioControls">
           <input type="button" value="自动播放" id="audioAutoplay">
           <input type="button" value="循环播放" id="audioLoop">
+          <select id="audioPreload">
+            <option value="none">不缓冲</option>
+            <option value="auto">缓冲音频文件</option>
+            <option value="metadata">缓冲元数据</option>
+          </select>
         </div>
       </div>
     </header>
   </main>
+  <script>
+    var video = document.querySelector('video');
+    var audio = document.querySelector('audio');
+    
+  </script>
 </body>
 </html>
