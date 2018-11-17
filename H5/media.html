@@ -13,6 +13,12 @@
       <div> 
         <h2>视频</h2>
         <video src="../assets/H5/media/video.mp4" controls>
+          <!-- source指定多个源，兼容匹配 -->
+          <source src="../assets/H5/media/video.mp4">
+            <!-- 不支持video可以使用flash播放 -->
+          <object data="../assets/H5/media/flash.swf" type="application/x-shockwave-flash">
+            <param value="../assets/H5/media/flash.swf" name="flash"/>
+          </object>
           <p>你的浏览器不支持 <code>video</code> 标签.</p>
         </video>
         <div> 
@@ -25,6 +31,11 @@
             <option value="auto">缓冲音频文件</option>
             <option value="metadata">缓冲元数据</option>
           </select>
+          <input type="button" value="播放" id="videoPlay">
+          <input type="button" value="暂停" id="videoPause">
+          <input type="button" value="音量+" id="videoSoundUp">
+          <input type="button" value="音量-" id="videoSoundDown">
+          <input type="button" value="从10秒播放至20秒" id="videoMarker">
         </div>
       </div>
       <div>
@@ -33,22 +44,42 @@
           <p>你的浏览器不支持 <code>audio</code> 标签.</p>
         </audio>
         <div>
-          <input type="button" value="控制器" id="audioControls">
-          <input type="button" value="自动播放" id="audioAutoplay">
-          <input type="button" value="循环播放" id="audioLoop">
-          <select id="audioPreload">
-            <option value="none">不缓冲</option>
-            <option value="auto">缓冲音频文件</option>
-            <option value="metadata">缓冲元数据</option>
-          </select>
+          audio事件操作等与video类似，需要注意，iphone不支持媒体元素的自动播放，其中有不支持音量，随后调整不支持整个媒体的自动播放。必须在页面有任何操作，加载媒体元素后才能播放。
         </div>
       </div>
     </header>
   </main>
   <script>
     var video = document.querySelector('video');
-    var audio = document.querySelector('audio');
-    
+    document.querySelector('#videoControls').addEventListener('click', function(evt) {
+      video.controls = !video.controls;
+    });
+    document.querySelector('#videoAutoplay').addEventListener('click', function(evt) {
+      video.autoplay = !video.autoplay;
+    });
+    document.querySelector('#videoLoop').addEventListener('click', function(evt) {
+      video.loop = !video.loop;
+    });
+    document.querySelector('#videoPreload').addEventListener('click', function(evt) {
+      video.preload = this.value;
+    });
+    document.querySelector('#videoPlay').addEventListener('click', function(evt) {
+      video.play();
+    });
+    document.querySelector('#videoPause').addEventListener('click', function(evt) {
+      video.pause();
+    });
+    document.querySelector('#videoSoundUp').addEventListener('click', function(evt) {
+      video.volume += 0.1;
+    });
+    document.querySelector('#videoSoundDown').addEventListener('click', function(evt) {
+      video.volume -= 0.1;
+    });
+    document.querySelector('#videoMarker').addEventListener('click', function(evt) {
+      video.src += '#t=10,20';
+      video.play();
+    });
   </script>
+
 </body>
 </html>
