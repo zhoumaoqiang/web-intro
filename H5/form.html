@@ -81,17 +81,23 @@
       <input type="hidden" id="timestamp" name="timestamp" value="1286705410">
     </div>
     <p>
-      <input type="image" name="pos" alt="" src="map.png">
+      <input type="image" name="pos" alt="" src="../assets/H5/form/img.jpg">
     </p>
     <p>
+      <p>进度:</p>
       <progress max="100" value="75">75/100</progress>
     </p>
     <p>
+      <p>米:</p>
       <meter min="0" max="100" value="75" low="33" high="66" optimum="50">75</meter>
     </p>
     <p>
-      <button type="submit">Submit me!</button>
+      <button type="submit">提交</button>
     </p>
   </form>
+  <script>
+    // 文件上传前提：1.使用post请求 2.包含文件上传的组件或者获取文件对象 3.设置enctype为multipart/form-data，其通常情况的值为application/x-www-form-urlencoded(已编码为URL参数的表单数据)
+    // 自定义表单，如select，设置role的值分别为presentation和option，用于提供功能信息
+  </script>
 </body>
 </html>

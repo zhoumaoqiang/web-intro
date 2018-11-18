@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>数学元素</title>
+  <style>
+    /* math */
+    math {
+      display: inline;
+      text-indent: 0;
+    }
+
+    math[display="block"] {
+      display: block;
+      text-align: center;
+    }
+
+    /* fraction */
+    mfrac {
+      display: inline-table !important;
+      vertical-align: middle;
+      border-collapse: collapse;
+    }
+
+    mfrac>* {
+      display: table-row !important;
+    }
+
+    mfrac:not([linethickness="0"])>*:first-child {
+      border-bottom: solid thin;
+    }
+
+    msub>*:nth-child(2),
+    msubsup>*:nth-child(2),
+    mmultiscripts>*:nth-child(2n+2),
+    mmultiscripts>mprescripts~*:nth-child(2n+3) {
+      font-size: 0.8em;
+      vertical-align: sub;
+    }
+
+    msup>*:nth-child(2),
+    msubsup>*:nth-child(3),
+    mmultiscripts>*:nth-child(2n+3),
+    mmultiscripts>mprescripts~*:nth-child(2n+2) {
+      font-size: 0.8em;
+      vertical-align: super;
+    }
+
+    mprescripts:after {
+      content: ";";
+    }
+
+    mi {
+      font-style: italic;
+    }
+
+    mo {
+      margin-right: .2em;
+      margin-left: .2em;
+    }
+
+    mtable {
+      display: inline-table !important;
+      vertical-align: middle;
+    }
+
+    mtr {
+      display: table-row !important;
+    }
+
+    mtd {
+      display: table-cell !important;
+      padding: 0 0.5ex;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <p>需要元素+CSS配合使用：</p>
+    <p>
+      <span>示例一：</span>
+      <math>
+        <mrow>
+          <msup>
+            <mi>  a </mi>
+            <mn>2</mn>
+          </msup>
+          <mo> + </mo>
+          <msup>
+            <mi> b </mi>
+            <mn>2</mn>
+          </msup>
+          <mo> = </mo>
+          <msup>
+            <mi> c </mi>
+            <mn>2</mn>
+          </msup>
+        </mrow>
+      </math>
+    </p>
+    <p>
+      <span>示例二：</span>
+      <math style="display: block;">
+        <mtable columnalign="right center left">
+          <mtr>
+            <mtd>
+              <msup>
+                <mrow>
+                  <mo> ( </mo>
+                  <mi> a </mi>
+                  <mo> + </mo>
+                  <mi> b </mi>
+                  <mo> ) </mo>
+                </mrow>
+                <mn> 2 </mn>
+              </msup>
+            </mtd>
+            <mtd>
+              <mo> = </mo>
+            </mtd>
+            <mtd>
+              <msup>
+                <mi> c </mi>
+                <mn>2</mn>
+              </msup>
+              <mo> + </mo>
+              <mn> 4 </mn>
+              <mo> ⋅ </mo>
+              <mo>(</mo>
+              <mfrac>
+                <mn> 1 </mn>
+                <mn> 2 </mn>
+              </mfrac>
+              <mi> a </mi>
+              <mi> b </mi>
+              <mo>)</mo>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+              &nbsp; &nbsp; &nbsp;&nbsp;
+            </mtd>
+          </mtr>
+          <mtr>
+            <mtd>
+              <msup>
+                <mi> a </mi>
+                <mn>2</mn>
+              </msup>
+              <mo> + </mo>
+              <mn> 2 </mn>
+              <mi> a </mi>
+              <mi> b </mi>
+              <mo> + </mo>
+              <msup>
+                <mi> b </mi>
+                <mn>2</mn>
+              </msup>
+            </mtd>
+            <mtd>
+              <mo> = </mo>
+            </mtd>
+            <mtd>
+              <msup>
+                <mi> c </mi>
+                <mn>2</mn>
+              </msup>
+              <mo> + </mo>
+              <mn> 2 </mn>
+              <mi> a </mi>
+              <mi> b</mi>
+            </mtd>
+          </mtr>
+          <mtr>
+            <mtd></mtd>
+          </mtr>
+          <mtr>
+            <mtd>
+              <msup>
+                <mi>a </mi>
+                <mn>2</mn>
+              </msup>
+              <mo> + </mo>
+              <msup>
+                <mi> b </mi>
+                <mn>2</mn>
+              </msup>
+            </mtd>
+            <mtd>
+              <mo> = </mo>
+            </mtd>
+            <mtd>
+              <msup>
+                <mi> c </mi>
+                <mn>2</mn>
+              </msup>
+            </mtd>
+          </mtr>
+        </mtable>
+      </math>
+    </p>
+
+
+  </main>
+</body>
+
+</html>
