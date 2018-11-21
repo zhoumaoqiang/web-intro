@@ -1,16 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>canvas</title>
 </head>
+
 <body>
   <div id="wrapper">
     <div class="canvas-container">
+      <!-- 这里动态提供部分示例 -->
+      <div>
+        <select id="draw">
+          <option value="choose">请选择</option>
+          <option value="rect">矩形</option>
+          <option value="rect">矩形</option>
+          <option value="rect">矩形</option>
+          <option value="rect">矩形</option>
+          <option value="rect">矩形</option>
+          <option value="rect">矩形</option>
+          <option value="rect">矩形</option>
+        </select>
+      </div>
       <!-- 只有宽高属性 -->
-      <canvas width="1200" height="600">
+      <canvas id="canvas" width="1200" height="600">
         不支持canvas将会显示的内容
       </canvas>
     </div>
@@ -19,9 +34,27 @@
     // 获取渲染上下文
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
-    
-    // 
 
+    document.getElementById('draw').addEventListener('change', function() {
+      clean();
+      switch(this.value) {
+        case 'rect':
+          drawRect();
+          break;
+      }
+    });
+
+    // 绘制案例
+    function drawRect() {
+      ctx.fillRect(25, 25, 100, 100);
+      ctx.clearRect(45, 45, 60, 60);
+      ctx.strokeRect(50, 50, 50, 50);
+    }
+
+    function clean() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
   </script>
 </body>
+
 </html>
