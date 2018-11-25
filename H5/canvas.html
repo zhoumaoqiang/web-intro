@@ -35,6 +35,10 @@
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
 
+    // 创建一个Path2D对象，可以存储绘制路径或者SVG
+    const path = new Path2D("M10 10 h 80 v 80 h -80 Z"); // M10 10表示起始点，随后h为水平位移，v为垂直方向，z为起点
+    path.rect(300, 200, 400, 300);
+
     document.getElementById('draw').addEventListener('change', function() {
       clean();
       switch(this.value) {
