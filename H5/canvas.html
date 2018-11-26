@@ -108,6 +108,12 @@
       ctx.fill();
     }
 
+    // 文字
+    function text() {
+      ctx.font = "48px serif";
+      ctx.fillText("Hello world", 10, 50);
+    }
+
     function clean() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
