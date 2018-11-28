@@ -16,12 +16,11 @@
         <select id="draw">
           <option value="choose">请选择</option>
           <option value="rect">矩形</option>
-          <option value="rect">路径</option>
-          <option value="rect">圆弧</option>
-          <option value="rect">二次贝塞尔曲线</option>
-          <option value="rect">三次贝塞尔曲线</option>
-          <option value="rect">文字</option>
-          <option value="rect">矩形</option>
+          <option value="path">路径</option>
+          <option value="arc">圆弧</option>
+          <option value="quadraticCurve">二次贝塞尔曲线</option>
+          <option value="bezierCurve">三次贝塞尔曲线</option>
+          <option value="text">文字</option>
         </select>
       </div>
       <!-- 只有宽高属性 -->
@@ -45,6 +44,17 @@
         case 'rect':
           drawRect();
           break;
+        case 'path':
+          drawPath();
+          break; case 'arc':
+          drawArc();
+          break; case 'quadraticCurve':
+          drawQuadraticCurve();
+          break; case 'bezierCurve':
+          drawBezierCurve();
+          break; case 'text':
+          drawText();
+
       }
     });
 
@@ -96,7 +106,7 @@
     }
     
     //三次贝塞尔曲线
-    function bezierCurve() {
+    function drawBezierCurve() {
       ctx.beginPath();
       ctx.moveTo(75,40);
       ctx.bezierCurveTo(75,37,70,25,50,25);
@@ -109,7 +119,7 @@
     }
 
     // 文字
-    function text() {
+    function drawText() {
       ctx.font = "48px serif";
       ctx.fillText("Hello world", 10, 50);
     }
