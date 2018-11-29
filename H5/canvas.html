@@ -21,6 +21,8 @@
           <option value="quadraticCurve">二次贝塞尔曲线</option>
           <option value="bezierCurve">三次贝塞尔曲线</option>
           <option value="text">文字</option>
+          <option value="image">图片</option>
+          <option value="clock">时钟</option>
         </select>
       </div>
       <!-- 只有宽高属性 -->
@@ -30,102 +32,244 @@
     </div>
   </div>
   <script>
-    // 获取渲染上下文
-    var canvas = document.getElementById('canvas');
-    var ctx = canvas.getContext('2d');
+    (function () {
+      // 获取渲染上下文
+      var canvas = document.getElementById('canvas');
+      var ctx = canvas.getContext('2d');
 
-    // 创建一个Path2D对象，可以存储绘制路径或者SVG
-    const path = new Path2D("M10 10 h 80 v 80 h -80 Z"); // M10 10表示起始点，随后h为水平位移，v为垂直方向，z为起点
-    path.rect(300, 200, 400, 300);
+      // 创建一个Path2D对象，可以存储绘制路径或者SVG
+      const path = new Path2D("M10 10 h 80 v 80 h -80 Z"); // M10 10表示起始点，随后h为水平位移，v为垂直方向，z为起点
+      path.rect(300, 200, 400, 300);
 
-    document.getElementById('draw').addEventListener('change', function() {
-      clean();
-      switch(this.value) {
-        case 'rect':
-          drawRect();
-          break;
-        case 'path':
-          drawPath();
-          break; case 'arc':
-          drawArc();
-          break; case 'quadraticCurve':
-          drawQuadraticCurve();
-          break; case 'bezierCurve':
-          drawBezierCurve();
-          break; case 'text':
-          drawText();
+      var intervalId, timeoutId;
+
+      document.getElementById('draw').addEventListener('change', function () {
+        if(intervalId) {
+          clearInterval(intervalId);
+        }
+        if(timeoutId) {
+          clearTimeout(intervalId);
+        }
+        clean();
+        switch (this.value) {
+          case 'rect':
+            drawRect();
+            break;
+          case 'path':
+            drawPath();
+            break;
+          case 'arc':
+            drawArc();
+            break;
+          case 'quadraticCurve':
+            drawQuadraticCurve();
+            break;
+          case 'bezierCurve':
+            drawBezierCurve();
+            break;
+          case 'text':
+            drawText();
+            break;
+          case 'image':
+            drawImage();
+            break;
+          case 'clock':
+          drawClock();
+            break;
+        }
+      });
+
+      // 绘制案例
+      function drawRect() {
+        ctx.fillRect(25, 25, 100, 100);
+        ctx.clearRect(45, 45, 60, 60);
+        ctx.strokeRect(50, 50, 50, 50);
       }
-    });
 
-    // 绘制案例
-    function drawRect() {
-      ctx.fillRect(25, 25, 100, 100);
-      ctx.clearRect(45, 45, 60, 60);
-      ctx.strokeRect(50, 50, 50, 50);
-    }
+      function drawPath() {
+        ctx.beginPath();
+        ctx.moveTo(75, 50);
+        ctx.lineTo(100, 75);
+        ctx.lineTo(100, 25);
+        ctx.fill();
 
-    function drawPath() {
-      ctx.beginPath();
-      ctx.moveTo(75, 50);
-      ctx.lineTo(100, 75);
-      ctx.lineTo(100, 25);
-      ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(250, 250);
+        ctx.lineTo(250, 90);
+        ctx.lineTo(90, 250);
+        ctx.closePath();
+        ctx.stroke();
+      }
 
-      ctx.beginPath();
-      ctx.moveTo(250,250);
-      ctx.lineTo(250,90);
-      ctx.lineTo(90,250);
-      ctx.closePath();
-      ctx.stroke();
-    }
+      function drawArc() {
+        ctx.beginPath();
+        ctx.arc(75, 75, 50, 0, Math.PI * 2, true); // 绘制
+        ctx.moveTo(110, 75);
+        ctx.arc(75, 75, 35, 0, Math.PI, false); // 口(顺时针)
+        ctx.moveTo(65, 65);
+        ctx.arc(60, 65, 5, 0, Math.PI * 2, true); // 左眼
+        ctx.moveTo(95, 65);
+        ctx.arc(90, 65, 5, 0, Math.PI * 2, true); // 右眼
+        ctx.stroke();
+      }
 
-    function drawArc() {
-      ctx.beginPath();
-      ctx.arc(75,75,50,0,Math.PI*2,true); // 绘制
-      ctx.moveTo(110,75);
-      ctx.arc(75,75,35,0,Math.PI,false);   // 口(顺时针)
-      ctx.moveTo(65,65);
-      ctx.arc(60,65,5,0,Math.PI*2,true);  // 左眼
-      ctx.moveTo(95,65);
-      ctx.arc(90,65,5,0,Math.PI*2,true);  // 右眼
-      ctx.stroke();
-    }
+      // 二次贝塞尔曲线
+      function drawQuadraticCurve() {
+        ctx.beginPath();
+        ctx.moveTo(75, 25);
+        ctx.quadraticCurveTo(25, 25, 25, 62.5);
+        ctx.quadraticCurveTo(25, 100, 50, 100);
+        ctx.quadraticCurveTo(50, 120, 30, 125);
+        ctx.quadraticCurveTo(60, 120, 65, 100);
+        ctx.quadraticCurveTo(125, 100, 125, 62.5);
+        ctx.quadraticCurveTo(125, 25, 75, 25);
+        ctx.stroke();
+      }
 
-    // 二次贝塞尔曲线
-    function drawQuadraticCurve() {
-      ctx.beginPath();
-      ctx.moveTo(75,25);
-      ctx.quadraticCurveTo(25,25,25,62.5);
-      ctx.quadraticCurveTo(25,100,50,100);
-      ctx.quadraticCurveTo(50,120,30,125);
-      ctx.quadraticCurveTo(60,120,65,100);
-      ctx.quadraticCurveTo(125,100,125,62.5);
-      ctx.quadraticCurveTo(125,25,75,25);
-      ctx.stroke();
-    }
-    
-    //三次贝塞尔曲线
-    function drawBezierCurve() {
-      ctx.beginPath();
-      ctx.moveTo(75,40);
-      ctx.bezierCurveTo(75,37,70,25,50,25);
-      ctx.bezierCurveTo(20,25,20,62.5,20,62.5);
-      ctx.bezierCurveTo(20,80,40,102,75,120);
-      ctx.bezierCurveTo(110,102,130,80,130,62.5);
-      ctx.bezierCurveTo(130,62.5,130,25,100,25);
-      ctx.bezierCurveTo(85,25,75,37,75,40);
-      ctx.fill();
-    }
+      //三次贝塞尔曲线
+      function drawBezierCurve() {
+        ctx.beginPath();
+        ctx.moveTo(75, 40);
+        ctx.bezierCurveTo(75, 37, 70, 25, 50, 25);
+        ctx.bezierCurveTo(20, 25, 20, 62.5, 20, 62.5);
+        ctx.bezierCurveTo(20, 80, 40, 102, 75, 120);
+        ctx.bezierCurveTo(110, 102, 130, 80, 130, 62.5);
+        ctx.bezierCurveTo(130, 62.5, 130, 25, 100, 25);
+        ctx.bezierCurveTo(85, 25, 75, 37, 75, 40);
+        ctx.fill();
+      }
 
-    // 文字
-    function drawText() {
-      ctx.font = "48px serif";
-      ctx.fillText("Hello world", 10, 50);
-    }
+      function drawText() {
+        ctx.font = "48px serif";
+        ctx.fillText("Hello world", 10, 50);
+      }
 
-    function clean() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
+      function drawImage() {
+        var image = new Image();
+        image.src = '../assets/H5/canvas/image.jpg';
+        image.onload = function () {
+          ctx.drawImage(image, 0, 0);
+          ctx.stroke();
+          // 延迟压缩重复
+          timeoutId = setTimeout(function () {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (var i = 0; i < 4; i++) {
+              for (var j = 0; j < 3; j++) {
+                ctx.drawImage(image, j * 50, i * 38, 50, 38);
+              }
+            }
+          }, 3000)
+          // 延迟剪切
+          timeoutId = setTimeout(function () {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(image, 33, 71, 400, 300, 21, 20, 400, 300);
+          }, 6000)
+        }
+      }
+
+      function drawClock() {
+        intervalId = setInterval(function clock() {
+          var now = new Date();
+          ctx.save();
+          ctx.clearRect(0, 0, 150, 150);
+          ctx.translate(75, 75);
+          ctx.scale(0.4, 0.4);
+          ctx.rotate(-Math.PI / 2);
+          ctx.strokeStyle = "black";
+          ctx.fillStyle = "white";
+          ctx.lineWidth = 8;
+          ctx.lineCap = "round";
+
+          // Hour marks
+          ctx.save();
+          for (var i = 0; i < 12; i++) {
+            ctx.beginPath();
+            ctx.rotate(Math.PI / 6);
+            ctx.moveTo(100, 0);
+            ctx.lineTo(120, 0);
+            ctx.stroke();
+          }
+          ctx.restore();
+
+          // Minute marks
+          ctx.save();
+          ctx.lineWidth = 5;
+          for (i = 0; i < 60; i++) {
+            if (i % 5 != 0) {
+              ctx.beginPath();
+              ctx.moveTo(117, 0);
+              ctx.lineTo(120, 0);
+              ctx.stroke();
+            }
+            ctx.rotate(Math.PI / 30);
+          }
+          ctx.restore();
+
+          var sec = now.getSeconds();
+          var min = now.getMinutes();
+          var hr = now.getHours();
+          hr = hr >= 12 ? hr - 12 : hr;
+
+          ctx.fillStyle = "black";
+
+          // write Hours
+          ctx.save();
+          ctx.rotate(hr * (Math.PI / 6) + (Math.PI / 360) * min + (Math.PI / 21600) * sec)
+          ctx.lineWidth = 14;
+          ctx.beginPath();
+          ctx.moveTo(-20, 0);
+          ctx.lineTo(80, 0);
+          ctx.stroke();
+          ctx.restore();
+
+          // write Minutes
+          ctx.save();
+          ctx.rotate((Math.PI / 30) * min + (Math.PI / 1800) * sec)
+          ctx.lineWidth = 10;
+          ctx.beginPath();
+          ctx.moveTo(-28, 0);
+          ctx.lineTo(112, 0);
+          ctx.stroke();
+          ctx.restore();
+
+          // Write seconds
+          ctx.save();
+          ctx.rotate(sec * Math.PI / 30);
+          ctx.strokeStyle = "#D40000";
+          ctx.fillStyle = "#D40000";
+          ctx.lineWidth = 6;
+          ctx.beginPath();
+          ctx.moveTo(-30, 0);
+          ctx.lineTo(83, 0);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(0, 0, 10, 0, Math.PI * 2, true);
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(95, 0, 10, 0, Math.PI * 2, true);
+          ctx.stroke();
+          ctx.fillStyle = "rgba(0,0,0,0)";
+          ctx.arc(0, 0, 3, 0, Math.PI * 2, true);
+          ctx.fill();
+          ctx.restore();
+
+          ctx.beginPath();
+          ctx.lineWidth = 14;
+          ctx.strokeStyle = '#325FA2';
+          ctx.arc(0, 0, 142, 0, Math.PI * 2, true);
+          ctx.stroke();
+
+          ctx.restore();
+        }, 50);
+      }
+
+      
+
+
+      function clean() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    })()
   </script>
 </body>
 
