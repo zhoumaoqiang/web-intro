@@ -23,6 +23,7 @@
           <option value="text">文字</option>
           <option value="image">图片</option>
           <option value="clock">时钟</option>
+          <option value="ball">移动小球松手</option>
         </select>
       </div>
       <!-- 只有宽高属性 -->
@@ -44,10 +45,10 @@
       var intervalId, timeoutId;
 
       document.getElementById('draw').addEventListener('change', function () {
-        if(intervalId) {
+        if (intervalId) {
           clearInterval(intervalId);
         }
-        if(timeoutId) {
+        if (timeoutId) {
           clearTimeout(intervalId);
         }
         clean();
@@ -74,7 +75,10 @@
             drawImage();
             break;
           case 'clock':
-          drawClock();
+            drawClock();
+            break;
+          case 'ball':
+            drawBall();
             break;
         }
       });
@@ -180,7 +184,7 @@
           ctx.lineWidth = 8;
           ctx.lineCap = "round";
 
-          // Hour marks
+          // 时针盘
           ctx.save();
           for (var i = 0; i < 12; i++) {
             ctx.beginPath();
@@ -191,7 +195,7 @@
           }
           ctx.restore();
 
-          // Minute marks
+          // 分针盘
           ctx.save();
           ctx.lineWidth = 5;
           for (i = 0; i < 60; i++) {
@@ -212,7 +216,7 @@
 
           ctx.fillStyle = "black";
 
-          // write Hours
+          // 时针转动
           ctx.save();
           ctx.rotate(hr * (Math.PI / 6) + (Math.PI / 360) * min + (Math.PI / 21600) * sec)
           ctx.lineWidth = 14;
@@ -222,7 +226,7 @@
           ctx.stroke();
           ctx.restore();
 
-          // write Minutes
+          // 分针转动
           ctx.save();
           ctx.rotate((Math.PI / 30) * min + (Math.PI / 1800) * sec)
           ctx.lineWidth = 10;
@@ -232,7 +236,7 @@
           ctx.stroke();
           ctx.restore();
 
-          // Write seconds
+          // 秒针转动
           ctx.save();
           ctx.rotate(sec * Math.PI / 30);
           ctx.strokeStyle = "#D40000";
@@ -263,7 +267,72 @@
         }, 50);
       }
 
-      
+      function drawBall() {
+        var raf;
+        var running = false;
+
+        var ball = {
+          x: 100,
+          y: 100,
+          vx: 5,
+          vy: 1,
+          radius: 25,
+          color: 'blue',
+          draw: function () {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+            ctx.closePath();
+            ctx.fillStyle = this.color;
+            ctx.fill();
+          }
+        };
+
+        function clear() {
+          ctx.fillStyle = 'rgba(255,255,255,0.3)';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function draw() {
+          clear();
+          ball.draw();
+          ball.x += ball.vx;
+          ball.y += ball.vy;
+
+          if (ball.y + ball.vy > canvas.height || ball.y + ball.vy < 0) {
+            ball.vy = -ball.vy;
+          }
+          if (ball.x + ball.vx > canvas.width || ball.x + ball.vx < 0) {
+            ball.vx = -ball.vx;
+          }
+
+          raf = window.requestAnimationFrame(draw);
+        }
+
+        canvas.addEventListener('mousemove', function (e) {
+          if (!running) {
+            clear();
+            ball.x = e.clientX;
+            ball.y = e.clientY;
+            ball.draw();
+          }
+        });
+
+        canvas.addEventListener('click', function (e) {
+          if (!running) {
+            raf = window.requestAnimationFrame(draw);
+            running = true;
+          }
+        });
+
+        canvas.addEventListener('mouseout', function (e) {
+          window.cancelAnimationFrame(raf);
+          running = false;
+        });
+
+        ball.draw();
+      }
+
+
 
 
       function clean() {
