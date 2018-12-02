@@ -24,10 +24,12 @@
           <option value="image">图片</option>
           <option value="clock">时钟</option>
           <option value="ball">移动小球松手</option>
+          <option value="grey">改变图片灰度</option>
+          <option value="opposite">图片反相</option>
         </select>
       </div>
       <!-- 只有宽高属性 -->
-      <canvas id="canvas" width="1200" height="600">
+      <canvas id="canvas" width="1200" height="600" style="border: 1px solid #000;">
         不支持canvas将会显示的内容
       </canvas>
     </div>
@@ -79,6 +81,12 @@
             break;
           case 'ball':
             drawBall();
+            break;
+          case 'grey':
+            grey();
+            break;
+          case "opposite":
+            opposite();
             break;
         }
       });
@@ -268,8 +276,8 @@
       }
 
       function drawBall() {
-        var raf;
-        var running = false;
+        // var raf;
+        // var running = false;
 
         var ball = {
           x: 100,
@@ -277,7 +285,7 @@
           vx: 5,
           vy: 1,
           radius: 25,
-          color: 'blue',
+          color: 'black',
           draw: function () {
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
@@ -295,6 +303,7 @@
         function draw() {
           clear();
           ball.draw();
+          // 这里控制速度，如下为匀速
           ball.x += ball.vx;
           ball.y += ball.vy;
 
@@ -305,35 +314,34 @@
             ball.vx = -ball.vx;
           }
 
-          raf = window.requestAnimationFrame(draw);
         }
 
-        canvas.addEventListener('mousemove', function (e) {
-          if (!running) {
-            clear();
-            ball.x = e.clientX;
-            ball.y = e.clientY;
-            ball.draw();
-          }
-        });
-
-        canvas.addEventListener('click', function (e) {
-          if (!running) {
-            raf = window.requestAnimationFrame(draw);
-            running = true;
-          }
-        });
-
-        canvas.addEventListener('mouseout', function (e) {
-          window.cancelAnimationFrame(raf);
-          running = false;
-        });
-
-        ball.draw();
+        ball.draw()
+        intervalId = setInterval(function () {
+          draw();
+        }, 50)
       }
+      
+      /** 
+       * 下面操作图片会使用imageData对象，将图片转换成  长 * 宽 * 4 长度的对象，表示该区域内像素的rgba的集合 
+       */
 
-
-
+      // 改变图片灰度
+      function grey() {
+        var img = new Image();
+        img.src = '../assets/H5/canvas/image.jpg';
+        img.onload = function() {
+        
+        };
+      }
+      // 图片反相
+      function opposite() {
+        var img = new Image();
+        img.src = '../assets/H5/canvas/image.jpg';
+        img.onload = function() {
+        
+        };
+      }
 
       function clean() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
