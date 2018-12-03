@@ -26,6 +26,7 @@
           <option value="ball">移动小球松手</option>
           <option value="grey">改变图片灰度</option>
           <option value="opposite">图片反相</option>
+          <option value="blob">blob地址</option>
         </select>
       </div>
       <!-- 只有宽高属性 -->
@@ -87,6 +88,9 @@
             break;
           case "opposite":
             opposite();
+            break;
+          case "blob":
+            blob();
             break;
         }
       });
@@ -321,7 +325,7 @@
           draw();
         }, 50)
       }
-      
+
       /** 
        * 下面操作图片会使用imageData对象，将图片转换成  长 * 宽 * 4 长度的对象，表示该区域内像素的rgba的集合 
        */
@@ -330,17 +334,60 @@
       function grey() {
         var img = new Image();
         img.src = '../assets/H5/canvas/image.jpg';
-        img.onload = function() {
-        
+        img.onload = function () {
+          ctx.drawImage(img, 0, 0);
+
+          var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          var data = imageData.data;
+          for (var i = 0; i < data.length; i += 4) {
+            var avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+            data[i] = avg; // red
+            data[i + 1] = avg; // green
+            data[i + 2] = avg; // blue
+          }
+          timeoutId = setTimeout(function () {
+            ctx.putImageData(imageData, 0, 0);
+          }, 2000)
+
         };
       }
       // 图片反相
       function opposite() {
         var img = new Image();
         img.src = '../assets/H5/canvas/image.jpg';
-        img.onload = function() {
-        
+        img.onload = function () {
+          ctx.drawImage(img, 0, 0);
+
+          var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          var data = imageData.data;
+          for (var i = 0; i < data.length; i += 4) {
+            data[i] = 225 - data[i]; // red
+            data[i + 1] = 225 - data[i + 1]; // green
+            data[i + 2] = 225 - data[i + 2]; // blue
+          }
+          timeoutId = setTimeout(function () {
+            ctx.putImageData(imageData, 0, 0);
+          }, 2000)
+
         };
+      }
+
+      // 锯齿效果，通过“imageSmoothingEnabled”属性来控制
+
+      // 转换成blob
+      function blob() {
+        var img = new Image();
+        img.src = '../assets/H5/canvas/image.jpg';
+        img.onload = function () {
+          ctx.drawImage(img, 0, 0);
+
+          canvas.toBlob(function(blob) {
+            // 获取的blob是一种文件对象， 在页面中可以转换成url的形式
+            var url = URL.createObjectURL(blob);
+            alert(url)
+
+          }, "image/jpeg", 0.95)  // 品质为0.95
+        }
       }
 
       function clean() {
