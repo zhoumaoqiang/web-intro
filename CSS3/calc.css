@@ -1,0 +1,10 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+/* 使用calc函数，支持加减乘除，乘法必须要有一位是number，除法被除数为number，运算符左右为空白符 */
+.reduce {
+  width: calc(100% - 80px);
+  height: 20px;
+  background: red;
+}
