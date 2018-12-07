@@ -6,5 +6,13 @@
 .reduce {
   width: calc(100% - 80px);
   height: 20px;
-  background: red;
+  background: #ee5e5e;
+}
+.nesting {
+  --widthA: 100px;
+  --widthB: calc(var(--widthA) * 2);
+  --widthC: calc(var(--widthB) * 2);
+  width: var(--widthC);
+  background: #6161ee;
+  color: #5c0808;
 }
