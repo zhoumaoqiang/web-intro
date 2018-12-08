@@ -1,0 +1,30 @@
+section {
+  bottom: 2px solid #ccc;
+  margin-bottom: 30px;
+}
+.color-container {
+  overflow: hidden;
+  background-image: url('../assets/demo.jpg');
+  min-height: 250px;
+  color: #fff;
+  line-height: 36px;
+}
+.standard-red {
+  background-color: #f00;
+}
+.opacity {
+  background-color: red;
+  opacity: .3;
+}
+.hsl {
+  background-color: hsl(0, 80%, 50%);
+}
+.hsla {
+  background-color: hsla(0, 80%, 50%, .3);
+}
+.rgb{
+  background-color: rgb(255, 0, 0);
+}
+.rgba {
+  background-color: rgba(255, 0, 0, .3);
+}
