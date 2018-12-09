@@ -28,3 +28,8 @@ section {
 .rgba {
   background-color: rgba(255, 0, 0, .3);
 }
+
+/* ====== */
+.bro-1~.bro-2 {
+  color: red;
+}

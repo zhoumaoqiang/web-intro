@@ -22,7 +22,29 @@
     </section>
 
     <section>
-      
+      <h3>选择器</h3>
+      <div>
+        <div class="bro-1">class="bro-1"</div>
+        <div class="bro-2">class="bro-2" .bro-1~.bor-2{ color: red; }</div>
+        <div name="data-attr">data-attr 以val或者val-开头 [name|data] color: blue;</div>
+
+
+      </div>
+    </section>
+
+    <section>
+      <h3>命名空间</h3>
+      <div>
+        <p>@namespace就像是CSS的一块作用域或者特殊的一层祖先元素前缀，使用时在选择器前面加上namespace的名字，以|分隔。</p>
+        <p>定义命名空间的语法：</p>
+        <pre>
+          @namespace &lt;namespace-prefix>? [ &lt;string> | &lt;url> ];
+          where 
+          &lt;namespace-prefix> = &lt;ident>
+        </pre>
+        <hr>
+        <p>html本身命名空间为(http://www.w3.org/1999/xhtml)，math元素和svg元素分别为http://www.w3.org/1998/Math/MathML和http://www.w3.org/2000/svg，这些特殊的命名空间可以在使用时省略定义。</p>
+      </div>
     </section>
   </div>
 </body>
