@@ -33,3 +33,30 @@ section {
 .bro-1~.bro-2 {
   color: red;
 }
+[name|=data] {
+  background-color: blue;
+}
+[name^=at] {
+  background-color: yellow;
+}
+[name$=bute] {
+  color: green;
+}
+[name*=cat] {
+  color: purple;
+}
+.pseudo-el::before {
+  content: "←";
+  color: #f00;
+}
+.pseudo-el::after {
+  content: "→";
+  color: blue;
+}
+.pseudo-el-2::first-line {
+  background-color: #ccc;
+  color: #333;
+}
+.pseudo-el-2::first-letter {
+  font-size: 40px;
+}
