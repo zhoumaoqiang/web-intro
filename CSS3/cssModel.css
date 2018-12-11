@@ -60,3 +60,14 @@ section {
 .pseudo-el-2::first-letter {
   font-size: 40px;
 }
+
+.column {
+  column-count: 5;
+  column-width: 100px;
+  column-gap: 50px;
+}
+.column-span {
+  columns: 4 150px;
+  column-span: all;
+  column-rule: thick inset blue;
+}
