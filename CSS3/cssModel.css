@@ -71,3 +71,19 @@ section {
   column-span: all;
   column-rule: thick inset blue;
 }
+
+.flex-box {
+  display: flex;
+  min-height: 200px;
+  border: 1px solid #333;
+  justify-content: space-around;
+  align-items: center;
+  flex: 1 1 200px;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 200px;
+}
+.flex-box>div {
+  width: 30%;
+  height: 100px;
+}
