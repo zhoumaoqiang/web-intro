@@ -88,14 +88,22 @@ section {
   height: 100px;
   border: 1px solid #000;
 }
-.felx-rows {
+.flex-rows {
   display: flex;
   flex-wrap: wrap;
-  align-content: center;
+  align-content: space-between;
+  justify-content: space-around;
   height: 300px;
 }
 .flex-rows>div {
   width: 20%;
   height: 50px;
   border: 1px solid #000;
+}
+
+.rem {
+  font-size: 2rem;
+}
+.ch {
+  font-size: 2rem;
 }
