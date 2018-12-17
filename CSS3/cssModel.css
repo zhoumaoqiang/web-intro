@@ -107,3 +107,14 @@ section {
 .ch {
   font-size: 2rem;
 }
+.angle {
+  width: 100px;
+  height: 100px;
+  background: #a00;
+  transform: rotate(30deg);
+}
+.calc {
+  width: calc(50% - 300px);
+  border: 1px solid red;
+  height: 40px;
+}
