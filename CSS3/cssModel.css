@@ -118,3 +118,49 @@ section {
   border: 1px solid red;
   height: 40px;
 }
+
+.transform > p {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #ccc;
+}
+.matrix {
+  transform: matrix(1,2,3,4,5,6);
+}
+.mixture {
+  transform: translate(500px, 30px) skew(30deg);
+}
+.rotate {
+  transform: rotate(60deg);
+}
+
+.polling_message {
+  color:white;
+  float:left;
+  margin-right:2%;            
+}
+
+.view_port {
+  background-color:black;
+  height:25px;
+  width:100%;
+  overflow: hidden;
+}
+
+.cylon_eye {
+  color:white;
+  height: 100%;
+  width: 20%;
+  background-color: red;
+  background-image: linear-gradient(to right, rgba( 0,0,0,0.9 ) 25%, rgba( 0,0,0,0.1 ) 50%, rgba( 0,0,0,0.9 ) 75%);
+  animation: move_eye 4s linear 0s infinite alternate;
+}
+
+@keyframes move_eye { 
+  from { 
+    margin-left: -20%; 
+  }
+  to { 
+    margin-left: 100%; 
+  }  
+}

@@ -124,19 +124,23 @@
         <p class="angle">值为角度的属性，变形的rotate函数，宽高100px，{transform: rotate(30deg);}</p>
         <p class="calc">计算的函数，calc函数，{width: calc(50%-300px);border: 1px splid red;}</p>
       </div>
+    </section>
 
-
-定义 <angle>，<time>， <frequency>，<resolution>。
-规范 <color>，<image> 和 <position> 定义的值。
-calc()，attr()和 toggle() 函数符号的定义。
+    <section class="transform">
+      <h3>变形</h3>
+      <p class="matrix">transform属性的值为函数，最基础的是matrix()，接受六个值，通过矩阵的计算是元素移动、倾斜和旋转，所以又有了translate、skew、rotate函数。{width: 100px;height: 100px;transform: matrix(1,2,3,4,5,6);}</p>
+      <p class="mixture">单纯的移动、倾斜和旋转是可以随意组合的。{transform: translate(500px, 30px) skew(30deg);}</p>
+      <p class="rotate">旋转{transform: rotate(60deg);}</p>
     </section>
 
     <section>
-      transform
-    </section>
-
-    <section>
-      animation
+      <h3>动画</h3>
+      <div class="view_port">
+        <div class="polling_message">
+          设置关键帧元素属性，调整过渡时间
+        </div>
+        <div class="cylon_eye"></div>
+      </div>
     </section>
 
     <section>

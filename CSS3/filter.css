@@ -1,0 +1,9 @@
+* {
+  color: #999;
+}
+.blur {
+  filter: blur(2px);
+}
+.brightness {
+  filter: brightness(0.5);
+}
