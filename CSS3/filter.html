@@ -17,19 +17,45 @@
     </div>
     <p>滤镜效果有：</p>
     <div>
-      <h4>高斯模糊blur()，接受CSS长度值，值越大越模糊，下面是3px的效果</h4>
+      <h4>高斯模糊blur()，接受CSS长度值，值越大越模糊，下面是2px的效果</h4>
       <div class="blur">
         <h4>高斯模糊blur()，接受CSS长度值，值越大越模糊</h4>
         <img src="../assets/CSS3/filter/image.jpg" alt="">
       </div>
     </div>
     <div>
+      <h4>调整明度brightness()，默认值为1，值越小越暗，下面是0.5的效果</h4>
+      <div class="brightness">
         <h4>调整明度brightness()，默认值为1，值越小越暗，下面是0.5的效果</h4>
-        <div class="brightness">
-          <h4>调整明度brightness()，默认值为1，值越小越暗，下面是0.5的效果</h4>
-          <img src="../assets/CSS3/filter/image.jpg" alt="">
-        </div>
+        <img src="../assets/CSS3/filter/image.jpg" alt="">
       </div>
+    </div>
+    <div>
+      <h4>调整对比度contrast()，默认值为1，值越小越暗，下面是0.5的效果</h4>
+      <div class="contrast">
+        <h4>调整对比度contrast()，默认值为1，值越小越暗，下面是0.5的效果</h4>
+        <img src="../assets/CSS3/filter/image.jpg" alt="">
+      </div>
+    </div>
+    <div>
+      <h4>设置阴影，参数同box-shadow</h4>
+      <div class="drop-shadow">
+        <h4>{filter: drop-shadow(16px 16px 10px 10px black)}</h4>
+        <img src="../assets/CSS3/filter/image.jpg" alt="">
+      </div>
+    </div>
+
   </div>
+
+  <script>
+    window.onload = function() {
+      var data = [{
+        "text": "高斯模糊blur()，接受CSS长度值，值越大越模糊，{filter: blur(2px);}",
+        "style": "filter: blur(2px);"
+      }, {
+
+      }]
+    }
+  </script>
 </body>
 </html>

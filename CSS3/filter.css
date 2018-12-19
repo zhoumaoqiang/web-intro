@@ -7,3 +7,11 @@
 .brightness {
   filter: brightness(0.5);
 }
+.contrast {
+  filter: contrast(.5);
+}
+.drap-shadow {
+  filter: drop-shadow(16px 16px 10px 10px black);
+
+  
+}
