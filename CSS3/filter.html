@@ -4,8 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="./filter.css">
   <title>CSS滤镜</title>
+  <style>
+    * {
+      color: #999;
+    }
+  </style>
 </head>
 <body>
   <div class="wrapper">
@@ -15,46 +19,88 @@
       <h3>原图</h3>
       <img src="../assets/CSS3/filter/image.jpg" alt="">
     </div>
-    <p>滤镜效果有：</p>
-    <div>
-      <h4>高斯模糊blur()，接受CSS长度值，值越大越模糊，下面是2px的效果</h4>
-      <div class="blur">
-        <h4>高斯模糊blur()，接受CSS长度值，值越大越模糊</h4>
-        <img src="../assets/CSS3/filter/image.jpg" alt="">
-      </div>
-    </div>
-    <div>
-      <h4>调整明度brightness()，默认值为1，值越小越暗，下面是0.5的效果</h4>
-      <div class="brightness">
-        <h4>调整明度brightness()，默认值为1，值越小越暗，下面是0.5的效果</h4>
-        <img src="../assets/CSS3/filter/image.jpg" alt="">
-      </div>
-    </div>
-    <div>
-      <h4>调整对比度contrast()，默认值为1，值越小越暗，下面是0.5的效果</h4>
-      <div class="contrast">
-        <h4>调整对比度contrast()，默认值为1，值越小越暗，下面是0.5的效果</h4>
-        <img src="../assets/CSS3/filter/image.jpg" alt="">
-      </div>
-    </div>
-    <div>
-      <h4>设置阴影，参数同box-shadow</h4>
-      <div class="drop-shadow">
-        <h4>{filter: drop-shadow(16px 16px 10px 10px black)}</h4>
-        <img src="../assets/CSS3/filter/image.jpg" alt="">
-      </div>
-    </div>
 
+    <p>
+      <span>滤镜效果有：</span>
+      <select id="filterSelect">
+        <option value="blur">高斯模糊</option>
+        <option value="brightness">调整明度</option>
+        <option value="contrast">对比度</option>
+        <option value="drop-shadow">阴影</option>
+        <option value="grayscale">灰度</option>
+        <option value="hue-rotate">调整色相</option>
+        <option value="invert">反相</option>
+        <option value="opacity">透明度</option>
+        <option value="saturate">饱和度</option>
+        <option value="sepia">深褐色</option>
+      </select>
+    </p>
+    <div>
+      <h4 class="desc-text">高斯模糊blur()，接受CSS长度值，值越大越模糊，下面是2px的效果</h4>
+      <div class="filter-wrapper">
+        <h4 class="desc-text">高斯模糊blur()，接受CSS长度值，值越大越模糊</h4>
+        <img src="../assets/CSS3/filter/image.jpg" alt="">
+      </div>
+    </div>
   </div>
 
   <script>
     window.onload = function() {
       var data = [{
         "text": "高斯模糊blur()，接受CSS长度值，值越大越模糊，{filter: blur(2px);}",
-        "style": "filter: blur(2px);"
+        "style": "blur(2px)",
+        "name": "blur"
       }, {
+        "text": "调整明度brightness()，默认值为1，值越小越暗，下面是0.5的效果",
+        "style": "brightness(0.5)",
+        "name": "brightness"
+      }, {
+        "text": "调整对比度contrast()，默认值为1，值越小越暗，下面是0.5的效果",
+        "style": "contrast(.5)",
+        "name": "contrast"
+      }, {
+        "text": "设置阴影，参数同box-shadow, {filter: drop-shadow(16px 16px 10px 10px black)}",
+        "style": "drop-shadow(16px 16px 10px 10px black)",
+        "name": "drop-shadow"
+      }, {
+        "text": "调整灰度grayscale()，默认值为1，值为0-1，下面是0.5的效果",
+        "style": "grayscale(50%)",
+        "name": "grayscale"
+      }, {
+        "text": "调整色相hue-rotate()，值为角度，360deg即还原，色相环旋转180度的效果",
+        "style": "hue-rotate(180deg)",
+        "name": "hue-rotate"
+      }, {
+        "text": "反相invert()，100%就是反相",
+        "style": "invert(100%)",
+        "name": "invert"
+      }, {
+        "text": "调整透明度opacity()，0-1透明度呈线性变化, 50%时",
+        "style": "opacity(50%)",
+        "name": "opacity"
+      }, {
+        "text": "调整饱和度saturate()，100%时图像没有变化，超过100%会呈现更高的饱和度, 值为2时",
+        "style": "saturate(200%)",
+        "name": "saturate"
+      }, {
+        "text": "将图像转化为深褐色sepia()，100%时完全呈现深褐色, 值为1时",
+        "style": "sepia(100%)",
+        "name": "sepia"
+      }];
 
-      }]
+      var textEls = document.querySelectorAll(".desc-text");
+      var filterEl = document.querySelector(".filter-wrapper");
+      // 初始化
+      filterEl.style.filter = data[0].style;
+      document.querySelector("#filterSelect").addEventListener("change", function() {
+        data.forEach((item) => {
+          if(item.name == this.value) {
+            textEls[0].innerHTML = item.text;
+            textEls[1].innerHTML = item.text;
+            filterEl.style.filter = item.style;
+          }
+        })
+      })
     }
   </script>
 </body>
