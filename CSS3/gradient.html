@@ -12,22 +12,56 @@
     
     <div>
       <h1>渐变</h1>
-      <p>渐变包括liner-gradient线性渐变和radius-gradient径向渐变。</p>
+      div>渐变包括liner-gradient线性渐变和radius-gradient径向渐变，渐变函数可用于CSS属性值为&lt;image&gt;的地方。</p>
     </div>
 
     <div>
       <h1>线性渐变</h1>
-      <div class="linear-gradient">
-        线性渐变函数可用于CSS属性值为&lt;image&gt;的地方，基本使用方法是标明方向和渐变颜色值<br>
-        {background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);}
+      <div>
+        <p>
+          线性渐变的值为渐变方向(角度)、颜色值(终止强度)。当使用方向时，to left/right、top/bottom的值可以直接使用角度进行替换。渐变颜色由起点色、终点色和中间色组成，颜色后面可以添加该颜色(顶点)在渐变过程中的断点占比。
+        </p>
+        <div class="linear-gradient">
+          从左至右多彩渐变：
+          {background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);}
+        </div>
+        <div class="linear-gradient-light">
+          包括角度和较轻颜色占比的渐变：
+          {background: linear-gradient(45deg, red, green 20%, blue);}
+        </div>
 
       </div>
     </div>
 
     <div>
       <h1>径向渐变</h1>
+      <div>
+        <p>径向渐变的值比较复杂，参数有: 渐变中心点位置、渐变形状(圆或椭圆)、边缘形状、颜色值。</p>
+        <p>渐变形状为circle或者ellipse，边缘形状有closest-side(就近边相切)、closest-corner(就近角相切)、farthest-side(最远边相切)和farthest-corner(最远角相切)。</p>
+        <div class="radial-gradient">
+          {background: radial-gradient(circle at 40% 30%, red, yellow, rgb(30, 144, 255))}
+        </div>
+        <div class="radial-gradient-more">
+          椭圆较远角相切，中心点40%, 60%, 同时制定位置相关的属性，相切点会生效
+          {background-image: radial-gradient(ellipse farthest-corner at 40% 60% , #FFFF80 20%, rgba(204, 153, 153, 0.4) 30%, #E6E6FF 60%);}
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h1>重复渐变</h1>
+        <p>重复渐变主要区别于颜色值后面提供的长度，CSS会根据px值或者百分比完成一组渐变，再将剩余空间铺满。</p>
+
+        <div class="repeating-linear-gradient">
+          线性重复渐变：{background: repeating-linear-gradient(to top left, lightpink, lightpink 5px, white 5px, white 10px);}
+        </div>
+
+        <div class="repeating-radial-gradient">
+          径向重复渐变: {background: repeating-radial-gradient(powderblue, powderblue 8px, white 8px, white 16px);}
+        </div>
 
     </div>
+
   </div>
 </body>
 </html>
