@@ -1,0 +1,26 @@
+.linear-gradient {
+  background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+}
+
+.linear-gradient-light {
+  background: linear-gradient(45deg, red, green 20%, blue);
+}
+
+.radial-gradient {
+  height: 250px;
+  background: radial-gradient(circle at 40% 30%, red, green, blue);
+}
+.radial-gradient-more {
+  width: 600px;
+  height: 300px;
+  background-image: radial-gradient(ellipse farthest-corner at 470px 47px , #FFFF80 20%, rgba(204, 153, 153, 0.4) 30%, #E6E6FF 60%);
+}
+
+.repeating-linear-gradient {
+  height: 300px;
+  background: repeating-linear-gradient(to top left, lightpink, lightpink 5px, white 5px, white 10px);
+}
+.repeating-radial-gradient {
+  height: 300px;
+  background: repeating-radial-gradient(powderblue, powderblue 8px, white 8px, white 16px);
+}
