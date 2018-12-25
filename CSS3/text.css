@@ -1,3 +1,7 @@
 .text-transform {
   text-transform: capitalize;
 }
+
+.letter-spacing {
+  letter-spacing: 10px;
+}
