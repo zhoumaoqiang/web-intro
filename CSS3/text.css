@@ -2,6 +2,22 @@
   text-transform: capitalize;
 }
 
+.hyphens {
+  hyphens: manual;
+}
+
 .letter-spacing {
   letter-spacing: 10px;
+}
+
+.text-shadow {
+  text-shadow: 5px 5px 5px #FF0000;
+}
+
+.ellipse {
+  white-space: nowrap; 
+  width: 200px; 
+  border: 1px solid #000000;
+  overflow: hidden;
+  text-overflow: ellipsis; 
 }
