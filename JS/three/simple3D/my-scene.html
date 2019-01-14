@@ -11,13 +11,14 @@
   <script src="../lib/three.js"></script>
   <script>
     function init() {
+      // 初始化三要素
       var scene = new THREE.Scene();
       var camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000);
       var renderer = new THREE.WebGLRenderer();
-      
+      // 设置背景颜色和尺寸
       renderer.setClearColorHex(0xeeeeee);
       renderer.setSize(window.innerWidth, window.innerHeight);
-      
+      // 加入轴
       var axes = new THREE.AsisHelper(20);
       scene.add(axes);
     }
