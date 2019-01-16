@@ -18,67 +18,76 @@
   </div>
   <script src="../lib/three.js"></script>
   <script>
-    // 初始化3D场景，并作出详细解释
     function init() {
 
-      // 初始化三要素(场景、相机、渲染器)
       var scene = new THREE.Scene();
-      var camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000);  // 透平相机，参数：视角、宽高横截比、近景、远景
+      var camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000);
       var renderer = new THREE.WebGLRenderer();
 
-      // 设置背景颜色和尺寸
-      renderer.setClearColor(0xeeeeee); // 设备颜色和透明度
+      renderer.setClearColor(0xeeeeee); 
       renderer.setSize(window.innerWidth, window.innerHeight);
 
-      // 加入轴辅助
-      var axes = new THREE.AxisHelper(20);  // 尺寸
+      // 阴影效果
+      renderer.shadowMapEnabled = true;
+      
+      var axes = new THREE.AxisHelper(20);  
       scene.add(axes);
 
-      // 创建一个物体
-      var planeGeometry = new THREE.PlaneGeometry(60, 20, 1, 1);  // 创建一个方形几何体，参数：宽、高、宽的片段数、高的片段数
-      var planeMaterial = new THREE.MeshBasicMaterial({color: 0xcccccc}); //创建材料
-      var plane = new THREE.Mesh(planeGeometry, planeMaterial); // 通过几何形状和材料创建物体
+      // 加入光源
+      var spotLight = new THREE.SpotLight( 0xffffff );
+      spotLight.position.set(-40, 60, -10);
+      scene.add(spotLight);
 
-      // 调整位置和角度
+      // 
+      spotLight.castShadow = true;
+
+      var planeGeometry = new THREE.PlaneGeometry(60, 20);  
+      var planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff}); // 
+      var plane = new THREE.Mesh(planeGeometry, planeMaterial); 
+
       plane.rotation.x = -0.5 * Math.PI;
       plane.position.x = 15;
       plane.position.y = 0;
       plane.position.z = 0;
 
-      // 将创建的物体加入场景中
+      //
+      plane.receiveShadow = true;
+
       scene.add(plane);
 
-      // 创建一个立方体，同上调整位置添加进入场景
-      var cubeGeometry = new THREE.BoxGeometry(4, 4, 4);  // 立方体几何体，参数：宽、高、深、宽高深的片段数
-      var cubeMaterial = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}); // 显示线框
+      var cubeGeometry = new THREE.BoxGeometry(4, 4, 4);  
+      var cubeMaterial = new THREE.MeshLambertMaterial({color: 0xff0000}); // 
       var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
 
       cube.position.x = -4;
       cube.position.y = 3;
       cube.position.z = 0;
 
+      //
+      cube.castShadow = true;
+
       scene.add(cube);
 
-      // 创建一个球体，操作同上
-      var sphereGeometry = new THREE.SphereGeometry(4, 20, 20); // 创建一个球体几何体，参数：半径、宽度片段数、高度片段数、水平向起始角、水平方向延伸的角度（默认180°）、垂直起始角度、垂直方向延伸角度
-      var sphereMaterial = new THREE.MeshBasicMaterial({color: 0x7777ff, wireframe: true});
+      var sphereGeometry = new THREE.SphereGeometry(4, 20, 20); 
+      var sphereMaterial = new THREE.MeshLambertMaterial({color: 0x7777ff});  //
       var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 
       sphere.position.x = 20;
       sphere.position.y = 4;
       sphere.position.z = 2;
 
+      //
+      sphere.castShadow = true;
+
       scene.add(sphere);
 
-      // 调整相机的位置和朝向
       camera.position.x = -30;
       camera.position.y = 40;
       camera.position.z = 30;
       camera.lookAt(scene.position);
 
-      // 将上面创建的场景加入到html中
-      document.getElementById('canvas').appendChild(renderer.domElement); // renderer创建时没有传入dom，那么画布就会被创建在其domElement上
-      renderer.render(scene, camera); // 只有场景唯一的，渲染的时候要指明场景、相机和那个渲染器
+      document.getElementById('canvas').appendChild(renderer.domElement); 
+      renderer.render(scene, camera); 
     }
 
     window.onload = init;
