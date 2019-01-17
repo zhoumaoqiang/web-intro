@@ -45,17 +45,18 @@
       scene.add(spotLight);
 
       // 创建一些具有视觉差的物体
-      for(let i = 0;i < 30; i++) {
-        for(let j = 0; j < 20; j++) {
+      for(let i = 0;i < 20; i++) {
+        for(let j = 0; j < 30; j++) {
           let geometry = new THREE.BoxGeometry(2, 2, 2);
           let material = new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff});
           let box = new THREE.Mesh(geometry, material);
           box.position.x = -15 + i * 2;
           box.position.y = 0;
-          box.position.z = -30 + j * 2;
+          box.position.z = -40 + j * 2;
           scene.add(box)
         }
       }
+      scene.rotation.z = Math.PI / 2;
       document.getElementById('canvas').appendChild(renderer.domElement)
 
       render();
