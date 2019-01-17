@@ -4,11 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>一个简单的三维场景</title>
+  <title>完整场景</title>
   <style>
     * {
       margin: 0;
       padding: 0;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
     }
   </style>
 </head>
@@ -16,13 +21,61 @@
   <div id="wrapper">
     <div id="canvas"></div>
   </div>
+  <script src="../lib/dat.gui.min.js"></script>
+  <script src="../lib/stats.min.js"></script>
   <script src="../lib/three.js"></script>
   <script>
+    // 加入统计帧数的库和其实例
+    function initStat() {
+      let stats = new Stats();
+      /*
+       * 两种模式可以设置，设置0时，检测帧数，设置为1，检测画面渲染时间
+       */
+      stats.setMode(0);
+      stats.domElement.style.position = 'absolute';
+      stats.domElement.style.left = '0';
+      stats.domElement.style.top = '0';
+      document.getElementById('wrapper').appendChild(stats.domElement);
+      return stats;
+    }
+    var scene, camera, renderer;
+
     function init() {
 
-      var scene = new THREE.Scene();
-      var camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000);
-      var renderer = new THREE.WebGLRenderer();
+      // 设置监控变量f
+      var controls = new function() {
+        // 定义初始值，将this指向controls
+        this.rotationSpeed = 0.02;
+        this.bouncingSpeed = 0.04;     
+      }
+      var gui = new dat.GUI();
+      gui.add(controls, 'rotationSpeed', 0, 0.5);
+      gui.add(controls, 'bouncingSpeed', 0, 0.5);
+
+      // 设置动画
+      var step = 0;
+      function renderScene() {
+        // 绘制帧数需要持续绘制
+        stats.update();
+
+        // 旋转方块
+        cube.rotation.x += controls.rotationSpeed;
+        cube.rotation.y += controls.rotationSpeed;
+        cube.rotation.z += controls.rotationSpeed;
+
+        // 调整球的位置，使用三角函数使球呈现圆弧运动
+        step += controls.bouncingSpeed;
+        sphere.position.x = 20 + ( 10 * ( Math.cos(step) ) );
+        sphere.position.y = 2 + ( 10 * Math.abs( Math.sin(step) ) );
+
+        // 重复的渲染工作
+        requestAnimationFrame(renderScene);
+        renderer.render(scene, camera);
+      }
+
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000);
+      renderer = new THREE.WebGLRenderer();
 
       renderer.setClearColor(0xeeeeee); 
       renderer.setSize(window.innerWidth, window.innerHeight);
@@ -38,11 +91,11 @@
       spotLight.position.set(-40, 60, -10);
       scene.add(spotLight);
 
-      // 
+      // 投射阴影
       spotLight.castShadow = true;
 
       var planeGeometry = new THREE.PlaneGeometry(60, 20);  
-      var planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff}); // 
+      var planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff}); // 材料会展现出高光效果
       var plane = new THREE.Mesh(planeGeometry, planeMaterial); 
 
       plane.rotation.x = -0.5 * Math.PI;
@@ -50,33 +103,33 @@
       plane.position.y = 0;
       plane.position.z = 0;
 
-      //
+      // 平面相当于地面，此处接受阴影
       plane.receiveShadow = true;
 
       scene.add(plane);
 
       var cubeGeometry = new THREE.BoxGeometry(4, 4, 4);  
-      var cubeMaterial = new THREE.MeshLambertMaterial({color: 0xff0000}); // 
+      var cubeMaterial = new THREE.MeshLambertMaterial({color: 0xff0000}); // 材料会展现出高光效果
       var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
 
       cube.position.x = -4;
       cube.position.y = 3;
       cube.position.z = 0;
 
-      //
+      // 投射阴影
       cube.castShadow = true;
 
       scene.add(cube);
 
       var sphereGeometry = new THREE.SphereGeometry(4, 20, 20); 
-      var sphereMaterial = new THREE.MeshLambertMaterial({color: 0x7777ff});  //
+      var sphereMaterial = new THREE.MeshLambertMaterial({color: 0x7777ff});  // 材料会展现出高光效果
       var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 
       sphere.position.x = 20;
       sphere.position.y = 4;
       sphere.position.z = 2;
 
-      //
+      // 投射阴影
       sphere.castShadow = true;
 
       scene.add(sphere);
@@ -86,11 +139,24 @@
       camera.position.z = 30;
       camera.lookAt(scene.position);
 
+      // 引入测试帧数的对象
+      var stats = initStat();
+
       document.getElementById('canvas').appendChild(renderer.domElement); 
-      renderer.render(scene, camera); 
+      // renderer.render(scene, camera);  // 调用持续渲染的方法
+      renderScene();
+
+    }
+
+    // 窗口大小调节时，修改控制canvas大小的renderer以及决定视野的camare
+    function resize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
     window.onload = init;
+    window.onresize = resize;
   </script>
 </body>
 </html>

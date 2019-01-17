@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>场景方法和控制</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div id="wrapper">
+    <div id="canvas"></div>
+  </div>
+  <script src="../lib/dat.gui.min.js"></script>
+  <script src="../lib/stats.min.js"></script>
+  <script src="../lib/three.js"></script>
+  <script>
+    var scene;
+    
+
+    function init() {
+      // 页面变量控制
+      let controls = new function() {
+        // 添加随机尺寸、随机位置的方块
+        this.addCube = function() {
+          let cubeSize = Math.ceil( Math.random() * 3 );
+          let cubeGeometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
+          let cubeMaterial = new THREE.MeshLambertMaterial({color: 0xff0000});
+          let cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+          cube.castShadow = true;
+          cube.position.x = -10 + Math.round( Math.random() * 60 );
+          cube.position.y = Math.round( Math.random() * 10 );
+          cube.position.z = -10 + Math.round( Math.random() * 20 );
+          cube.castShadow = true;
+          scene.add(cube);
+          this.initObjNum = scene.children.length;
+        }
+        this.removeCube = function() {
+          let lastObject = scene.children[scene.children.length - 1];
+          if(lastObject instanceof THREE.Mesh) {
+            scene.remove(lastObject);
+            this.initObjNum = scene.children.length;
+          }
+        }
+        this.initObjNum = 30;
+        this.rotateSpeed = 0.02;
+      }
+
+      scene = new THREE.Scene();
+      let camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000);
+      let renderer = new THREE.WebGLRenderer();
+      renderer.setClearColor(0xeeeeee); 
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.shadowMapEnabled = true;
+
+      scene.add(camera);
+
+      // 添加雾化，浓度为线性增长
+      scene.fog = new THREE.Fog( 0xffffff, 15, 100 );  // 颜色，近值，远值
+
+      // 场景材质，设置后场景内的所有材料会被强行替换
+      scene.overrideMaterial = new THREE.MeshLambertMaterial({color: 0x00ff00});
+
+      let axes = new THREE.AxisHelper(20);  
+      scene.add(axes);
+     
+      let spotLight = new THREE.SpotLight( 0xffffff );
+      spotLight.position.set(-40, 60, -10);
+      spotLight.castShadow = true;
+      scene.add(spotLight);
+
+      let planeGeometry = new THREE.PlaneGeometry(60, 20);  
+      let planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff}); 
+      let plane = new THREE.Mesh(planeGeometry, planeMaterial); 
+      plane.rotation.x = -0.5 * Math.PI;
+      plane.position.x = 15;
+      plane.position.y = 0;
+      plane.position.z = 0;
+      plane.name = 'ground';
+      plane.receiveShadow = true;
+      scene.add(plane);
+  
+      camera.position.x = -30;
+      camera.position.y = 40;
+      camera.position.z = 30;
+      camera.lookAt(scene.position);
+
+      for(let i = 0; i < 30; i++) {
+        controls.addCube();
+      }
+
+      
+      document.getElementById('canvas').appendChild(renderer.domElement);
+      
+      let gui = new dat.GUI();
+      gui.add(controls, 'rotateSpeed', 0, 0.5);
+      gui.add(controls, 'addCube');
+      gui.add(controls, 'removeCube');
+      gui.add(controls, 'initObjNum');
+
+      let stats = initStat();
+      render();
+
+      // 显示帧数
+      function initStat() {
+        let stats = new Stats();
+        stats.setMode(0);
+        stats.domElement.style.position = 'absolute';
+        stats.domElement.style.left = '0';
+        stats.domElement.style.top = '0';
+        document.getElementById('wrapper').appendChild(stats.domElement);
+        return stats;
+      }
+      // 渲染
+      function render() {
+        stats.update();
+        // 该方法会对场景 SCENE 及其所有子对象和子对象的子对象。。执行回调中的方法
+        scene.traverse(function(obj) {
+          if(obj instanceof THREE.Mesh && obj.name != 'ground') {
+            obj.rotation.x += controls.rotateSpeed;
+            obj.rotation.y += controls.rotateSpeed;
+            obj.rotation.z += controls.rotateSpeed;
+          }
+        });
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+      }
+      
+    }
+
+
+    window.onload = init();
+  </script>
+</body>
+</html>
