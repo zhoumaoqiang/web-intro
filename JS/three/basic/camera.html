@@ -15,19 +15,44 @@
       height: 100%;
       overflow: hidden;
     }
+    #switchBtn {
+      position: absolute;
+    }
   </style>
 </head>
 <body>
   <div id="wrapper">
+    <input id="switchBtn" type="button" value="透平相机">
     <div id="canvas"></div>
   </div>
   <script src="../lib/three.js"></script>
   <script>
     function init() {
+      let i = -20;
       function render() {
+        if(i < 20) {
+          i += 0.02;
+        }
+        camera.lookAt(i, 0, 0); // 相机的lookAt方法，也可以是一个物体的position，一个三维向量
         requestAnimationFrame(render);
         renderer.render(scene, camera);
       }
+
+      function switchCamera() {
+        if(camera instanceof THREE.PerspectiveCamera) {
+          // 正交投影相机参数
+          // 左侧截面距离，右侧，顶部、底部、近值、远值
+          camera = new THREE.OrthographicCamera(window.innerWidth / -16, window.innerWidth / 16, window.innerHeight / 16, window.innerHeight / -16, -200, 500);
+          this.value = '正交投影相机';
+        } else {
+          camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+          this.value = '透平相机';
+        }
+        camera.position.set(-30, 40, 30);
+        camera.lookAt(scene.position)
+      }
+
+      document.getElementById('switchBtn').onclick = switchCamera;
      
       let scene = new THREE.Scene();
       let camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
@@ -36,7 +61,7 @@
       renderer.setSize(window.innerWidth, window.innerHeight);
 
       camera.position.set(-30, 40, 30);
-      camera.lookAt(0, 0, 0);
+      camera.lookAt(i, 0, 0);
 
       scene.add(camera);
       
@@ -44,19 +69,22 @@
       spotLight.position.set(-40, 60, 10);
       scene.add(spotLight);
 
+      let group = new THREE.Group();
+      scene.add(group);
+
       // 创建一些具有视觉差的物体
       for(let i = 0;i < 20; i++) {
         for(let j = 0; j < 30; j++) {
           let geometry = new THREE.BoxGeometry(2, 2, 2);
           let material = new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff});
           let box = new THREE.Mesh(geometry, material);
-          box.position.x = -15 + i * 2;
+          box.position.x = -10 + i * 2;
           box.position.y = 0;
-          box.position.z = -40 + j * 2;
-          scene.add(box)
+          box.position.z = -30 + j * 2;
+          group.add(box)
         }
       }
-      scene.rotation.z = Math.PI / 2;
+      group.rotation.y = Math.PI / 4;
       document.getElementById('canvas').appendChild(renderer.domElement)
 
       render();
