@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>物体法向量材料</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="wrapper">
+    <div id="canvas"></div>
+  </div>
+  <script src="../lib/three.js"></script>
+  <script>
+    function init() {
+
+      function render() {
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+      }
+
+      // 基本要素
+      let scene = new THREE.Scene();
+      let camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+      let renderer = new THREE.WebGLRenderer();
+      renderer.setClearColor(0xeeeeee);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.shadowMap.enabled = true;
+
+      camera.position.set(-30, 40, 30);
+      camera.lookAt(0, 0, 0);
+      scene.add(camera);
+
+      let spotLight = new THREE.SpotLight(0xffffff);
+      spotLight.castShadow = true;
+      spotLight.position.set(-30, 60, -30);
+      spotLight.target = scene;
+
+      // 消除阴影的马赛克效果
+      spotLight.shadow.mapSize.width = 800;
+      spotLight.shadow.mapSize.height = 800;
+
+      scene.add(spotLight);
+
+      // 球体
+      let sphereGeometry = new THREE.SphereGeometry(4, 20, 20); 
+      let sphereMaterial = new THREE.MeshLambertMaterial({color: 0x7777ff});  // 蓝色球
+      let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+      sphere.position.x = 20;
+      sphere.position.y = 4;
+      sphere.position.z = 2;
+      sphere.castShadow = true;
+      scene.add(sphere);
+
+      // 设置球的法向量
+      for(let i = 0, j = sphere.geometry.faces.length; i < j; i++) {
+        let face = sphere.geometry.faces[i];
+        let centroid = new THREE.Vector3(0, 0, 0);
+        centroid.add(sphere.geometry.vertices[face.a]);
+        centroid.add(sphere.geometry.vertices[face.b]);
+        centroid.add(sphere.geometry.vertices[face.c]);
+        centroid.divideScalar3(3);
+
+        let arrow = new THREE.ArrowHelper(face.normal, centroid, 2, 0x3333ff, 0.5, 0.5);
+        sphere.add(arrow);
+      }
+
+      document.getElementById('canvas').appendChild(renderer.domElement);
+      render();
+
+    }
+    window.onload = init;
+  </script>
+</body>
+
+</html>
