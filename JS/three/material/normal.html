@@ -31,6 +31,9 @@
       function render() {
         requestAnimationFrame(render);
         renderer.render(scene, camera);
+
+        sphere.rotation.x += 0.001;
+        sphere.rotation.y += 0.001;
       }
 
       // 基本要素
@@ -41,7 +44,7 @@
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.shadowMap.enabled = true;
 
-      camera.position.set(-30, 40, 30);
+      camera.position.set(10, 10, 10);
       camera.lookAt(0, 0, 0);
       scene.add(camera);
 
@@ -60,9 +63,6 @@
       let sphereGeometry = new THREE.SphereGeometry(4, 20, 20); 
       let sphereMaterial = new THREE.MeshLambertMaterial({color: 0x7777ff});  // 蓝色球
       let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-      sphere.position.x = 20;
-      sphere.position.y = 4;
-      sphere.position.z = 2;
       sphere.castShadow = true;
       scene.add(sphere);
 
@@ -73,11 +73,13 @@
         centroid.add(sphere.geometry.vertices[face.a]);
         centroid.add(sphere.geometry.vertices[face.b]);
         centroid.add(sphere.geometry.vertices[face.c]);
-        centroid.divideScalar3(3);
+        centroid.divideScalar(3); // 添加向量除以 3，通过上面的计算获得法向量与面的相交点
 
-        let arrow = new THREE.ArrowHelper(face.normal, centroid, 2, 0x3333ff, 0.5, 0.5);
+        let arrow = new THREE.ArrowHelper(face.normal, centroid, 2, 0x3333ff, 0.5, 0.5);  // 参数：箭头原点方向、箭头原点、长度、颜色、箭头锥的长度、箭头锥的宽度
         sphere.add(arrow);
       }
+      // 可以看到共有760个face，也有760个ArrowHelper类型的箭头
+      console.log(sphere)
 
       document.getElementById('canvas').appendChild(renderer.domElement);
       render();
