@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>形状绘制</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div id="wrapper">
+    <div id="canvas"></div>
+  </div>
+  <script src="../lib/three.js"></script>
+  <script>
+    function init() {
+
+      let scene = new THREE.Scene();
+      let camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
+      let renderer = new THREE.WebGLRenderer();
+      renderer.setClearColor(0xe5e5e5);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+
+      let cameraInitAngle = Math.PI / 4;
+      camera.position.set(20, 20, 20);
+      camera.lookAt(scene.position);
+      scene.add(camera);
+
+      let axes = new THREE.AxesHelper(20);  
+      scene.add(axes);
+
+      let shapeGroup = new THREE.Group();
+      scene.add(shapeGroup);
+
+      // 创建shape，通过画的形状生成几何体，再结合材料生成物体
+      let shape = new THREE.Shape();
+      // shape的绘制与canvas的context画笔对象方法类似
+      shape.moveTo(10, 10);
+      shape.lineTo(10, 40);
+      shape.bezierCurveTo(15, 25, 25, 25, 30, 40); // 三次贝塞尔曲线
+      shape.splineThru([new THREE.Vector2(32, 30), new THREE.Vector2(28, 20), new THREE.Vector2(30, 10)]); // 光滑曲线
+      shape.quadraticCurveTo(20, 15, 10, 10); // 二次贝塞尔曲线，最终回到 (10, 10) 点
+      
+      let hole_1 = new THREE.Path();
+      hole_1.absellipse(16, 24, 2, 3, 0, Math.PI * 2, true); // 绘制一个绝对位置的椭圆，参数：x、y、x半径、y半径、起始角、结束角、是否顺时针
+      shape.holes.push(hole_1);
+
+      let hole_2 = new THREE.Path();
+      hole_2.absellipse(20, 16, 2, 0, Math.PI, true); 
+      shape.holes.push(hole_2);
+
+      // 根据上面绘制的形状，创建几何图形
+      let shapeGeometry = new THREE.ShapeGeometry(shape);
+      let shapeMaterial = new THREE.MeshPhongMaterial(0x0882f5);
+      let shapePlane = new THREE.Mesh(shapeGeometry, shapeMaterial);
+      shapeGroup.add(shapePlane);
+
+      let wireframe = new THREE.WireframeGeometry(shapeGeometry);
+      let frameMaterial = new THREE.MeshBasicMaterial(0x00f032);
+      let line = new THREE.LineSegments(wireframe, frameMaterial);
+      // line.material.depthTest = true;
+      shapeGroup.add(line);
+
+      shapeGroup.rotation.y += Math.PI / 2;
+
+      shapeGroup.position.x -= 1;
+      shapeGroup.position.y -= 20;
+      shapeGroup.position.z += 30;
+
+
+      document.getElementById('canvas').appendChild(renderer.domElement);
+      render();
+
+
+      function render() {
+        cameraInitAngle += Math.PI / 720;
+        camera.position.x = Math.sin(cameraInitAngle) * 20 / (Math.PI / 4);
+        camera.position.z = Math.cos(cameraInitAngle) * 20 / (Math.PI / 4);
+        camera.lookAt(scene.position);
+
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+      }
+
+    }
+    window.onload = init;
+  </script>
+</body>
+</html>

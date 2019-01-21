@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>机床加工图形</title>
+  <!-- 确定母线和法线，将母线绕法线旋转得到图形 -->
+  <style>
+    * {
+      margin: 0;
+      overflow: hidden;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="canvas">
+
+  </div>
+  <script src="../lib/three.js"></script>
+  <script>
+    function init() {
+
+      let scene = new THREE.Scene();
+      let camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
+      let renderer = new THREE.WebGLRenderer();
+      renderer.setClearColor(0xe5e5e5);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+
+      let cameraInitAngle = Math.PI / 4;
+      camera.position.set(40, 60, 40);
+      camera.lookAt(scene.position);
+      scene.add(camera);
+
+      let axes = new THREE.AxesHelper(20);  
+      scene.add(axes);
+
+      // 样条曲线，默认曲线在xy平面上， 并且曲线绕y轴旋转获得3D图形
+      let points = [], height = 5, count = 30;
+      for (let i = 0; i < count; i++) {
+        points.push(new THREE.Vector3( (Math.sin(i * 0.2) + Math.cos(i * 0.3)) * height + 12, i, 0 ));
+      }
+
+      // 根据样条曲线绘制3D图形
+      let latheGeometry = new THREE.LatheGeometry(points, 20, 0, Math.PI * 2); // 参数：样条曲线点的合集，片段数，起始角，结束角
+      let latheMaterial = new THREE.MeshNormalMaterial();
+      latheMaterial.side = THREE.DoubleSide;
+      let mesh = new THREE.Mesh(latheGeometry, latheMaterial);
+      scene.add(mesh);
+
+      let wireframe = new THREE.WireframeGeometry(latheGeometry);
+      let frameMaterial = new THREE.MeshBasicMaterial(0x00f032);
+      let line = new THREE.LineSegments(wireframe, frameMaterial);
+      scene.add(line);
+
+
+
+      document.getElementById('canvas').appendChild(renderer.domElement);
+      render();
+
+      function render() {
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+      }
+
+    }
+    window.onload = init;
+  </script>
+</body>
+</html>
