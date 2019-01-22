@@ -81,9 +81,9 @@
       renderer.setSize(window.innerWidth, window.innerHeight);
 
       // 阴影效果
-      renderer.shadowMapEnabled = true;
+      renderer.shadowMap.enabled = true;
       
-      var axes = new THREE.AxisHelper(20);  
+      var axes = new THREE.AxesHelper(20);
       scene.add(axes);
 
       // 加入光源
@@ -95,7 +95,7 @@
       spotLight.castShadow = true;
 
       var planeGeometry = new THREE.PlaneGeometry(60, 20);  
-      var planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff}); // 材料会展现出高光效果
+      var planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff}); // 材料会展现出光线效果
       var plane = new THREE.Mesh(planeGeometry, planeMaterial); 
 
       plane.rotation.x = -0.5 * Math.PI;
