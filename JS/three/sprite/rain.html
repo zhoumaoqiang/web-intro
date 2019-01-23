@@ -30,12 +30,12 @@
       renderer.setClearColor(new THREE.Color(0x000000, 1.0));
       renderer.setSize(window.innerWidth, window.innerHeight);
       
-      camera.position.x = 20;
-      camera.position.y = 40;
-      camera.position.z = 110;
-      camera.lookAt(new THREE.Vector3(20, 30, 0));
+      camera.position.x = 20 / 3;
+      camera.position.y = 40 / 3;
+      camera.position.z = 110 / 3;
+      camera.lookAt(new THREE.Vector3(0, 30, 0));
       
-      let cloud, a=1;
+      let cloud;
       createPoints(3, true, 0.8, true, 0xffffff);
 
       document.getElementById("canvas").appendChild(renderer.domElement);
@@ -51,7 +51,8 @@
           map: texture,
           blending: THREE.AdditiveBlending,
           sizeAttenuation: sizeAttenuation,
-          color: color
+          color: color,
+          depthTest: false
         });
         var range = 40;
         for (var i = 0; i < 1500; i++) {
@@ -73,13 +74,13 @@
         let vertices = cloud.geometry.vertices;
         cloud.geometry.verticesNeedUpdate = true;
         // cloud.geometry.computeFaceNormals();
-        vertices.forEach(function (v) {
+        vertices.forEach(function (item) {
           // 必须设值点位置更新会直接绘制，才会表现出来！！！
-          v.y -= v.velocityY;
-          v.x -= v.velocityX;
+          item.y -= item.velocityY;
+          item.x -= item.velocityX;
 
-          if (v.y <= 0) v.y = 60;
-          if (v.x <= -20 || v.x >= 20) v.velocityX = v.velocityX * -1;
+          if (item.y <= 0) item.y = 60;
+          if (item.x <= -20 || item.x >= 20) item.velocityX = item.velocityX * -1;
         });
         renderer.render(scene, camera);
         requestAnimationFrame(render);

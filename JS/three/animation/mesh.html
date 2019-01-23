@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="../../../CSS3/reset.css">
+  <style>
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div id="wrapper">
+    <div id="canvas"></div>
+  </div>
+  <script src="../lib/three.js"></script>
+  <script src="../lib/orbitControl.js"></script>
+  <script type="text/javascript">
+  
+    function init() {
+      
+      let scene = new THREE.Scene();
+      let camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 200);
+      let renderer = new THREE.WebGLRenderer();
+      renderer.setClearColor(0xe5e5e5);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.shadowMap.enabled = true;
+      
+      camera.position.set(-60, 30, 10);
+      camera.lookAt(0, 0, 0);
+      scene.add(camera);
+
+      let controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+      // 光线
+      let spotLight = new THREE.SpotLight(0xffffff);
+      spotLight.position.set(-20, 80, 40);
+      spotLight.castShadow = true;
+      scene.add(spotLight);
+
+      // 创建地面
+      let planeGeometry = new THREE.PlaneGeometry(40, 60);
+      let planeMaterial = new THREE.MeshLambertMaterial(0x99ccaa);
+      let plane = new THREE.Mesh(planeGeometry, planeMaterial);
+      plane.rotation.x -= Math.PI / 2;
+      plane.receiveShadow = true;
+      scene.add(plane);
+
+      // 头
+      let headGeometry = new THREE.SphereGeometry(10, 32, 32);
+      let headMaterial = new THREE.MeshLambertMaterial({color: 0x333333});
+      let head = new THREE.Mesh(headGeometry, headMaterial);
+      head.position.y += 15;
+      head.position.z -= 10;
+      scene.add(head);
+
+      // 喙
+      let topMouseGeometry = new THREE.ConeGeometry(5, 22, 28, 10, true, 0, Math.PI);
+      let topMouseMaterial = new THREE.MeshLambertMaterial({
+        color: 0xffff00, 
+        morphTargets: true, 
+        vertexColors: THREE.FaceColors
+      });
+      topMouseMaterial.side = THREE.DoubleSide;
+      let topMouse = new THREE.Mesh(topMouseGeometry, topMouseMaterial);
+      topMouse.rotation.z += Math.PI / 2;
+      topMouse.rotation.y += Math.PI / 2;
+      topMouse.position.z += 8;
+      topMouse.position.y += 15;
+      scene.add(topMouse);
+      console.log(topMouse)
+      topMouseGeometry.vertices.forEach(function(item) {
+        if(item.z < -4) {
+          console.log(item)
+        }
+      })
+
+      let bottomMouseGeometry = new THREE.ConeGeometry(5, 22, 28, 10, true, 0, Math.PI);
+      let bottomMouseMaterial = new THREE.MeshLambertMaterial({
+        color: 0xffff00, 
+        morphTargets: true, 
+        vertexColors: THREE.FaceColors
+      });
+      bottomMouseMaterial.side = THREE.DoubleSide;
+      let bottomMouse = new THREE.Mesh(bottomMouseGeometry, bottomMouseMaterial);
+      bottomMouse.rotation.z -= Math.PI / 2;
+      bottomMouse.rotation.y -= Math.PI / 2;
+      bottomMouse.position.z += 8;
+      bottomMouse.position.y += 15;
+      scene.add(bottomMouse);
+
+
+      document.getElementById('canvas').appendChild(renderer.domElement);
+      render();
+
+      function render() {
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+      }
+    }
+    window.onload = init;
+  </script>
+</body>
+</html>
