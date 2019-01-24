@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>threeJS创建网格动画？</title>
   <link rel="stylesheet" href="../../../CSS3/reset.css">
   <style>
     body {
@@ -52,14 +52,16 @@
       scene.add(plane);
 
       // 头
+      let headGroup = new THREE.Group();
       let headGeometry = new THREE.SphereGeometry(10, 32, 32);
       let headMaterial = new THREE.MeshLambertMaterial({color: 0x333333});
       let head = new THREE.Mesh(headGeometry, headMaterial);
       head.position.y += 15;
       head.position.z -= 10;
-      scene.add(head);
+      headGroup.add(head);
 
       // 喙
+      let topMouseGroup = new THREE.Group();
       let topMouseGeometry = new THREE.ConeGeometry(5, 22, 28, 10, true, 0, Math.PI);
       let topMouseMaterial = new THREE.MeshLambertMaterial({
         color: 0xffff00, 
@@ -70,16 +72,13 @@
       let topMouse = new THREE.Mesh(topMouseGeometry, topMouseMaterial);
       topMouse.rotation.z += Math.PI / 2;
       topMouse.rotation.y += Math.PI / 2;
-      topMouse.position.z += 8;
-      topMouse.position.y += 15;
-      scene.add(topMouse);
-      console.log(topMouse)
-      topMouseGeometry.vertices.forEach(function(item) {
-        if(item.z < -4) {
-          console.log(item)
-        }
-      })
+      topMouse.position.z += 10;
+      topMouseGroup.add(topMouse);
+      topMouseGroup.position.y += 15;
+      topMouseGroup.position.z -= 7;
+      headGroup.add(topMouseGroup);
 
+      let bottomMouseGroup = new THREE.Group();
       let bottomMouseGeometry = new THREE.ConeGeometry(5, 22, 28, 10, true, 0, Math.PI);
       let bottomMouseMaterial = new THREE.MeshLambertMaterial({
         color: 0xffff00, 
@@ -90,15 +89,123 @@
       let bottomMouse = new THREE.Mesh(bottomMouseGeometry, bottomMouseMaterial);
       bottomMouse.rotation.z -= Math.PI / 2;
       bottomMouse.rotation.y -= Math.PI / 2;
-      bottomMouse.position.z += 8;
-      bottomMouse.position.y += 15;
-      scene.add(bottomMouse);
+      bottomMouse.position.z += 10;
+      bottomMouseGroup.add(bottomMouse);
+      bottomMouseGroup.position.y += 15;
+      bottomMouseGroup.position.z -= 7;
+      headGroup.add(bottomMouseGroup);
 
+      // 眼睛
+      let leftEye = new THREE.Group();
+      let leftEyeBallGeometry = new THREE.SphereGeometry( 1, 32, 32 );
+      let leftEyeBallMaterial = new THREE.MeshBasicMaterial( { color: 0x000000 } );
+      let leftEyeBall = new THREE.Mesh( leftEyeBallGeometry, leftEyeBallMaterial );
+      leftEye.add( leftEyeBall );
+      let leftEyeTorusGeometry = new THREE.TorusGeometry( 1.5, 0.5, 16, 100 );
+      let leftEyeTorusMaterial = new THREE.MeshBasicMaterial( { color: 0xeeeeee } );
+      let leftEyeTorus = new THREE.Mesh( leftEyeTorusGeometry, leftEyeTorusMaterial );
+      leftEye.add( leftEyeTorus );
+      leftEye.position.x += 7;
+      leftEye.position.y += 20;
+      leftEye.position.z -= 4.5;
+      leftEye.rotation.y += Math.PI / 6;
+      leftEye.rotation.x -= Math.PI / 6;
+      headGroup.add(leftEye);
+
+      let rightEye = new THREE.Group();
+      let rightEyeBallGeometry = new THREE.SphereGeometry( 1, 32, 32 );
+      let rightEyeBallMaterial = new THREE.MeshBasicMaterial( { color: 0x000000 } );
+      let rightEyeBall = new THREE.Mesh( rightEyeBallGeometry, rightEyeBallMaterial );
+      rightEye.add( rightEyeBall );
+      let rightEyeTorusGeometry = new THREE.TorusGeometry( 1.5, 0.5, 16, 100 );
+      let rightEyeTorusMaterial = new THREE.MeshBasicMaterial( { color: 0xeeeeee } );
+      let rightEyeTorus = new THREE.Mesh( rightEyeTorusGeometry, rightEyeTorusMaterial );
+      rightEye.add( rightEyeTorus );
+      rightEye.position.x -= 7;
+      rightEye.position.y += 20;
+      rightEye.position.z -= 4.5;
+      rightEye.rotation.y -= Math.PI / 6;
+      rightEye.rotation.x -= Math.PI / 6;
+      headGroup.add(rightEye);
+
+      console.log(topMouse)
+      headGroup.castShadow = true;
+      scene.add(headGroup);
+
+      let clock = new THREE.Clock();
+      clock.start();
+      let counter = 1;  // 记录动画转折点
 
       document.getElementById('canvas').appendChild(renderer.domElement);
       render();
+      // 点头
+      function nod() {
+        
+        if(clock.elapsedTime < 1.2) {
+          headGroup.rotation.x += (Math.PI / 6) * clock.getDelta() / 1.2;
+        } else if(clock.elapsedTime < 3.2) {
+          if(counter === 1) {
+            headGroup.rotation.x = Math.PI / 6;
+            counter++;
+          }
+          headGroup.rotation.x -= (Math.PI / 4) * clock.getDelta() / 2;
+        } else if(clock.elapsedTime < 5.2) {
+          if(counter === 2) {
+            headGroup.rotation.x = - Math.PI / 12;
+            counter ++;
+          }
+          headGroup.rotation.x += (Math.PI / 4) * clock.getDelta() / 2;
+        } else if(clock.elapsedTime < 6.4){
+          if(counter === 3) {
+            headGroup.rotation.x = Math.PI / 6;
+            counter ++;
+          }
+          headGroup.rotation.x -= (Math.PI / 6) * clock.getDelta() / 1.2;
+        } else {
+          if(counter === 4) {
+            headGroup.rotation.x = 0;
+            counter ++;
+          }
+          peck();
+        }
+      }
+      // 咬
+      function peck() {
+        let step = (Math.PI / 18) * clock.getDelta();
+        if(clock.elapsedTime < 7.4) {
+          topMouseGroup.rotation.x -= step;
+          bottomMouse.rotation.x += step * 2;
+        } else if(clock.elapsedTime < 8.4) {
+          if(counter === 5) {
+            topMouseGroup.rotation.x = - Math.PI / 18;
+            bottomMouse.rotation.x = Math.PI / 9;
+            counter ++;
+          }
+          topMouseGroup.rotation.x += step;
+          bottomMouse.rotation.x -= step * 2;
+        } else {
+          if(counter === 6) {
+            topMouseGroup.rotation.x = 0;
+            bottomMouse.rotation.x = 0;
+            counter ++;
+          }
+          shock();
+        }
+      }
+      // 惊讶
+      function shock() {
+        let scale = leftEyeBall.scale.x + clock.getDelta() * 2;
+        let vector = new THREE.Vector3(scale, scale, scale);
+        if(clock.elapsedTime < 9.4) {
+          leftEyeBall.scale = vector;
+          rightEyeBall.scale = vector;
+        } 
+      }
 
       function render() {
+        if(clock.running) {
+          nod();
+        }
         requestAnimationFrame(render);
         renderer.render(scene, camera);
       }
