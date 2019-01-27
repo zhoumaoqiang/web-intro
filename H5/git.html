@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Git的安装使用</title>
+</head>
+<body>
+  
+  <main>
+    <p>刚好最近换电脑，原电脑上很多东西需要重新安装和设置。安装Git的时候，本以为是很轻松的事情，下载、安装、绑定仓库、推送拉取更新一系列操作随手而来，怎知装完Git之后直接的操作根本无从下手，输入指令后根本没有出现想要的效果。所以重拾记忆顺便记录一下，另外只关心windows系统的安装使用。</p>
+    <div>
+      <h1>1.安装Git</h1>
+      <p>第一步当时是百度一下，搜索Git进行下载安装，<a href="https://git-scm.com/downloads">这里</a>找到系统对应的版本，选完地方直接默认安装完成便可。</p>
+      <p>然后在任意地方右键，可以看到一个 Git Bash Here 的选项，选中就可以打开Git的命令行工具</p>
+      <p><img src="../assets/H5/git/Git-Bash.jpg" alt="Git Bash Here"></p>
+      <p>然后输入下面的指令：</p>
+      <p>
+        <code>
+          git config --global user.name  "Your Name" 
+          <br>
+          git config --global user.email  "email@example.com"
+        </code><br>
+        <img src="../assets/H5/git/config.jpg" alt="填写的配置">
+        本人姓名和邮箱已被马赛克。
+      </p>
+      <p>所有的配置信息可以通过指令 <code>git config --list</code> 查看。</p>
+    </div>
+    <div>
+      <h1>创建一个Github远程仓库</h1>
+      <p>通过Git来进行版本控制，如果只限于个人的电脑，可以直接参考Git官网的指令，进行增加、删除、修改等操作，但是往往多人之间的开发通过Git来管理，就需要一台随时开机的电脑来提供管理和服务，而Github就提供了这样的作用供用户上传管理代码。</p>
+      <p>要使用Github，首先需要注册一个账号，完成验证激活。这里使用Github的远程仓库，本地的Git和Github仓库之间通过SSH加密，登陆进入Github，点击头像选择settings可以在左边菜单栏看见SSH and GPG keys，然后在自己电脑上打开Git Bash，输入下面的指令：</p>
+      <p><code>ssh-keygen -t rsa -C "your email"</code></p>
+      <p>输入后一直选择回车就可以了，程序会选择一个默认的位置生成两个文件，根据提示的目录，找到.ssh文件夹，里面的id_rsa就是生成的SSH Key的私钥，要自己保管好，另一个id_rsa.pub是公钥，可以告诉别人。</p>
+      <img src="../assets/H5/git/ssh.jpg" alt="完成ssh配置">
+      <p>回到Github的ssh界面，选择右上角的New SSH key，需要填写title和key，title填写自己想要使用的名称，key就需要使用上面生成的公钥，打开id_rsa.pub，将里面的文本复制到key的文本框内，选择Add SSH key。</p>
+      <p>创建完成后，在Github上面建立一个仓库，用来保存我们的代码。点击页面左上角的logo回到自己的主页，在页面左下角有一个Repositories的栏目，点击New repository创建一个属于自己的仓库。根据页面提示，填写仓库的名称，描述，选择Public（公开的仓库，Private不是所有人可见，但是需要收费），然后根据需求选择是否要初始化一个项目的初始文档README，点击Create repository创建。</p>
+      <p>创建完成后，在仓库的正下方有一段话，就是提示如何将本地Git的代码上传到Github上的，此外，在这个仓库的Settings中，选择Collaborators，搜索小伙伴的名字，把他拉进来就可以公共进行开发啦。</p>
+    </div>
+    <div>
+      <h1>添加项目</h1>
+      <p>选中已经创建项目的目录，或者开始创建项目的目录，打开Git Bash，输入：</p>
+      <p><code>git init</code></p>
+      <p>这样就创建了一个Git项目，并会在打开位置生成一个隐藏的.git文件。此时你可以通过git add将想要添加的文件添加至缓存区，或者可以添加一个README的md文件，然后通过git commit指令提交，后面可以通过-m 添加此次上传文件的说明。然后就需要连接我们的远程仓库，并且完成版本的上传和更新。所有的指令如下（直接通过代码创建README）：</p>
+      <p><code>echo "# myBasicStudy" >> README.md</code></p>
+      <p><code>git init</code></p>
+      <p><code>git add README.md</code></p>
+      <p><code>git commit -m "输入你的说明"</code></p>
+      <p><code>git remote add origin 你的SSH后面指向的地址</code></p>
+      <p><code>git push -u origin master</code></p>
+      <p>这些指令从上到下的意思大致就是创建一个README.md文件，将当前目录初始化为Git管理的目录，像暂存区添加README.md文件，提交所有暂存区的东西，添加远程仓库，仓库就是后面要输的网址，然后将当前版本向Github上更新。</p>
+      <p>需要注意的是，使用git push向远程仓库添加文件的时候，需要登陆github账号，不要输错了用户名（不是邮箱）和密码。完成后刷新Github新建的这个远程仓库的code页面，就会发现刚才的指令提示都没有了，取而代之的是刚才上传的README.md。</p>
+    </div>
+    <div>
+      <h1>一些工具</h1>
+      <p>当我们项目较大的时候，一个个添加文件是件十分麻烦的事情，所以可以使用一些工具来帮助我们。</p>
+      <p>Sourcetree是一款免费的git可视化管理软件，可以很好的帮助我们管理本地代码啊、远程仓库、分支，尽量避免冲突问题。</p>
+      <p>此外vs code现在已经是官方支持git，可以方便的暂存、提交管理的代码。并且在vs code控制台的输出中可以看到具体执行的git指令。</p>
+      <p><img src="../assets/H5/git/vscode.jpg" alt="暂存项目"></p>
+      <p>左边显示有数字12的就表示git管理的源代码，+号为暂存更改，左边为撤销更改，下面管理的文件也可以单独进行打开、撤销更改、暂存，最后表示文件的状态。点击+号暂存后可以点击最上面的勾来提交（相当于commit，提交到本地。），这时候会弹出来个输入框要求输入本次提交的说明（也就是提交了什么东西）。</p>
+      <p><img src="../assets/H5/git/vs-git.jpg" alt="提交暂存区推送至远程仓库"></p>
+      <p>点击提交右边的···，可以看到许多功能，和sourcetree类似，同步、拉取是从远程仓库中下载项目，推送就是将本地代码传递到远程仓库，这里我们直接点推动就可以了，由于之前设置了远程仓库的地址，并且进行过账号的验证，所以点击推送后全部都直接生效了。</p>
+      <p>至于更多拓展性的功能，就自己研究吧。。。</p>
+    </div>
+  </main>
+</body>
+</html>

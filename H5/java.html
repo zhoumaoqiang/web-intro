@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>JAVA环境的安装</title>
+</head>
+<body>
+    <main>
+        <section>
+            <h1>下载JAVA</h1>
+            <p>第一步需要下载Java程序安装包，搜索“jdk下载”或者访问<a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">oracle官网</a>，对于windows系统，选择x86适用于32位电脑，x64适用于64位电脑。</p>
+            <p>所谓jdk，全称是Java Development Kit，表示Java 语言的软件开发工具包(SDK)。jdk是Java程序编译的必要条件，有：standard edition-标准版、enterprise edition-企业版和micro edition-主要用于移动设备、嵌入式设备上的java应用程序。也就是通常所见的Java SE，Java EE和Java ME。</p>
+        </section>
+        <section>
+            <h1>安装</h1>
+            <p>安装Java直接双击下载完成的exe文件，根据提示就可安装完成。安装的位置可以自行选择，记下安装的位置，默认是在C:\Program Files\Java下，安装过程中会提示jre的安装位置，如果默认C盘直接确定就行，如果前面自行选择了安装路径，那么jre会默认安装在C:\Program Files\Java下，此时可以再次选择安装在自己选择的jdk目录。如果下载的是x86，那么会安装在Program Files(x86)中。</p>
+        </section>
+        <section>
+            <h1>配置环境</h1>
+            <p>Java运行时通常会读取一些环境变量，由于jdk安装不会自动配置环境变量，Path可能会自行配置，总之我们最好确认一下环境变量的配置如何。在电脑属性的环境变量中，可以配置系统变量JAVA_HOM和JRE_HOME，路径分别为安装的jdk内，以及jdk下jre内。同时需要配置两个Path，使用绝对路径或者环境变量都可以，第一个Path的路径是在jdk中bin目录下，另一个是jdk下jre中bin目录下，通过使用环境变量的写法为：%JAVA_HOME%\bin;%JRE_HOME%\bin</p>
+            <p>可以配置classpath用于指定java的zip和jar路径，CLASSPATH也可以设置系统变量，一般值可以写作：%JAVA_HOME%\lib;%JAVA_HOME%\lib\tools.jar。</p>
+            <p>通过命令号工具输入指令java可以看到java的帮助信息，例如使用java -version查看Java版本等（jdk版本）。</p>
+        </section>
+    </main>
+</body>
+</html>
