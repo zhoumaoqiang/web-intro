@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <a href="./land_std_code.xlsx">load</a>
+  <script src="https://unpkg.com/xlsx/dist/shim.min.js"></script>
+  <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+  <script>
+    // XLSX.utils.sheet_to_json
+    document.querySelector('a').addEventListener('click', function (e) {
+      e.preventDefault();
+      fetch("./land_std_code.xlsx", {
+        method: 'get',
+        responseType: 'blob'
+      }).then((data) => {
+        let blob = data.blob();
+        console.log(blob)
+        return blob;
+      }).then((blob) => {
+
+        console.log(blob)
+
+        var reader = new FileReader();
+        reader.onload = function (event) {
+
+          // // 文件里的文本会在这里被打印出来
+          let binary = event.target.result
+          // console.log(binary)
+          // console.log(XLSX.utils.sheet_to_json(binary))
+
+
+          try {
+            var workbook = XLSX.read(binary, {
+              type: 'binary'
+            }), // 以二进制流方式读取得到整份excel表格对象
+            persons = []; // 存储获取到的数据
+          } catch (e) {
+            console.log('文件类型不正确');
+            return;
+          }
+
+          // 表格的表格范围，可用于判断表头是否数量是否正确
+          var fromTo = '';
+          // 遍历每张表读取
+          for (var sheet in workbook.Sheets) {
+            if (workbook.Sheets.hasOwnProperty(sheet)) {
+              fromTo = workbook.Sheets[sheet]['!ref'];
+              console.log(fromTo);
+              persons = persons.concat(XLSX.utils.sheet_to_json(workbook.Sheets[sheet]));
+              // break; // 如果只取第一张表，就取消注释这行
+            }
+          }
+
+          console.log(persons);
+
+
+
+        };
+
+        reader.readAsBinaryString(blob);
+
+      })
+    })
+  </script>
+</body>
+
+</html>

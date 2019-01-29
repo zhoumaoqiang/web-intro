@@ -68,7 +68,6 @@
 
 <body>
   <button>Update</button>
-  <svg></svg>
   <script src="../d3.v5.js"></script>
   <script src="bullet.js"></script>
   <script>
@@ -81,24 +80,30 @@
       width = 960 - margin.left - margin.right,
       height = 50 - margin.top - margin.bottom;
 
+    // 宽高按照外部定义传入，替换了bullet.js中定义的宽高
     var chart = d3.bullet()
       .width(width)
       .height(height);
 
-    d3.json("bullets.json", function (error, data) {
-      // 完全没有进来
-      console.log(data)
-      if (error) throw error;
+    // d3.json("bullets.json", function (error, data) {
+    
+    
+    d3.json('bullets.json').then(handle)
 
-      var svg = d3.select("body").selectAll("svg")
-        .data(data)
-        .enter().append("svg")
-        .attr("class", "bullet")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-        .call(chart);
+    function handle(data) {
+
+      var svg = d3
+        .select("body")   // 从当前文档选择body元素
+        .selectAll("svg")   // 选中body中的svg元素
+        .data(data)   // 将数据填入上面的svg元素中
+        .enter()  // svg元素缺失的话，返回占位符
+        .append("svg")  // 讲缺失的svg元素占位符，创建并填充svg元素
+        .attr("class", "bullet")  // 添加类名
+        .attr("width", width + margin.left + margin.right)  // 设置宽度
+        .attr("height", height + margin.top + margin.bottom)  // 设置高度
+        .append("g")  // 添加svg元素 g
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")   // 移动位置
+        .call(chart);   // 对当前svg调用chart
 
       var title = svg.append("g")
         .style("text-anchor", "end")
@@ -118,13 +123,18 @@
         });
 
       d3.selectAll("button").on("click", function () {
-        svg.datum(randomize).call(chart.duration(1000)); // TODO automatic transition
+        svg
+          .datum(randomize)   
+          .call(chart.duration(1000)); 
       });
 
-    });
+    }
+    // });
 
     function randomize(d) {
       if (!d.randomizer) d.randomizer = randomizer(d);
+      // map方法，导入了chart的类，用于生成类型ES6的MAP类型的新的，空的集合
+      // 然后放入上一句生成的新的值
       d.ranges = d.ranges.map(d.randomizer);
       d.markers = d.markers.map(d.randomizer);
       d.measures = d.measures.map(d.randomizer);
@@ -132,6 +142,7 @@
     }
 
     function randomizer(d) {
+      // 每次点击update更新数据后，值的更改
       var k = d3.max(d.ranges) * .2;
       return function (d) {
         return Math.max(0, d + k * (Math.random() - .5));
