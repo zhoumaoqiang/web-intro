@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>贷款增长情况</title>
   <style>
+    
     .money.p5 {
       fill: #5757fd;
     }
@@ -28,12 +29,49 @@
       stroke: #666;
       stroke-width: .5px;
     }
+
+    ul > li {
+      float: left;
+      margin-right: 30px;
+    }
+    .color-index {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+    }
+    .color-index.p5 {
+      background-color: #5757fd;
+    }
+    .color-index.p4 {
+      background-color: steelblue;
+    }
+    .color-index.p3 {
+      background-color: lightsteelblue;
+    }
+    .color-index.p2 {
+      background-color: #ccc;
+    }
+    .color-index.p1 {
+      background-color: #ddd;
+    }
+    .color-index.p0 {
+      background-color: #eee;
+    }
   </style>
 </head>
 <body>
   <div class="wrapper">
+    <div class="color-indexes">
+      <ul>
+        <li><span>2005: </span><span class="color-index p5"></span></li>
+        <li><span>2008: </span><span class="color-index p4"></span></li>
+        <li><span>2010: </span><span class="color-index p3"></span></li>
+        <li><span>2012: </span><span class="color-index p2"></span></li>
+        <li><span>2015: </span><span class="color-index p1"></span></li>
+        <li><span>2018: </span><span class="color-index p0"></span></li>
+      </ul>
+    </div>
     <div id="charts"></div>
-    <div class="color-index"></div>
   </div>
   <script src="../d3.v5.js"></script>
   <script>
@@ -93,6 +131,8 @@
             .attr("class", function (d, i) {
               return "money p" + i;
             })
+            .transition() // 加上动画
+            .duration(1000)
             .attr("width", (value) => {return Math.abs(value * fullWidth * 0.8 / 40000 - 0)})
             .attr("height", chartHeight - 20)
             .attr("x", 0)
