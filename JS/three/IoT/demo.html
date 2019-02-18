@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>物联网</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="wrapper">
+    <div id="canvas"></div>
+  </div>
+  <script src="../lib/stats.min.js"></script>
+  <script src="../lib/three.js"></script>
+  <script src="../lib/orbitControl.js"></script>
+  <script src="./roomComponent.js"></script>
+  <script>
+    var scene, camera, renderer, controls;
+    var raycaster, vector, cast;
+    var castObj = {};
+
+    var room = new RoomComponent();
+
+    function init() {
+      // 场景、控制器和坐标系
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+      renderer = new THREE.WebGLRenderer({
+        antialias: true
+      });
+      controls = new THREE.OrbitControls(camera, renderer.domElement);
+      renderer.setClearColor(0xeeeeee);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.shadowMap.enabled = true;
+      scene.add(camera);
+      camera.position.x = -30;
+      camera.position.y = 40;
+      camera.position.z = 30;
+      camera.lookAt(scene.position);
+      let axes = new THREE.AxesHelper(50);
+      scene.add(axes);
+
+      // 光源
+      let spotLight = new THREE.SpotLight(0xffffff);
+      spotLight.position.set(-40, 60, -10);
+      spotLight.castShadow = true;
+      scene.add(spotLight);
+
+      // 搭建静态对象
+      createRaycaster() // 射线检测对象
+      createGround() // 地面和墙
+      let door = createDoor() // 门
+
+
+      document.getElementById('canvas').appendChild(renderer.domElement);
+      let stats = initStat();
+      render();
+      document.addEventListener('mousedown', onDocumentMouseDown, false);
+
+
+
+      // 交互事件
+      function onDocumentMouseDown() {
+        raycaster.setFromCamera(vector, camera);
+        let intersects = raycaster.intersectObjects([...door.children]);
+        if (intersects.length > 0) {
+          if (intersects[0].object.parent === door) {
+            if(door.opened) {
+              door.close = true
+            } else {
+              door.open = true
+            }
+          }
+
+        }
+      }
+
+      function createRaycaster() {
+        raycaster = new THREE.Raycaster();
+        vector = new THREE.Vector2();
+        window.addEventListener('mousemove', function onMouseMove(event) {
+          vector.x = (event.clientX / window.innerWidth) * 2 - 1;
+          vector.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        }, false);
+
+        // 创建一个粒子用于指示射线相交的位置
+        cast = new THREE.Mesh(new THREE.SphereGeometry(1, 32, 32), new THREE.MeshBasicMaterial({
+          color: 0xff0000
+        }));
+        cast.position.y -= 1;
+        scene.add(cast);
+      }
+
+      // 创建墙体环境
+      function createGround() {
+        let ground = room.ground('xy', 100, 60, new THREE.TextureLoader().load('../../../assets/JS/three/floor1.jpg'))
+        ground.material.side = THREE.DoubleSide
+        ground.receiveShadow = true;
+        let wall_l = room.ground('-yz', 60, 20, 0xfbfb73)
+        wall_l.position.x = -50;
+        wall_l.position.y = 10
+        let wall_r = room.ground('yz', 60, 20, 0xf6fb73)
+        wall_r.position.x = 50
+        wall_r.position.y = 10
+
+        let bawn = new THREE.Group()
+        bawn.name = 'bawn'
+        let wall_1 = room.ground('xz', 10, 80, 0xf6f764)
+        wall_1.position.z = 20
+        let wall_2 = room.ground('xz', 10, 30, 0xf6f764)
+        wall_2.position.x = -25
+        wall_2.position.z = -30
+        let wall_3 = room.ground('xz', 10, 50, 0xf6f764)
+        wall_3.position.x = 15
+        wall_3.position.z = -20
+        let wall_4 = room.ground('yz', 50, 10, 0xf6f764)
+        wall_4.position.x = -40
+        wall_4.position.z = -5
+        let wall_5 = room.ground('yz', 10, 10, 0xf6f764)
+        wall_5.position.x = -10
+        wall_5.position.z = -25
+        let wall_6 = room.ground('yz', 40, 10, 0xf6f764)
+        wall_6.position.x = 40
+
+        scene.add(ground)
+        scene.add(wall_l)
+        scene.add(wall_r)
+
+        scene.add(bawn)
+        bawn.add(wall_1)
+        bawn.add(wall_2)
+        bawn.add(wall_3)
+        bawn.add(wall_4)
+        bawn.add(wall_5)
+        bawn.add(wall_6)
+
+        bawn.children.forEach((mesh) => {
+          mesh.material.side = THREE.DoubleSide
+          mesh.position.y = 5
+          mesh.castShadow = true
+        })
+      }
+
+      // 创建门
+      function createDoor() {
+        let door = room.door(4, 8, Math.PI / 2, -1)
+        scene.add(door)
+        return door
+      }
+
+      // 显示帧数
+      function initStat() {
+        let stats = new Stats();
+        stats.setMode(0);
+        stats.domElement.style.position = 'absolute';
+        stats.domElement.style.left = '0';
+        stats.domElement.style.top = '0';
+        document.getElementById('wrapper').appendChild(stats.domElement);
+        return stats;
+      }
+      // 渲染动画等
+      function render() {
+        stats.update();
+
+        let bawn = scene.getObjectByName('bawn').children
+        raycaster.setFromCamera(vector, camera);
+        let intersects = raycaster.intersectObjects([...bawn]);
+        for (let i = 0; i < intersects.length; i++) {
+          cast.position.x = intersects[i].point.x;
+          cast.position.y = intersects[i].point.y + 1;
+          cast.position.z = intersects[i].point.z;
+        }
+
+        door.switch()
+
+
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+      }
+
+
+
+    }
+
+
+
+    window.onload = init();
+    window.onresize = function resize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+  </script>
+</body>
+
+</html>
