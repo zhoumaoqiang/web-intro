@@ -42,10 +42,10 @@ class RoomComponent {
    */
   door(width, height, angle, direction) {
     let door = new THREE.Group();
-    door.opened = false;
     door.open = false;
     door.close = false;
     direction = direction || 1
+    door.opened = false;
     const THICK = 0.2
     let geometry_b = new THREE.BoxGeometry(width, THICK, THICK)
     let geometry_t = new THREE.BoxGeometry(width, THICK, THICK)
@@ -91,7 +91,7 @@ class RoomComponent {
 
     door.switch = function() {
       if(door.opened && door.close) {
-        door.rotation.z -= angle / 200 * direction
+        door.rotation.z -= angle / 100 * direction
         if(direction === 1 && door.rotation.z <= 0) {
           door.close = false;
           door.rotation.z = 0
@@ -103,7 +103,7 @@ class RoomComponent {
         }
       }
       if(!door.opened && door.open) {
-        door.rotation.z += angle / 200 * direction
+        door.rotation.z += angle / 100 * direction
         if(door.rotation.z >= angle ||  door.rotation.z <= -angle) {
           door.rotation.z = direction === 1 ? angle : - angle
           door.open = false
@@ -111,8 +111,90 @@ class RoomComponent {
         }
       }
     }
+    door.name = 'door'
 
     return door
+  }
+
+  /**
+   * 
+   * @param {number} width width of the machine
+   * @param {number} height height of the machine
+   */
+  machine(width, height) {
+    width = width || 4, height = height || 8
+    let machine = new THREE.Group()
+    let material = new THREE.MeshNormalMaterial()
+    let top_g = new THREE.PlaneGeometry(width, width)
+    let left_g = new THREE.PlaneGeometry(width, height)
+    let right_g = new THREE.PlaneGeometry(width, height)
+    let behind_g = new THREE.PlaneGeometry(width, height)
+    let top = new THREE.Mesh(top_g, material)
+    let left = new THREE.Mesh(left_g, material)
+    let right = new THREE.Mesh(right_g, material)
+    let behind = new THREE.Mesh(behind_g, material)
+
+    machine.add(top)
+    top.rotation.x = Math.PI / 2
+    top.position.y = height
+    machine.add(left)
+    left.rotation.y = Math.PI / 2
+    left.position.set(-width/2, height/2, 0)
+    machine.add(right)
+    right.rotation.y = Math.PI / 2
+    right.position.set(width/2, height/2, 0)
+    machine.add(behind)
+    behind.position.set(0, height/2, -width/2)
+
+    machine.children.forEach((mesh) => {
+      mesh.material.side = THREE.DoubleSide
+    })
+
+    let door = this.door(width, height, Math.PI /2, -1)
+    machine.add(door)
+    door.position.set(-width/2,0,width/2)
+    machine.rotation.y = Math.PI / 2
+
+    let board_g = new THREE.BoxGeometry(width, height * 2 / 3 , width)
+    let board = new THREE.Mesh(board_g, material)
+    board.position.y = height / 2
+    board.name = 'board'
+    machine.add(board)
+
+    return machine
+  }
+
+  machineFrame(width, height) {
+    width = width || 4, height = height || 8
+    let frame = new THREE.Group();
+    frame.ready = false
+    let box = new THREE.WireframeGeometry(new THREE.BoxGeometry(width, height, width))
+    let line = new THREE.LineSegments( box )
+    line.material.lineWidth = 3
+    line.position.y = height / 2
+    
+    let count = Math.ceil(Math.random() * 7 + 1)
+    let capacity = new THREE.Mesh( new THREE.BoxGeometry(width, count, width) )
+    capacity.name = 'capacity'
+    capacity.capacity = count
+    frame.add(capacity)
+
+    frame.move = function() {
+      if(!frame.ready) {
+        capacity.position.y = -count / 2
+        frame.ready = true
+      }
+      if(capacity.position.y < count / 2) {
+        capacity.position.y += count / 100
+      }
+    }
+
+    frame.reset = function() {
+      frame.ready = false
+    }
+      
+    frame.add(line)
+    return frame
   }
 
 }
