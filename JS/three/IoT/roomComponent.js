@@ -134,6 +134,7 @@ class RoomComponent {
     let right = new THREE.Mesh(right_g, material)
     let behind = new THREE.Mesh(behind_g, material)
 
+    top.name = 'top ' + Math.ceil(Math.random()*1000)
     machine.add(top)
     top.rotation.x = Math.PI / 2
     top.position.y = height

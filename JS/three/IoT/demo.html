@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>物联网</title>
+  <title>3D机房</title>
   <style>
     * {
       margin: 0;
@@ -33,6 +33,19 @@
       cursor: pointer;
       border-radius: 10px;
     }
+    #panel {
+      position: absolute;
+      top: calc(50% - 50px);
+      left: calc(50% - 150px);
+      width: 300px;
+      height: 100px;
+      background: rgba(0, 0, 0, .5);
+      border-radius: 20px;
+      line-height: 100px;
+      font-size: 22px;
+      padding: 0 20px;
+      display: none;
+    }
   </style>
 </head>
 
@@ -47,6 +60,10 @@
     </div>
     <div id="state">
 
+    </div>
+    <div id="panel">
+      <span>机器名称：</span>
+      <span id="panelName"></span>
     </div>
   </div>
   <script src="../lib/stats.min.js"></script>
@@ -72,6 +89,9 @@
       },
       points: [],
       state: {
+        show: false
+      },
+      panel: {
         show: false
       }
     };
@@ -125,25 +145,49 @@
 
       // 交互事件
       function onDocumentMouseDown() {
-        let machineDoors = []
+        let machineDoors = [], machineTop = [], machineBoard = []
         machines.children.map((machine) => {
           machine.getObjectByName('door').children.forEach((item) => {
             machineDoors.push(item)
           })
+          machineTop.push(machine.children[0])
+          machineBoard.push(machine.getObjectByName('board'))
         })
    
         raycaster.setFromCamera(vector, camera);
         let intersects = raycaster.intersectObjects([
           ...door.children, 
-          ...machineDoors
+          ...machineDoors,
+          ...machineTop,
+          ...machineBoard
         ]);
         if (intersects.length > 0) {
-          if (intersects[0].object.parent.name === 'door') {
-            if(door.opened) {
-              intersects[0].object.parent.close = true
+          let obj = intersects[0].object
+          // 门
+          if (obj.parent.name === 'door') {
+            if(obj.parent.opened) {
+              obj.parent.close = true
             } else {
-              intersects[0].object.parent.open = true
+              obj.parent.open = true
             }
+          }
+          // 顶
+          if(/^top /.test(obj.name)) {
+            if(!obj.lastTime) {
+              obj.lastTime = clock.elapsedTime
+            } else if(clock.elapsedTime - obj.lastTime < 1) {
+              showTextBoard(obj.name)
+            }
+            obj.lastTime = clock.elapsedTime
+          }
+          // 机器
+          if(obj.name === 'board') {
+            if(!obj.lastTime) {
+              obj.lastTime = clock.elapsedTime
+            } else if(clock.elapsedTime - obj.lastTime < 1) {
+              showTextBoard('board' + obj.id)
+            }
+            obj.lastTime = clock.elapsedTime
           }
 
         }
@@ -382,6 +426,12 @@
         return state
       }
 
+      // 面板展示
+      function showTextBoard(text) {
+        document.getElementById('panel').style.display = 'block'
+        document.getElementById('panelName').innerHTML = text
+      }
+
       // 显示帧数
       function initStat() {
         let stats = new Stats();
@@ -392,10 +442,12 @@
         document.getElementById('wrapper').appendChild(stats.domElement);
         return stats;
       }
+
       // 渲染动画等
       function render() {
         stats.update();
         let time = clock.getDelta()
+        
     
         // 控制点映射
         let bawn = scene.getObjectByName('bawn').children
@@ -500,6 +552,9 @@
       }
       document.getElementById('four').onclick = function() {
         data.state.show = !data.state.show
+      }
+      document.getElementById('panel').onclick = function() {
+        this.style.display = 'none'
       }
     })
     

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>array</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: serif;
+    }
+    p {
+      margin: 10px  5px;
+    }
+    .head {
+      font-size: 16px;
+      color: #0d0d6b;
+      text-indent: 20px;
+      position: relative;
+    }
+    .head::before{
+      content: "";
+      position: absolute;
+      left: 10px;
+      top: 0;
+      display: inline-block;
+      width: 5px;
+      height: 20px;
+      background-color: #0d0d6b;
+    }
+    p div{
+      padding-left: 30px;
+      text-indent: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div id="wrapper">
+    <p><div class="head">统计学相关</div></p>
+    <div>d3中array的计算方法，会忽略数组中不可识别的数据类型或者值，如null、undefined、null。<div>
+    <p>
+      <div class="head">d3.min(iterable[,accessor])</div>
+      <div>接收一个迭代类型数据，还可以选择性传入一个数据访问器的函数，在里面可以对值进行操作。</div>
+    </p>
+    <p>
+      <div class="head">d3.max(iterable[,accessor])</div>
+      <div>返回最大值</div>
+    </p>
+    <p>
+      <div class="head">d3.extent(iterable[,accessor])</div>
+      <div>返回最大和最小值的数组</div>
+    </p>
+    <p>
+      <div class="head">d3.sum(iterable[,accessor])</div>
+      <div>返回求和结果</div>
+    </p>
+    <p>
+      <div class="head">d3.mean(iterable[,accessor])</div>
+      <div>平均值</div>
+    </p>
+    <p>
+      <div class="head">d3.median(iterable[,accessor])</div>
+      <div>去中位数，奇数个参数返回大小关系中间值的数，偶数个参数返回大小关系中间值两个数的平均值，例如：d3.median([-99,20,-10,-50]) => 获取中卫大小为-50、-10 => 获取平均值-30</div>
+    </p>
+    <p>
+      <div class="head">d3.quantile(iterable,p[,accessor])</div>
+      <div>求得四分位数，p是0到1之间的数。计算方法是按照p的值获取数组顺序对应位数的值，如果不在整位，则计算返回内值按照占比的平均值，例如：d3.quantile([-99,20,-10,-50], 1/3) => 按照位数0、1/3、2/3、1 => 返回20。再例如：d3.quantile([-100,20,-10,-50,50], 0.9) => -50是0.75,50是1，相当于在-50~50取得3/5的进度 => 返回10。可以按照线性折线图取值来判断。</div>
+    </p>
+    <p>
+      <div class="head">d3.variance(iterable[,accessor])</div>
+      <div>方差，等于各个数据与其算术平均数的差的平方和的平均值。方差越大，数据越分散</div>
+    </p>
+    <p>
+      <div class="head">d3.deviation(iterable[,accessor])</div>
+      <div>标准偏差，计算方法是将各项与平均值的差的平方和，求得平均值后开方，所以标准偏差也是方法的开方值。用于反应一个数据集的离散程度。</div>
+    </p>
+    <p><div class="head">数据查找</div></p>
+    <p>
+      <div class="head">d3.max(iterable[,accessor])</div>
+      <div></div>
+    </p>
+    <p>
+      <div class="head">d3.max(iterable[,accessor])</div>
+      <div></div>
+    </p>
+    <p>
+      <div class="head">d3.max(iterable[,accessor])</div>
+      <div></div>
+    </p>
+    <p>
+      <div class="head">d3.max(iterable[,accessor])</div>
+      <div></div>
+    </p>
+    <p>
+      <div class="head">d3.max(iterable[,accessor])</div>
+      <div></div>
+    </p>
+    
+  </div>
+  <script src="../d3.v5.js"></script>
+  <script>
+    function init() {
+
+
+    }
+    window.onload = init
+  </script>
+</body>
+</html>

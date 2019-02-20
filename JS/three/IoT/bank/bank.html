@@ -28,7 +28,7 @@
 		<script>
 
 			var container, stats, controls;
-			var camera, scene, renderer, object;
+			var camera, scene, renderer, models;
 	
 			init();
 			animate();
@@ -38,7 +38,7 @@
 				scene = new THREE.Scene();
 				scene.background = new THREE.Color( 0xcccccc );
 				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 20000 );
-        camera.position.set( 100, 200, 300 );
+        camera.position.set( -900, 600, -200 );
         renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
@@ -49,37 +49,74 @@
 				controls = new THREE.OrbitControls( camera );
 				controls.target.set( 0, 50, 0 );
         controls.update();
-        
-				let light = new THREE.HemisphereLight( 0xffffff, 0x444444 );
-				light.position.set( 0, 200, 0 );
-				scene.add( light );
-				light = new THREE.DirectionalLight( 0xffffff );
-				light.position.set( 0, 200, 100 );
-				light.castShadow = true;
-				light.shadow.camera.top = 180;
-				light.shadow.camera.bottom = - 100;
-				light.shadow.camera.left = - 120;
-				light.shadow.camera.right = 120;
-				scene.add( light );
-	
-        // model
+				
+				let axes = new THREE.AxesHelper(500);
+      	scene.add(axes);
 
-				var loader = new THREE.FBXLoader();
-				loader.load( '../../../../assets/JS/three/bank.FBX', function ( object ) {
-					
-					object.traverse( function ( child ) {
-						if ( child.isMesh ) {
-							child.castShadow = true;
-							child.receiveShadow = true;
-						}
-					} );
-          scene.add( object );
-          console.log(object)
-				} );
+
+				addLight()
+				addGround()
+				loadModel()
+	
+			
 				
 				// stats
 				stats = new Stats();
 				container.appendChild( stats.dom );
+
+
+				function addLight() {
+					let light = new THREE.HemisphereLight( 0xffffff, 0x444444 );
+					light.position.set( 0, 200, 0 );
+					scene.add( light );
+					light = new THREE.DirectionalLight( 0xffffff );
+					light.position.set( 0, 200, 100 );
+					light.castShadow = true;
+					light.shadow.camera.top = 180;
+					light.shadow.camera.bottom = - 100;
+					light.shadow.camera.left = - 120;
+					light.shadow.camera.right = 120;
+					scene.add( light );
+					return light
+				}
+
+				function addGround() {
+					let plane = new THREE.Mesh(
+						new THREE.PlaneGeometry(800, 800),
+						new THREE.MeshPhongMaterial({color: 0x62de96, side: THREE.DoubleSide})
+					)
+					plane.rotation.x = Math.PI / 2
+					scene.add(plane)
+					return plane
+				}
+
+				function loadModel() {
+					var loader = new THREE.FBXLoader();
+					models = new THREE.Group()
+					scene.add(models)
+					loader.load( '../../../../assets/JS/three/STM.FBX', function ( object ) {
+						object.traverse( function ( child ) {
+							if ( child.isMesh ) {
+								child.castShadow = true;
+								child.receiveShadow = true;
+							}
+						});
+						object.position.y += 10
+
+						for(let r = 0; r < 5; r++) {
+							for(let c = 0; c < 3; c++) {
+								let copyObj = object.clone()
+								copyObj.position.x = r * 100 - 220
+								copyObj.position.z = c * 200 - 300
+								models.add(copyObj)
+							}
+						}
+
+
+					});
+				}
+
+
       }
       // 窗口重置
 			function onWindowResize() {
@@ -95,6 +132,8 @@
 				renderer.render( scene, camera );
 				stats.update();
 			}
+
+
 		</script>
 
 	</body>
