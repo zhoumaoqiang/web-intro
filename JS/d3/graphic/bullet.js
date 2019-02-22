@@ -27,7 +27,7 @@
           g = d3.select(this); // 指向g元素
 
         // 计算新的底部的x轴标尺
-        var x1 = d3.scaleLinear() // 构建线型比例尺
+        var x1 = d3.scaleLinear() // 构建线型刻度
           .domain([0, Math.max(rangez[0], markerz[0], measurez[0])]) // 设置比例尺的定义域，按照三个值最大的设定
           .range(reverse ? [width, 0] : [0, width]); // 设置比例尺输出范围，从左到右是 0 到 最值，还是 最值 到 0
 

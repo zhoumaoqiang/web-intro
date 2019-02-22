@@ -1,3 +1,5 @@
+// d3.axex 提供了一系列生成坐标系的方法
+
 /* example
   d3.select("#chart")
     .selectAll("svg")

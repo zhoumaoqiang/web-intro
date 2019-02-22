@@ -136,14 +136,83 @@
       </div>
     </section>
 
+    <section>
+      <div class="head title">处理改变得到新数组</div>
+      <div><p></p></div>
+      <!-- 设计一个归类的方法，d3.group，根据传入类别对数组分类，返回一个map类型数据 -->
+      <div>
+        <div class="head">d3.cross(...iterables[, reducer])</div>
+        <p>注意参数要求是多个数组，和一个归并数据处理器函数，该函数默认返回一个包含a、b两元素的数组。</p>
+      </div>
+      <div>
+        <div class="head">d3.merge(iterables)</div>
+        <p>合并数组，传入多个数组，返回一个拼接后的数组。</p>
+      </div>
+      <div>
+        <div class="head">d3.pairs(iterable[, reducer])</div>
+        <p>传入一个数组和归并的处理函数，不传入函数则每次返回包含归并两元素的数组。</p>
+      </div>
+      <div>
+        <div class="head">d3.permute(array, indexes)</div>
+        <p>传入一个数组和索引的数组，返回一个依据索引数组排序后的新数组。也适用于json和keys</p>
+      </div>
+      <div>
+        <div class="head">d3.shuffle(array[, start[, stop]])</div>
+        <p>将数组洗牌，重新随机排序后返回新的数组。</p>
+      </div>
+      <div>
+        <div class="head">d3.ticks(start, stop, count)</div>
+        <p>从start到stop，总共生成count个元素的数组，并且每相邻两个元素间值相差1、2、5或者10的倍数，d3会计算最合适的值，然后count不匹配时会返回最接近目标个数的新数组。</p>
+      </div>
+      <div>
+        <div class="head">d3.tickIncrement(start, stop, count)</div>
+        <p>根据起始值、终止值和计算数量，得到递增的数，必须为1、2、5或者10的倍数。</p>
+      </div>
+      <div>
+        <div class="head">d3.tickStep(start, stop, count)</div>
+        <p>功能同d3.tickIncrement，也是计算自增的基数。</p>
+      </div>
+      <div>
+        <div class="head">d3.range([start, ]stop[, step])</div>
+        <p>从start到stop，每次间隔step得到的数组。函数处理时会返回长度为1、2、5、或者10的倍数的数组，如果想要得到特殊长度的数组，可以使用map方法进行处理(d3.range(start, stop).map(accessor))。</p>
+      </div>
+      <div>
+        <div class="head">d3.zip(arrays…)</div>
+        <p>传入多个数组，返回一个压缩后的多维数组，外层数组长度为arrays中长度最短的数组长度，每一个数组长度为传入arrays个数</p>
+      </div>
+      <div>
+        <div class="head">d3.transpose(matrix)</div>
+        <p>传入一个zip后的数组(多维数组)，还原成另一个多维数组，将每一组下表的值拼接起来。</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="head title">数组生成柱形图</div>
+      <div><p></p></div>
+      <div>
+        <div class="head">d3.histogram()</div>
+        <p>构造函数，返回一个histogram对象，用于操作数据显示成柱形图。</p>
+      </div>
+      <div>
+        <div class="head">d3.histogram()</div>
+        <p></p>
+      </div>
+      <div id="histogram"></div>
+    </section>
+
   </main>
   <script src="../d3.v5.js"></script>
   <script>
     function init() {
 
-      let array = [-2, 11, 16, 70, 222]
-      let r = d3.bisectRight(array, 226)
-console.log(r, array)
+      let a = []
+      let x = d3.scaleLinear()
+      var histogram = d3.histogram(a)
+        .domain(x.domain())
+        .thresholds(x.ticks(20));
+
+      var bins = histogram(a);
+      // console.log(bins)
     }
     window.onload = init
   </script>

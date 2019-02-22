@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>选择器</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-size: 14px;
+      font-family: serif;
+    }
+    p {
+      padding-left: 5px;
+      text-indent: 33px;
+      margin: 10px 5px;
+    }
+    .head {
+      font-size: 16px;
+      color: #0d0d6b;
+      text-indent: 20px;
+      position: relative;
+    }
+    .head::before {
+      content: "";
+      position: absolute;
+      left: 10px;
+      top: 0;
+      display: inline-block;
+      width: 5px;
+      height: 20px;
+      background-color: #0d0d6b;
+    }
+    .title {
+      color: #2125df;
+      font-weight: 600;
+      font-size: 22px;
+    }
+  </style>
+</head>
+<body>
+  <div id="wrapper">
+    <section>
+      <div class="head title">选择器</div>
+      <div><p></p></div>
+      <div>
+        <div class="head">d3.select(selector)</div>
+        <p>用法类似于document.querySelector()，这里返回的是一个d3的selection对象。</p>
+      </div>
+      <div>
+        <div class="head">d3.selectAll(selector)</div>
+        <p>可以选择多个元素，同document.querySelectAll()，返回一个selection对象。</p>
+      </div>
+      <div>
+        <div class="head">d3.selection()</div>
+        <p>可以获取到selection对象的，从而获取器原型，由上面获取元素的方法知道获取元素后返回的是一个selection对象，所以提供该方法以作为拓展。</p>
+      </div>
+      <div>
+        <div class="head">selection.select(selector) | selection.selectAll(selector)</div>
+        <p>获取元素的对象可以查找子元素，或者传入函数，获取与当前元素相关的元素，分别返回第一个和所有的匹配结果。</p>
+      </div>
+      <div>
+        <div class="head">selection.datum([value])</div>
+        <p>获取或者设置当前元素的数据（data-属性）。</p>
+      </div>
+      <div>
+        <div class="head">selection.filter(filter)</div>
+        <p>筛选元素，可以传入位置等伪类选择器的字符串，也可以传入函数，函数默认接收两个值，当前数据（selection.datum()）和当前索引。</p>
+      </div>
+      <div>
+        <div class="head">selection.attr(name[, value])</div>
+        <p></p>
+      </div>
+      
+    </section>
+  </div>
+  <script src="../d3.v5.js"></script>
+  <script>
+    
+  </script>
+</body>
+</html>
