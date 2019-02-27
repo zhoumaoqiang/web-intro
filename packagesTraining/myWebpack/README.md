@@ -62,3 +62,243 @@ document.body.appendChild(component());
 - |- index.html
 ```
 
+调整html和js中的代码
+
+``` index.html 解除依赖，只保留main.js，也就是打包完成的输出文件
+<body>
+  <script src="main.js"></script>
+</body>
+```
+
+``` index.js 引入依赖，多了第一句引入依赖的代码
+import _ from 'lodash';
+function component() {
+  var element = document.createElement('div');
+  element.innerHTML = _.join(['Hello', 'webpack'], ' ');
+  return element;
+}
+document.body.appendChild(component());
+```
+
+通过指令`npx webpack`，将资源打包输出为一个main.js文件，成功后文件放至`./dist`文件夹中，index.html就可以直接访问。  
+但是发现运行报错，查看依赖只有`webpack-cli`，安装`webpack`，再次执行打包的命令`npx webpack`，发现指令执行成功。  
+执行命令时，警告信息提示要设置`mode`为生产还是开发，而前面有提过一个指令包含`--config webpack.config.js`，所以的确存在这么一个文件用于配置打包的选项。
+
+## 使用webpack配置
+
+添加配置在根目录创建一个`webpack.config.js`文件，配置文件将会作为一个模块在编译时读取加载。
+
+``` webpack.config.js 例如一个指定入口和出口的配置
+const path = require('path');
+
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist')
+  }
+};
+```
+
+通过指令`npx webpack --config webpack.config.js`完成编译，完成后再dist下生成了`bundle.js`文件。所以此时可以添加上`mode`属性，设置`production`或者`development`就不会再出现警告了。  
+每次通过`npx`指令指定配置进行编译显得很麻烦，可以在`package.json`中设置`scripts`添加指令`"build": "webpack"`。
+
+## 配置加载器
+
+前面提到webpack默认只能对javascript文件打包，想要对其他资源一并打包，需要通过loader添加模块规则。
+
+### CSS loader
+
+要支持CSS加载，首先需要安装两款依赖，通过指令`npm install --save-dev style-loader css-loader`完成。在配置文件中，加入module属性
+
+``` webpack.config.js
+module: {
+  rules: [
+    {
+      test: /\.css$/,
+      use: [
+        'style-loader',
+        'css-loader'
+      ]
+    }
+  ]
+}
+```
+
+在介绍核心的时候讲过，上面配置的意思是使用`style-loader`和`css-loader`这两个插件将以`.css`结尾的文件打包到静态资源输出中。  
+将CSS文件当做模块处理，意味着CSS文件可以通过js模块的方式引入到js文件中。创建`style.css`文件，并引入`index.js`模块
+
+``` index.js
+import './style.css';
+```
+
+### file(image) loader
+
+图片如果在webpack支持的模块中使用，那么通过`file-loader`可以将图片一并打包至编译后的包中。分别使用小分辨率的小图片和大分辨率的大图片进行加载。  
+在js模块和css模块中引用图片，配置文件`module/rules`添加
+
+``` webpack.config.js file-loader
+{
+  test: /\.(png|svg|jpg|gif)$/,
+  use: [
+    'file-loader'
+  ]
+}
+```
+
+需要注意的是，在js中必须通过`import`的方式引入图片，才会将文件作为一个模块对待，引入的对象作为字符串的路径对待即可。并且这里无论图片大小都没有进行数据转换，想要图片转为base64，需要进行额外的配置。  
+同一个加载器可以进行多个规则的匹配，例如文件模块还包括字体文件的使用。  
+
+```
+{
+  test: /\.(woff|woff2|eot|ttf|otf)$/,
+  use: [
+    'file-loader'
+  ]
+}
+```
+
+### data loaders
+
+加载存储数据的单元，例如json、xml、csv等，json是node内置支持的，其余格式的数据也有类似的加载器。
+
+``` webpack.config.js
+{
+  test: /\.(csv|tsv)$/,
+  use: [
+    'csv-loader'
+  ]
+},
+{
+  test: /\.xml$/,
+  use: [
+    'xml-loader'
+  ]
+}
+```
+
+引入一个xml文件，引入为模块查看结果，转换输出为json格式的数据
+
+``` data.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<note>
+  <to>Mary</to>
+  <from>John</from>
+  <heading>Reminder</heading>
+  <body>Call Cindy on Tuesday</body>
+</note>
+```
+
+## 输出管理
+
+前面的js模块、css、文件等都可以通过加载器完成静态资源的打包处理，但是`index.html`文件始终放在输出的文件夹中并不符合代码书写的习惯。  
+因此，我们可以使用插件来处理这一问题，通过指令`npm install --save-dev html-webpack-plugin`安装html的管理插件。  
+在`webpack.config.js`中的主要更改为： 
+
+``` webpack.config.js plugins
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'Output Management'
+    })
+  ]
+};
+```
+
+插件的详细使用方法可以参考[这里](https://github.com/jantimon/html-webpack-plugin)，主要作用就是在输出管理的文件夹中创建一个`index.html`，并且将所有关联的`bundle.js`添加进去。
+
+前面都是只对`index.js`文件实现输出，也就是单一的输出。前面提到过多个输入可以添加`entry`的属性和值，显然输出文件看上去并不适用，多个输入输出引入html可定义如下：  
+
+```
+const path = require('path');
+
+module.exports = {
+  entry: {
+    app: './src/index.js',
+    print: './src/print.js'
+  },
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'dist')
+  }
+};
+```
+
+打包完成后会生成`app.bundle.js`和`print.bundle.js`两个文件，结合上面的`html-webpack-plugin`插件，可以看到html文件中引入了两个js文件。
+
+当输出的文件夹有废弃的文件时，每次打包除去名字重复的覆盖原文件，还有不重名的无效文件，要保证`./dist`文件夹干净，可以引入另一个插件，控制台输入指令`npm install clean-webpack-plugin --save-dev`完成安装，在配置`plugins`中添加。
+
+```
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+module.exports = {
+  plugins: [
+    new CleanWebpackPlugin(['dist'])
+  ]
+}
+```
+
+每次build之前会清空输出的文件夹，再将打包后的文件写入。
+
+## 开发工具
+
+### 源文件追踪
+
+输出的一个模块如果引入了多个模块，当引入模块报错时，无法定位已经输出的模块中引入模块的错误位置，所以webpack提供了开发者工具`source map`来定位引用模块的错误。定义后，如果引用模块发生错误，控制台会输出错误模块的发声位置，然后对照源码进行检查就可以了。
+
+``` webpack.config.js
+module.exports = {
+  devtool: 'inline-source-map'
+}
+```
+
+### 实时刷新
+
+webpack提供了检测文件变化，并实施编译的指令，结合可以开启webpack服务并且实时刷新浏览器的插件`npm install --save-dev webpack-dev-server`，就可以完成代码到展示的实时刷新。
+
+``` package.json scripts 检测文件编译，--config webpack.config.js是默认值，可以不加
+"scripts": {
+  "watch": "webpack --watch"
+}
+```
+开启服务除了配置devServer，还需要输入指令`webpack-dev-server --open`，或者在`package.json`中添加指令。
+
+``` webpack.config.js webpack-dev-server，可以不引入模块
+devServer: {
+  contentBase: './dist'
+},
+```
+
+``` package.json
+"scripts": {
+  "start": "webpack-dev-server --open"
+}
+```
+
+### 转接服务
+
+使用`npm install --save-dev express webpack-dev-middleware`，这个指令是安装中间件用于express的服务，也就是用于node开启服务，插件会把打包出来的内容提供给服务器允许资源的访问。  
+由此可知，前面安装的`webpack-dev-server`实际上也是用了这个插件，只不过这里可以单独提出来用于其他的服务。想要功能正常运行，需要对配置进行一点小小的调整。 
+
+``` webpack.config.js output
+const path = require('path')
+module.exports = {
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/'
+  }
+};
+```
+
+## 模块热替换
+
+前面提到实时刷新，如果总是编译打包在重启服务，可想而知性能将会十分的慢。好的是`webpack-dev-server`这个包里面继承了热加载的模块，所以使用`webpack-dev-server`是没有问题的。如果想要自定义，那么就需要进行许多的配置了。  
+不使用`webpack-dev-server`直接启动，而是结合nodejs API开启服务，需要引入该模块，并在开启服务的模块中进行一定的设置。  
+自定义的模块热替换，会出现无法完全辨识的问题。例如引入一个模块的方法发生了改变，将这个暴露的方法绑定到一个时间处理上，输出方法发现已经热替换了，触发事件却发现仍是原来的函数。  
+热加载时对模块有效，意思就是通过加载器引入的文件，已经当做了模块来处理，那么这些模块也会触发热加载。
+
+## tree shaking
+
+摇树优化就是指分析代码并删除未引用的部分，依赖于静态结构`import`和`export`。由于
