@@ -1,5 +1,14 @@
+# 依赖
 node_modules/
+# IDE
 /.vscode
+
+#编译后的文件
+packagesTraining/**/lib
+packagesTraining/**/dist
+
+
+# 非关键文件
 *.min.js
 *.jpg
 *.png

@@ -16,4 +16,49 @@
 
 ## 安装webpack
 
-安装webpack使用指令`npm install --save-dev webpack`
+安装webpack~~使用指令`npm install --save-dev webpack`~~，4.0以上的版本使用`npm install --save-dev webpack-cli`。可以在package.json中scripts选项配置多个指令，来执行不同的webpack配置，所以需要先通过`npm init -y`初始化一个`package.json`，以控制后面的npx交互，指令中`-y`指的是`-yes`，表示初始化过程中需要输入的选项全部为`yes`.
+
+``` webpack config
+"scripts": {
+  "start": "webpack --config webpack.config.js"
+}
+```
+
+安装完依赖后，按照默认的入口设置创建目录文件，添加`index.js`入口，并处于默认的入口文件夹`src`下。根目录的`index.html`是访问服务的默认文件。
+
+```
+  |- package.json
++ |- index.html
++ |- /src
++   |- index.js
+```
+
+此时如果`index.html`中有其余js的依赖，这种在html中通过scripts标签引入的js和src中的js模块管理不便，而且也不便理解。在没有使用`loader`之前，webpack只能打包js文件，所以讲html中的js依赖转移到src中，按照上面的目录结构代码为
+
+``` index.html 关键代码
+<head>
+  <script src="https://unpkg.com/lodash@4.16.6"></script>
+</head>
+<body>
+  <script src="./src/index.js"></script>
+</body>
+```
+
+``` index.js _就是引入lodash的全局变量
+function component() {
+  var element = document.createElement('div');
+  element.innerHTML = _.join(['Hello', 'webpack'], ' ');
+  return element;
+}
+document.body.appendChild(component());
+```
+
+采用模块的方式来管理，降低文件之间的耦合···，总之将js单独管理起来，更改文件结构，调整`index.html`文件位置，解除html中JS的依赖，通过指令`npm i lodash`安装依赖到本地
+
+``` structure
+  |- package.json
++ |- /dist
++   |- index.html
+- |- index.html
+```
+
