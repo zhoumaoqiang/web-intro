@@ -301,4 +301,115 @@ module.exports = {
 
 ## tree shaking
 
-摇树优化就是指分析代码并删除未引用的部分，依赖于静态结构`import`和`export`。由于
+摇树优化就是指分析代码并删除未引用的部分，依赖于静态结构`import`和`export`。由于函数副作用，也就是直接或者间接的引用了外部或者全局变量，导致函数不是纯函数而不会被删除，这是很容易发生的，特别针对于使用babel插件转换代码，会把函数定义在原型上。  
+webpack针对函数副作用，允许在`package.json`中定义`sideEffects`属性为false，标注定义模块均是安全，没有副作用的，可以放心删除。或者给定一个带有副作用模块的数组。
+
+``` package.json 所有模块都没有副作用
+{
+  "sideEffects": false
+}
+```
+
+``` package.json 标注具有副作用的模块
+{
+  "sideEffects": [
+    './src/index.js'
+  ]
+}
+```
+
+优化除了找到未使用部分，将`mode`设置为`production`，webpack将启用`uglifyjs`将代码压缩输出。
+
+## 生产环境构建
+
+### 开发和生产配置
+
+生产环境和开发环境可以通过`webpack-merge`工具，构建出通过、开发、生产的webpack配置，控制台输入指令`npm install --save-dev webpack-merge`完成安装。  
+
+``` 根目录下结构
+- |- webpack.config.js
++ |- webpack.common.js
++ |- webpack.dev.js
++ |- webpack.prod.js
+```
+
+其中common是通用的配置，总是生效。`dev`和`prod`分别是开发环境和生产环境，属于配置的分支，关键代码如下
+
+``` webpack.common.js
+const path = require('path');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+module.exports = {
+  entry: {
+    app: './src/index.js'
+  },
+  plugins: [
+    new CleanWebpackPlugin(['dist']),
+    new HtmlWebpackPlugin({
+      title: 'Production'
+    })
+  ],
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'dist')
+  }
+};
+```
+
+``` webpack.dev.js
+const merge = require('webpack-merge');
+const common = require('./webpack.common.js');
+
+module.exports = merge(common, {
+  devtool: 'inline-source-map',
+  devServer: {
+    contentBase: './dist'
+  }
+});
+```
+
+``` webpack.prod.js
+const merge = require('webpack-merge');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const common = require('./webpack.common.js');
+
+module.exports = merge(common, {
+  plugins: [
+    new UglifyJSPlugin()
+  ]
+});
+```
+
+对照前面的配置进行修改配置，那么可想而知，`package.json`中的指令`--config webpack.config.js`应该指向`dev`和`prop`两个配置，对应开发和生产环境。
+
+``` package.json
+{
+  "scripts": {
+    "start": "webpack-dev-server --open --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js"
+  }
+}
+```
+
+### 代码压缩
+
+webpack提供`uglifyJSPlugin`用于压缩代码，除此之外引入其他的压缩插件也是可行的，`BabelMinifyWebpackPlugin`可以解决babel转换后函数副作用的问题，`ClosureCompilerPlugin`具有项目的流程分析和优化，可以压缩到更小的文件体积。
+
+### source map
+
+浏览器中的source map，对于webpack打包后仍建议显示出，可以通过更改生产配置
+
+``` webpacl.prod.js
+const merge = require('webpack-merge');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const common = require('./webpack.common.js');
+
+module.exports = merge(common, {
+  devtool: 'source-map',  plugins: [
+    new UglifyJSPlugin({
+      sourceMap: true
+    })
+  ]
+});
+```
+

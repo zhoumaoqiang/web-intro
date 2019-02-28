@@ -9,9 +9,6 @@ module.exports = {
     path: path.resolve(__dirname, 'dist')
   },
   mode: "development",
-  devServer: {
-    contentBase: './dist'
-  },
   module: {
     rules: [
       {test: /\.css$/, use: ['style-loader', 'css-loader']},
