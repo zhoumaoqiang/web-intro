@@ -3,10 +3,12 @@ node_modules/
 # IDE
 /.vscode
 
-#编译后的文件
+# 编译后的文件
 packagesTraining/**/lib
 packagesTraining/**/dist
 
+# 私密文件
+key.js
 
 # 非关键文件
 *.min.js
