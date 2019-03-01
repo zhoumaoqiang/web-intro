@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const fs = require('fs');
 const util = require('util');
+const proxy = require('http-proxy-middleware')
 
 // 引入中间键
 const bodyParser = require('body-parser') // 获取post请求参数
@@ -12,7 +13,18 @@ const cookieParser = require('cookie-parser') // 获取解析cookie(转换成对
 app.use(express.static('public')); // 静态文件中间键，静态资源全匹配可直接访问
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(multer({ dest: '/tmp/' }).array('image'));
-app.user(cookieParser())
+app.use(cookieParser())
+
+// 服务器代理
+app.use(proxy(['/maps', '/theme', 'count'], {
+  target: 'https://webapi.amap.com', 
+  changeOrigin: true 
+}))
+app.use('/api', proxy({
+  target: 'https://vdata.amap.com', 
+  changeOrigin: true 
+}))
+
 
 // GET
 app.get('/', function (req, res) {
@@ -57,10 +69,14 @@ app.post('upload', function (req, res) {
 })
 
 
-var server = app.listen(8081, function () {
+var server = app.listen(3000, function () {
 
   var host = server.address().address
   var port = server.address().port
 
   console.log("应用实例，访问地址为 http://%s:%s", host, port)
+})
+
+server.on('request',function(request, response) {
+
 })
