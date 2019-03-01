@@ -191,8 +191,9 @@ import './style.css';
 
 ## 输出管理
 
+这里的输出管理只是对于输出文件和载体的管理（文档载体、文件清理等），并不是针对多页开发的目录输出。想要实现多页面，自行参考`html-webpack-plugin`的详细使用方案。  
 前面的js模块、css、文件等都可以通过加载器完成静态资源的打包处理，但是`index.html`文件始终放在输出的文件夹中并不符合代码书写的习惯。  
-因此，我们可以使用插件来处理这一问题，通过指令`npm install --save-dev html-webpack-plugin`安装html的管理插件。  
+因此，我们可以使用插件来处理这一问题，通过指令`npm install --save-dev html-webpack-plugin`安装html的管理插件，。  
 在`webpack.config.js`中的主要更改为： 
 
 ``` webpack.config.js plugins
@@ -413,3 +414,34 @@ module.exports = merge(common, {
 });
 ```
 
+## 代码分离
+
+### 公共模块依赖切除和样式分离
+
+公共组件的引用可以通过配置进行剔除，插件为`webpack`自身支持，引入`plugins`.
+
+``` webpack.common.js
+const webpack = require('webpack)
+module.exports = {
+  plugins: [
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'common' // 指定公共 bundle 的名称。
+    })
+  ]
+}
+```
+
+webpack还有一些其他有用的插件，例如`ExtractTextPlugin`用于将CSS代码从主应用程序中分离，`bundle-loader`分离代码和延迟加载生成的`bundle`，使用插件`promise-loader`也可以达到该目的，只不过应用上是使用promise实现。
+
+## 懒加载
+
+懒加载的实现就是在触发某个动作，才进行import操作，例如
+
+``` example
+button.onclick = e => import(/* webpackChunkName: "print" */ './print').then(module => {
+  var print = module.default;
+  print();
+});
+```
+
+更多的时候，懒加载可能是配合框架使用，例如`Vue`，可以参考webpack官网链接。  
