@@ -1,0 +1,37 @@
+{
+  "name": "puppeteer-test",
+  "version": "1.0.0",
+  "description": "automate test",
+  "main": "index.js",
+  "window": {
+    "title": "获取报告",
+    "icon": "./assets/logo.jpg",
+    "toolbar": true,
+    "frame": true,
+    "width": 1008,
+    "height": 750,
+    "position": "center",
+    "min_width": 400,
+    "min_height": 200
+  },
+  "webkit": {
+    "plugin": true,
+    "java": false,
+    "page-cache": false
+  },
+  "chromium-args": "-allow-file-access-from-files",
+  "scripts": {
+    "start": "node index.js",
+    "test": "nyc report --reporter=html node .\\src\\page.js"
+  },
+  "author": "zhou",
+  "license": "ISC",
+  "dependencies": {
+    "babel-plugin-istanbul": "^5.1.1",
+    "puppeteer": "^1.13.0",
+    "puppeteer-to-istanbul": "^1.2.2"
+  },
+  "devDependencies": {
+    "nyc": "^13.3.0"
+  }
+}
