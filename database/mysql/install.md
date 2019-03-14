@@ -1,7 +1,7 @@
 # 安装设置
 
 1. bin目录下配置my.ini文件，并在该目录层级下输入指令`mysqld --initialize --console`，等待后控制台输出
-    ``` init password
+    ``` log
     2018-12-25T14:50:21.467410Z 0 [System] [MY-013169] [Server] D:\MySQL\bin\mysqld.exe (mysqld 8.0.13) initializing of server in progress as process 1336
     2018-12-25T14:51:11.076344Z 5 [Note] [MY-010454] [Server] A temporary password is generated for root@localhost: init_password0
     2018-12-25T14:51:20.293987Z 0 [System] [MY-013170] [Server] D:\MySQL\bin\mysqld.exe (mysqld 8.0.13) initializing of server has completed

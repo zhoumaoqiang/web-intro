@@ -45,7 +45,9 @@
           if(fs.existsSync('./coverage/index.html')) {
             clearInterval(intervalId)
             document.querySelector('.loadding').style.display = 'none'
-            window.location.href = window.location.origin + '/coverage/index.html'
+            setTimeout(() => {
+              window.location.href = window.location.origin + '/coverage/index.html'
+            }, 1000)
           }
         }, 100)
         
