@@ -1,5 +1,8 @@
 const fs = require('fs')
 
+console.log(fileListCompare('./pti', '../oldDoc'))
+
+// 获取相对路径下完整的文件目录
 function getFileList(path) {
   let files = []
   if (fs.existsSync(path)) {
@@ -16,7 +19,7 @@ function getFileList(path) {
   }
   return files
 }
-
+// 获取两个相对路径下文件目录的相对差异
 function fileListCompare(path1, path2) {
   let files1 = getFileList(path1), files2 = getFileList(path2)
   let diff_list = files_compare(files1, files2)
@@ -93,6 +96,5 @@ function fileListCompare(path1, path2) {
     return diffs
   }
 }
-fileListCompare('./pti', '../oldDoc')
 
-// console.log(getFileList('./pti'))
+

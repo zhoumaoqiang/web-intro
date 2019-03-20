@@ -91,7 +91,15 @@ console.log(bar, baz)
 let [o, p, q, r, s] = 'hello'
 let { length } = 'hello'
 
+// 函数参数
 function add([a, b]) {
     consolelog(a + b)
 }
 add([5, 10])
+
+
+try {
+    let ({ block }) = { block: 'block' }
+} catch (e) {
+    console.log('结构语句不能使用任何形式的小括号')
+}
