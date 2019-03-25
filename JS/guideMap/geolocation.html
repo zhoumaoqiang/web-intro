@@ -12,7 +12,8 @@
   <script>
     (() => {
       var apiScript = document.createElement('script')
-      apiScript.src =  "http://127.0.0.1:3000/maps?v=1.4.13&key=" + KEY.key + "&plugin=AMap.MarkerClusterer"
+      // apiScript.src =  "http://127.0.0.1:3000/maps?v=1.4.13&key=" + KEY.key + "&plugin=AMap.MarkerClusterer"
+      apiScript.src = 'https://webapi.amap.com/maps?v=1.4.13&key=' + KEY.key + "&plugin=AMap.MarkerClusterer"
       document.head.appendChild(apiScript)
     })()
   </script>
