@@ -11,3 +11,13 @@
 4. 使用`tsconfig.json`，配置编译细节
 
 使用`tsc --init`指令生成`tsconfig.json`文件，设置输出的文件位置，然后在菜单栏`终端 -> 运行任务 -> 见识tsconfig.json`可以实现实时编译。如果使用Hbuilder就需要下载插件，在首选项中选择自动编译，最后在工程目录选择配置，允许ts的编译即可。
+
+## 类型校验
+
+typescript中数据类型包括boolean、string、number、array、tuple、enum、any、undefined、void、never。使用类型注解的方法：
+
+```ts
+let n:number = 10
+```
+
+变量使用类型注解标记数据类型后，就不能给变量赋值其他类型的数据。
