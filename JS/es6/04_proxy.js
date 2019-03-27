@@ -3,6 +3,7 @@
 // 接受两个对象，原对象和处理配置
 var obj = new Proxy({}, {
   get: function (target, key, receiver) {
+    // 可以被继承
     console.log(`getting ${key}!`);
     return Reflect.get(target, key, receiver);
   },
@@ -15,9 +16,11 @@ var obj = new Proxy({}, {
 obj.title = "hello world";  // setting title
 console.log(obj.title)  // getting title    hello world
 
-// 上面使用defineProperty同样有效
+// 上面使用defineProperty同样有效 !! Vue2 -> Vue3
 
 // proxy暴露的可操作性特性包括
 // get、set、has、deleteProperty、ownKeys、getOwnPropertyDescriptor、defineProperty、
 // preventExtensions(组织扩展)、isExtensible、getPropertyOf、setPropertyOf、apply、construct
+
+// 对象代理操作，可以设置在对象实例的proxy属性，或者对象原型上，这样更具通用性
 

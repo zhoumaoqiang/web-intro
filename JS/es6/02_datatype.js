@@ -196,5 +196,95 @@ function arrayModule() {
 
     // 实现Iterator 接口的对象，都可以通过拓展运算符转换成数组
 
+    function switch2array(...args) {
+        // 将类数组对象和可迭代对象转换成数组
+        console.log(Array.from(arguments))
+        // 还可以用于document.querySelectorAll获取的DOMList
+        // 只要有length属性，都可以使用改法方进行转换
+        let arrObj = {length: 3}
+        console.log(Array.from(arrObj))
+    }
+    switch2array(2, 5, "sada0", 56)
 
+    function arrayConstruct() {
+        // Array.of()用于解决Array()构造函数在参数个数不同行为不一致的问题
+        console.log(Array.of(3, 2, 1))
+    }
+    arrayConstruct()
+
+    // 数组内将制定位置元素复制到另一个地方，指定位置由第二、三个参数表示，覆盖的地方由第一个参数表示
+    // 负数表示倒序，原数组会被修改
+    console.log([1, 2, 3, 4, 5].copyWithin(0, 3))
+
+    // 接收第二个参数，用于指定this。相比IndexOf，可以用于NaN的查找
+    [1, 4, -5, 10].find((curVal, curIndex, fullArr) => curVal < 0)
+    [1, 4, -5, 10].findIndex((curVal, curIndex, fullArr) => curVal < 0)
+
+    // 对数组指定位置填充数值
+    function fillArray(val, start, end) {
+        console.log([].fill(val, start, end))
+    }
+    fillArray(10, 2, 5)
+
+    var arr = ['a', 'b', 10]
+    for(let index of arr.keys()) {
+        console.log('keys:', index)
+    }
+    for(let elem of arr.values()) {
+        console.log('values:', elem)
+    }
+    for(let [index, elem] of arr.entries()) {
+        console.log('entries: ', index, '  ', elem)
+    }
+
+    // includes()查询数组元素，indexOf()应用的是全等比较
+    [1, 2, 'ada', NaN].includes(NaN)
+
+    // 将多维数组减维，传入参数表示减去的层数
+    [1, 1, [2, [3, [4]]]].flat(2)
+
+    // flatMap() 等价于 map() + flat()
+
+    // ES5空位不完全等价于undefined，在ES6中会被转换成undefined
+}
+
+// ==================================== Object
+function objModule()  {
+    // 对象的属性，设置其描述特性可以使用 Object.defineProperty()
+    let symbolKey = Symbol('symbolKey')
+    var obj = {foo: 'fool', [symbolKey]: 50}
+    Object.defineProperty(obj, 'unenmb', {
+        get() {
+            return 'false'
+        },
+        enumerable: false
+    })
+
+    // 获取其描述
+    Object.getOwnPropertyDescriptor(obj, 'foo')
+
+    // 对象的遍历方法
+    for(let key in obj) {
+        console.log(key)    // 不含symbol
+    }
+    Object.keys(obj).forEach((item) => console.log(item))   // 不含symbol
+    Object.getOwnPropertyNames(obj).forEach((item) => console.log(item))    // 不含symbol，包含不可枚举
+    Object.getOwnPropertySymbols(obj).forEach(item => console.log(item))
+    Reflect.ownKeys(obj).forEach(item => console.log(item))
+
+    // super关键字，指向当前对象原型，必须在对象简写的方法中使用才有效
+    
+    // ES6新增的同值相等算法，严格比较两个值是否相等
+    console.log(Object.is({}, {}))
+    console.log(Object.is(NaN, NaN))
+    console.log(Object.is(+0, -0))
+
+    // 代替原型的设置，使用方法：
+    // Object.setPrototypeOf()（写操作）、Object.getPrototypeOf()（读操作）、Object.create()（生成操作）
+
+    // Object.entries()的逆操作，将二维数组转换成对象
+    Object.fromEntries([
+        ['foo', 'bar'],
+        ['baz', 42]
+    ])    
 }
