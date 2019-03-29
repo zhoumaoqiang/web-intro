@@ -7,4 +7,13 @@ function* fib(num) {
     if(n < num) {
         yield n++
     }
-} 
+}
+
+// 遍历器生成函数可以直接作为对象 Symbol.iterator 接口的函数，在使用 next() 函数是可以传递参数，作为 yield 语句返回的值
+function* next_transport() {
+    var n = 0
+    while(true) {
+        var result = (yield n++)
+        if(result) return 1
+    }
+}
