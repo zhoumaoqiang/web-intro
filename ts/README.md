@@ -18,6 +18,19 @@ typescript中数据类型包括boolean、string、number、array、tuple、enum�
 
 ```ts
 let n:number = 10
+let arr:Array<number> = [1, 2, 3]
+let _arr:number[] = [1, 2, 3]
+let tuple:[number, string] = [123, '123'] // 必须每个位置指定
+enum Flag{success=200, error=404, unknown}  // 类似于常量对象
+let status:Flag = Flag.success
+console.log(Flag.unknown)
 ```
 
-变量使用类型注解标记数据类型后，就不能给变量赋值其他类型的数据。
+变量使用类型注解标记数据类型后，就不能给变量赋值其他类型的数据。  
+前面提到的都是JS中较为熟悉的数据类型，除开null和undefined比较特殊的类型，ts中还添加有一些特殊的数据类型。
+
+```ts
+let v:any = 30;
+v = 'string';
+v = document.querySelector('div')
+```
