@@ -17,3 +17,8 @@ function* next_transport() {
         if(result) return 1
     }
 }
+
+// 使用迭代器函数，就可以使用 for...of 完成遍历
+for(let val of fib(10)) {
+    console.log(val)
+}
