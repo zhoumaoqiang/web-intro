@@ -27,10 +27,47 @@ console.log(Flag.unknown)
 ```
 
 变量使用类型注解标记数据类型后，就不能给变量赋值其他类型的数据。  
-前面提到的都是JS中较为熟悉的数据类型，除开null和undefined比较特殊的类型，ts中还添加有一些特殊的数据类型。
+前面提到的都是JS中较为熟悉的数据类型，除开null和undefined比较特殊的类型（既是类型也是值），ts中还添加有一些特殊的数据类型。
 
 ```ts
-let v:any = 30;
+let v:any = 30; // 任意类型，可以不受限制更改数据类型
 v = 'string';
 v = document.querySelector('div')
+
+var data:number | null | undefined
+// 使用null和undefined可以在不赋值的情况直接访问
+
+// void用于定义函数的返回数据类型，表示函数没有任何返回值
+function fn():void {
+
+}
+// 返回类型确定时，就需要
+function getNum():number {
+  let a:number = 0
+  a++
+  return a
+}
+
+// never使用比较特殊，使用never声明的变量只能赋值never类型的数据
+// 表示总是会抛出异常或根本就不会有返回值的函数表达式或箭头函数表达式的返回值类型;
+let err:never = () => {
+  throw Error('unknown Error')
+}
+
+```
+
+## 函数
+
+ts中函数定义的方式：
+
+* 函数声明
+* 匿名函数
+
+```ts
+function getStr():string {
+  return 'string'
+}
+let doSomething = function():void {
+  console.log('do something')
+}
 ```
