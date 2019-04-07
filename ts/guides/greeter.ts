@@ -1,7 +1,7 @@
 // 构造函数参数添加public，相当于创建同名变量
 class Student {
   fullName: String;
-  constructor(public firstName, public middleName, public lastName) {
+  constructor(public firstName:string, public middleName:string, public lastName:string) {
     this.fullName = firstName + ' ' + middleName + ' ' + lastName
   }
 }

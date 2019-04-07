@@ -64,10 +64,55 @@ ts中函数定义的方式：
 * 匿名函数
 
 ```ts
-function getStr():string {
-  return 'string'
+function getStr(str: string):string {
+  return str + '  ';
 }
 let doSomething = function():void {
   console.log('do something')
 }
 ```
+
+函数可选参数(可选参数应放在必传参数的后面)：
+
+```ts
+function getAge(age?:number):number {
+  if(age) {
+    return age
+  } else {
+    return 0
+  }
+}
+```
+
+函数参数默认值：
+
+```ts
+function getInfo(name:string, age:number=10):void {
+  console.log(name + 'is' + age + 'years old')
+}
+getInfo('Tom')
+```
+
+函数剩余参数，参数类型指定时，将会是个数组类型：
+
+```ts
+function sum(...args:number[]):number() {
+  return args.reduce((a,b) => a+b)
+}
+```
+
+函数重载，在java中是指两个或两个以上同名函数参数不同出现的情况，js中同名函数在同一作用域内将会被覆盖，但是在ts中，指定函数传入类型和返回类型，重载起到一定的匹配对应的作用。
+
+```ts
+function getInfo(name:string):string;
+function getInfo(age:number):number;
+// 上面是类型注解，下面是函数体，any并不是实际的类型注解，而是对上面两种情况的站位说明
+function getInfo(info:any):any {
+  if(typeof info === 'string') {
+    return `my name is ${info}`
+  } else {
+    return info
+  }
+}
+```
+
