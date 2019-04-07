@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="/client/js/socket.io.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <input id="autoRotateBtn" type="button" value="自动旋转">
+        <div id="tag"></div>
+    </div>
+    <script>
+        function init() {
+
+            var socket = io.connect("ws://172.20.10.11:4000");
+            var index = 0
+
+            document.querySelector('#autoRotateBtn').addEventListener('click', function() {
+                socket.emit('toggleAutorotate', {status: true})
+                document.getElementById('tag').innerHTML = index++
+            })
+        }
+        
+        window.onload = init    
+    </script>
+</body>
+</html>

@@ -787,7 +787,8 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		if ( scope.enabled === false || scope.enableZoom === false || ( state !== STATE.NONE && state !== STATE.ROTATE ) ) return;
 
-		event.preventDefault();
+		// chrome73 更新中采用passive，不需要再阻止默认行为
+		// event.preventDefault();
 		event.stopPropagation();
 
 		scope.dispatchEvent( startEvent );
