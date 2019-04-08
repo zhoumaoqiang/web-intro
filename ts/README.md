@@ -116,3 +116,56 @@ function getInfo(info:any):any {
 }
 ```
 
+## 类
+
+ts中类的基本定义，以及类继承：
+
+```ts
+class Person {
+  // 类的属性对应值的类型注解
+  name: string
+
+  constructor(num: string) {
+    this.name = num
+  }
+
+  getName():string {
+    return this.name
+  }
+
+  setName(newName: string):void {
+    this.name = newName
+  }
+}
+
+class Student extends Person {
+
+  constructor(name: string) {
+    // 传入继承类 Person 的构造器
+    super(name)
+  }
+  // 对象多态性，子类定义方法覆盖父类方法
+  getName():string {
+    return this.name + ' special'
+  }
+
+}
+```
+
+类修饰符，public、protected、private(表示类属性有效域)：
+
+```ts
+class Person {
+  // 可以在类的里面和外面访问此属性，public可省略
+  public name:string
+
+  constructor(name: string) {
+    this.name = name
+  }
+
+  public work():void {
+    console.log('%s is working', this.name)
+  }
+}
+
+```
