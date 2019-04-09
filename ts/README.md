@@ -158,6 +158,12 @@ class Student extends Person {
 class Person {
   // 可以在类的里面和外面访问此属性，public可省略
   public name:string
+  // 当成员被标记成 private时，它就不能在声明它的类的外部访问，继承类中该属性也无法访问
+  private weight: number
+  // 同样在类外部无法访问，但是在继承类中可以访问
+  protected age: number
+
+
 
   constructor(name: string) {
     this.name = name
@@ -168,4 +174,43 @@ class Person {
   }
 }
 
+```
+
+类的静态方法和属性(参考Math类、Date.now())：
+
+```ts
+class Person {
+  static type = 'human'
+  static run():void {
+    console.log('The person is running')
+  }
+  static getType():string {
+    // 静态方法中无法使用this
+    return Person.type
+  }
+}
+Person.run()
+```
+
+类的多态，父类定义方法，通过子类实现(重写)，ts中抽象类定义抽象方法，不能包含具体实现，而只能在子类中定义：
+
+```ts
+// 抽象类不能实例化
+abstract class Animal {
+  // 抽象类与普通方法不冲突
+  name: string
+  constructor(name: string) {
+    this.name = name
+  }
+  abstract eat():any
+}
+// 抽象类的子类必须实现抽象类中定义的方法
+class Dog extends Animal {
+  constructor(name: string) {
+    super(name)
+  }
+  eat(): string {
+    return 'dogs eat bone'
+  }
+}
 ```
