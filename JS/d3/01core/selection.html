@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>选择</title>
+</head>
+<body>
+  <div class="wrapper">  
+    <div>
+      <p>使用选择器选择元素，返回一个d3-selection对象，以便采用链式调用</p>
+      <table>
+          <tbody>
+            <tr>
+              <td>1-1</td>
+              <td>1-2</td>
+              <td>1-3</td>
+              <td>1-4</td>
+              <td>1-5</td>
+            </tr>
+            <tr>
+              <td>2-1</td>
+              <td>2-2</td>
+              <td>2-3</td>
+              <td>2-4</td>
+              <td>2-5</td>
+            </tr>
+            <tr>
+              <td>3-1</td>
+              <td>3-2</td>
+              <td>3-3</td>
+              <td>3-4</td>
+              <td>3-5</td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+    <div>
+      <p>设置属性，例如svg元素</p>
+      <svg class="svg-attr"></svg>
+    </div>
+  </div>
+  <script src="../d3.v5.js"></script>
+  <script>
+    // 通过document.querySelector()，填入选择器选中第一个匹配元素，也可以传入一个node节点
+    d3.select('td').style('color', 'red')
+    // 选中所有匹配元素，同样传入选择器或者一个 node节点组成的数组
+    d3.selectAll('td').style('background-color', 'yellow')
+
+    // 设置节点属性
+    var data = [1,2,3,4,5]
+    d3.select('.svg-attr').selectAll('rect').data(data).enter().append('rect').attr({
+      x: function(d, i) {console.log(d);return 20 + i*160/data.length},
+      y: function(d) {return 20},
+      width: 20,
+      height: 100
+    })
+  </script>
+</body>
+</html>
