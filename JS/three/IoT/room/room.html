@@ -25,11 +25,21 @@
 				color: #046;
 				font-weight: bold;
 			}
+			.handle {
+				position: absolute;
+				right: 0;
+				top: 0;
+			}
 		</style>
 	</head>
 
 	<body>
-		
+		<div class="handle">
+			<input id="top-switch" type="button" value="顶部" />
+			<input id="left-switch" type="button" value="床头左" />
+			<input id="right-switch" type="button" value="床头右" />
+			<input id="sofa-switch" type="button" value="沙发" />
+		</div>
 
 		<script src="../../lib/three.js"></script>
 
@@ -54,9 +64,9 @@
                 document.body.appendChild( container );
                 // 设置相机和相机的控制
 				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
-				camera.position.set( -518, 151, -116 );
+				camera.position.set( -259, 75, -58 );
 				controls = new THREE.OrbitControls( camera );
-				controls.target.set( 0, 100, 0 );
+				controls.target.set( 0, 50, 0 );
                 controls.update();
                 // 新建场景
 				scene = new THREE.Scene();
@@ -65,18 +75,11 @@
 				light = new THREE.HemisphereLight( 0xcccccc, 0x444444 );
 				light.position.set( 0, 200, 0 );
 				scene.add( light );
-				// light = new THREE.DirectionalLight( 0xffffff );
-				// light.position.set( 0, 200, 100 );
-				// light.castShadow = true;
-				// light.shadow.camera.top = 180;
-				// light.shadow.camera.bottom = - 100;
-				// light.shadow.camera.left = - 120;
-				// light.shadow.camera.right = 120;
-				// scene.add( light );
+				
 
 				// 加载房间模型
 				var loader = new THREE.FBXLoader();
-				loader.load('./hotel.FBX', function ( object ) {
+				loader.load('./hotel-v48.FBX', function ( object ) {
 					mixer = new THREE.AnimationMixer( object );
 					var action = mixer.clipAction( object.animations[ 0 ] );
                     action.play();
@@ -87,7 +90,9 @@
 							child.receiveShadow = true;
 						}
                     } );
-                    object.scale.set(0.1,0.1,0.1)
+					// 由于添加光源的光照距离，需要设置
+                    // object.scale.set(0.1,0.1,0.1)
+					object.scale.set(0.05, 0.05, 0.05)
 					scene.add( object );
                 } );
                 
@@ -95,15 +100,29 @@
                 lightPointTexture = createPoint()
 
                 let lightGroup = new THREE.Group()
+				lightGroup.name = 'lightGroup'
                 scene.add(lightGroup)
 
                 let topLight = getSphereLight()
                 topLight.name = 'top'
                 lightGroup.add(topLight)
-            //    -20,230,20
+				// topLight.position.set(-20, 230, 20)
+				topLight.position.set(-10, 115, 10)
+            	//    -20,230,20
 
+				let leftLight = getSphereLight()
+				leftLight.name = 'left'
+				lightGroup.add(leftLight)
+				leftLight.position.set(52, 50, 82)
                 
+				let rightLight = getSphereLight()
+				rightLight.name = 'right'
+				lightGroup.add(rightLight)
 
+				let sofaLight = getSphereLight()
+				sofaLight.name = 'sofa'
+				lightGroup.add(sofaLight)
+				sofaLight.position.set(145, 60, 75)
 
                 // 渲染器，调整像素、尺寸
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -117,9 +136,10 @@
 				// 帧数
 				stats = new Stats();
 				container.appendChild( stats.dom );
+				handle()
             }
 
-
+			// 获取球形光源
             function getSphereLight(size) {
                 let group = new THREE.Group()
                 if(!size) {
@@ -150,7 +170,7 @@
 
                 return group
             }
-
+			// 创建发光体形状
             function createPoint() {
                 let canvas = document.createElement('canvas');
                 canvas.width = 16;
@@ -171,6 +191,28 @@
                 texture.needsUpdate = true;
                 return texture;
             }
+
+			function handle() {
+				let lights = scene.getObjectByName('lightGroup')
+				let topLight = lights.getObjectByName('top')
+				let leftLight = lights.getObjectByName('left')
+				let rightLight = lights.getObjectByName('right')
+				let sofaLight = lights.getObjectByName('sofa')
+				document.querySelector('#top-switch').addEventListener('click', () => {
+					topLight.visible = !topLight.visible
+				})
+				document.querySelector('#left-switch').addEventListener('click', () => {
+					leftLight.visible = !leftLight.visible
+				})
+				document.querySelector('#right-switch').addEventListener('click', () => {
+					rightLight.visible = !rightLight.visible
+				})
+				document.querySelector('#sofa-switch').addEventListener('click', () => {
+					sofaLight.visible = !sofaLight.visible
+				})
+			}
+
+
 
 			function onWindowResize() {
 				camera.aspect = window.innerWidth / window.innerHeight;

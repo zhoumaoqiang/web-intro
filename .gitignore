@@ -15,8 +15,9 @@ packagesTraining/**/dist
 # 私密文件
 key.js
 
-# 非关键文件
+# 资源、媒体
 *.min.js
 *.jpg
 *.png
 *.FBX
+*.mp4
