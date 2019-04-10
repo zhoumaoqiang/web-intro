@@ -1,0 +1,118 @@
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+html, body, .wrapper {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+details {
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+a::before {
+    content: '→';
+    display: inline-block;
+    margin: 0 5px 0 10px;
+}
+
+.container {
+    width: 50%;
+    height: 100%;
+}
+.origin {
+    float: left;
+}
+.new {
+    float: right;
+}
+.division {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    background-color: #000;
+}
+
+/* 顶部文件夹选择样式 */
+.folder-container {
+    display: flex;
+}
+.folder-text {
+    width: calc(100% - 65px);
+}
+.folder-selector {
+    width: 65px;
+    overflow: hidden;
+}
+
+#showResult {
+    float: right;
+}
+#hideResult {
+    margin-left: auto;
+    display: block;
+}
+.resultList {
+    color: #fff;
+    padding: 10px 20px;
+    overflow: scroll;
+    height: calc(100% - 45px);
+}
+
+/* 列表 */
+.list {
+    height: calc(100% - 30px);
+    padding: 5px;
+    overflow: scroll;
+    font-size: 0;
+}
+.list ul {
+    overflow: hidden;
+}
+.folder {
+    font-size: 14px;
+    font-style: italic;
+    margin: 2px 0;
+}
+.file {
+    font-size: 14px;
+    color: #333;
+}
+.switch {
+    cursor: pointer;
+}
+.grey-for-less {
+    color: grey;
+}
+.red-for-less {
+    color: red;
+}
+.green-for-more {
+    color: #07d607;
+}
+.diff {
+    color: #0005de;
+}
+.result {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .5);
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: none;
+    z-index: 10;
+}
