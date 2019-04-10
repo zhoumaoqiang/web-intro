@@ -214,3 +214,33 @@ class Dog extends Animal {
   }
 }
 ```
+
+## 接口
+
+ts中接口是为类型注解和代码之间进行规范契约（例如定义一个json类型注解的通过规范接口），接口可用于属性、函数、类等。
+
+属性接口：
+
+```ts
+// 定义接口使用interface关键字，相当于定义一个固定属性的json数据格式
+// 问号表示属性为可选
+interface FullName {
+  firstName: string
+  secondName: string,
+  age?: number
+}
+// 指定类型注解可以直接使用对象格式，但是使用抽出的接口，可以用于多个方法
+function printName(name: FullName):void {
+  console.log(name.firstName + ' ' + name.secondName)
+}
+// 出入对象属性必须完全匹配接口定义，顺序无关
+printName({
+  firstName: 'Sheldon',
+  secondName: 'Cooper'
+})
+printName({
+  firstName: 'Tom',
+  secondName: 'Welson',
+  // age: 20
+})
+```
