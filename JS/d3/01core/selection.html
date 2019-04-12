@@ -48,14 +48,14 @@
     // 选中所有匹配元素，同样传入选择器或者一个 node节点组成的数组
     d3.selectAll('td').style('background-color', 'yellow')
 
-    // 设置节点属性
+    // 设置节点属性，在v3、v4版本设置json，v5版本未生效
     var data = [1,2,3,4,5]
-    d3.select('.svg-attr').selectAll('rect').data(data).enter().append('rect').attr({
-      x: function(d, i) {console.log(d);return 20 + i*160/data.length},
-      y: function(d) {return 20},
-      width: 20,
-      height: 100
-    })
+    d3.select('.svg-attr').selectAll('rect').data(data).enter().append('rect')
+    .attr("x", function(d, i) {console.log(d);return 20 + i*160/data.length})
+    .attr("y", function(d) {return 20})
+    .attr("width", 20)
+    .attr("height", 100)
+    .attr("fill", "steelblue")
   </script>
 </body>
 </html>
