@@ -244,3 +244,12 @@ printName({
   // age: 20
 })
 ```
+
+只读接口：
+
+```ts
+interface Point {
+    readonly x: number;
+    readonly y: number;
+}
+```
