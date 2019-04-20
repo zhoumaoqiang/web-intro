@@ -253,3 +253,11 @@ interface Point {
     readonly y: number;
 }
 ```
+
+定义函数的接口：
+
+``` ts
+interface SearchFunc {
+  (source: string, subString: string): boolean;
+}
+```
