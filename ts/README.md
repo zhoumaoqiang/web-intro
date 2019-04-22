@@ -261,3 +261,25 @@ interface SearchFunc {
   (source: string, subString: string): boolean;
 }
 ```
+
+可索引：
+
+```ts
+interface StringArray {
+  [index: number]: string;
+}
+```
+
+类接口：
+
+```ts
+interface ClockInterface {
+    currentTime: Date;
+}
+
+class Clock implements ClockInterface {
+    currentTime: Date;
+    constructor(h: number, m: number) { }
+}
+
+```
