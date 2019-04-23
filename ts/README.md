@@ -283,3 +283,16 @@ class Clock implements ClockInterface {
 }
 
 ```
+
+类静态：
+
+```ts
+interface ClockConstructor {
+    new (hour: number, minute: number);
+}
+
+class Clock implements ClockConstructor {
+    currentTime: Date;
+    constructor(h: number, m: number) { }
+}
+```
