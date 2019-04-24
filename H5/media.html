@@ -80,11 +80,13 @@
       video.play();
     });
     // 全屏
-    window.onload = function() {
+    // document.fullScreenEnabled = true;
+    // 在某些版本，只允许手势触发
+    document.body.onclick = function() {
       // 必须将isFullScreen放在requestFullScreen之后
-      // video.play()
-      // video.requestFullscreen()
-      // document.IsFullScreen = true;
+      video.play()
+      video.webkitRequestFullScreen()
+      document.IsFullScreen = true;
       
     }
   </script>

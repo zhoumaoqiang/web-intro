@@ -1,11 +1,22 @@
-# an
-# 依赖管理
+# npm配置
+
+## 设置用户
+
+配置用户和邮箱..  
+`npm config --global user.name "my_name"`  
+`npm config --global user.email "my_email@c.com"`  
+安装cnpm：`npm install -g cnpm --registry=https://registry.npm.taobao.org`
+
+## 依赖管理
 
 1. 从nodeJS官网下载稳定版node程序，安装完成后，打开命令行工具，输入```node -v```和```npm -v```查看节点安装情况，可以使用```npm install npm@latest -g```将npm更新至最新版本
 2. 使用```npm install <package>``` 获取依赖
 
 
-# 错误
+## 错误
+
+npm指令无法使用：
+
 - 首先设置```npm config set prefix ...``` 和 ```npm config set cache ...```，条件环境变量"PATH_MODULE"，在全局环境下仍不能使用npm指令
 - 设置```npm i npm -g```，可以使用npm指令，但是使用时报```path argument must be a string, but got null```
 - 再次调整npm config，出现错误```TypeError: Path must be a string. Received undefined```

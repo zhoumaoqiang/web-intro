@@ -95,13 +95,14 @@
       spotLight.castShadow = true;
 
       var planeGeometry = new THREE.PlaneGeometry(60, 20);  
-      var planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff}); // 材料会展现出光线效果
+      var planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff, opacity: 0.1, transparent: true}); // 材料会展现出光线效果
       var plane = new THREE.Mesh(planeGeometry, planeMaterial); 
 
       plane.rotation.x = -0.5 * Math.PI;
       plane.position.x = 15;
       plane.position.y = 0;
       plane.position.z = 0;
+    
 
       // 平面相当于地面，此处接受阴影
       plane.receiveShadow = true;
