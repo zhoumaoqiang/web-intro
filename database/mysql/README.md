@@ -6,3 +6,7 @@
 4. mysql修改表结构
 5. mysql约束
 6. mysql函数
+
+## 使用nodejs操作mysql
+
+thinkjs
