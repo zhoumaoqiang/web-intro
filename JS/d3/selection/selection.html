@@ -12,73 +12,58 @@
       font-size: 14px;
       font-family: serif;
     }
-    p {
-      padding-left: 5px;
-      text-indent: 33px;
-      margin: 10px 5px;
+    .newClass {
+      font-size: 30px;
+      color: blue;
     }
-    .head {
-      font-size: 16px;
-      color: #0d0d6b;
-      text-indent: 20px;
-      position: relative;
-    }
-    .head::before {
-      content: "";
-      position: absolute;
-      left: 10px;
-      top: 0;
+    .newClass::before {
+      content: '新增元素类名的伪元素';
       display: inline-block;
-      width: 5px;
-      height: 20px;
-      background-color: #0d0d6b;
-    }
-    .title {
-      color: #2125df;
-      font-weight: 600;
-      font-size: 22px;
     }
   </style>
 </head>
 <body>
   <div id="wrapper">
-    <section>
-      <div class="head title">选择器</div>
-      <div><p></p></div>
-      <div>
-        <div class="head">d3.select(selector)</div>
-        <p>用法类似于document.querySelector()，这里返回的是一个d3的selection对象。</p>
-      </div>
-      <div>
-        <div class="head">d3.selectAll(selector)</div>
-        <p>可以选择多个元素，同document.querySelectAll()，返回一个selection对象。</p>
-      </div>
-      <div>
-        <div class="head">d3.selection()</div>
-        <p>可以获取到selection对象的，从而获取器原型，由上面获取元素的方法知道获取元素后返回的是一个selection对象，所以提供该方法以作为拓展。</p>
-      </div>
-      <div>
-        <div class="head">selection.select(selector) | selection.selectAll(selector)</div>
-        <p>获取元素的对象可以查找子元素，或者传入函数，获取与当前元素相关的元素，分别返回第一个和所有的匹配结果。</p>
-      </div>
-      <div>
-        <div class="head">selection.datum([value])</div>
-        <p>获取或者设置当前元素的数据（data-属性）。</p>
-      </div>
-      <div>
-        <div class="head">selection.filter(filter)</div>
-        <p>筛选元素，可以传入位置等伪类选择器的字符串，也可以传入函数，函数默认接收两个值，当前数据（selection.datum()）和当前索引。</p>
-      </div>
-      <div>
-        <div class="head">selection.attr(name[, value])</div>
-        <p>获取或者设置当前元素的属性。</p>
-      </div>
-      
-    </section>
+    <!-- 选择器 -->
+    <div class="node1">根据选择器选择</div>
+    <div class="node2">根据node节点选择</div>
+    <div class="nodes1">
+      <!-- 设置元素属性 -->
+      <span>选择器子元素1 </span>
+      <span>选择器子元素2 </span>
+      <span>选择器子元素3 </span>
+    </div>
+    <div class="nodes2">
+      <span>node子元素1 </span>
+      <span>node子元素2 </span>
+      <span>node子元素3 </span>
+    </div>
+    
+    <!-- 读写元素类名 -->
+    <div class="classedNode" onclick="modifyClass()">（修改元素类名，点击生效）</div>
+
   </div>
   <script src="../d3.v5.js"></script>
   <script>
-    
+    // 选择元素
+    d3.select('.node1').style('color', 'red')
+    d3.select(document.querySelector('.node2')).style('color', 'green')
+    // 选择多个元素
+    var els = d3.selectAll('.nodes1 span').style('color', 'yellow')
+    d3.selectAll(document.querySelectorAll('.nodes2 span')).style('color', 'purple')
+
+    // 读写元素属性
+    els.attr('data-name', 'setAttr')
+    console.log('获取d3选择对象数据名称：', els.attr('data-name'))
+
+    // 控制元素类名
+    function modifyClass() {
+      if(d3.select('.classedNode').classed('newClass')) {
+        d3.select('.classedNode').classed('newClass', false)
+      } else {
+        d3.select('.classedNode').classed('newClass', true)
+      }
+    }
   </script>
 </body>
 </html>
