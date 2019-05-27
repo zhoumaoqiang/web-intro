@@ -38,9 +38,58 @@
       <span>node子元素2 </span>
       <span>node子元素3 </span>
     </div>
+    <br>
     
     <!-- 读写元素类名 -->
     <div class="classedNode" onclick="modifyClass()">（修改元素类名，点击生效）</div>
+    <br>
+
+    <!-- 单属性 -->
+    <div class="property">
+      <label>
+        <input type="checkbox" name="property" onclick="printPro()">
+        <span>选中输出状态</span>
+      </label>
+      <input type="button" value="设置选中状态" onclick="setProperty()">
+    </div>
+    <br>
+
+    <!-- 文本填充 -->
+    <div>
+      <div class="text"></div>
+      <div class="html"></div>
+    </div>
+    <br>
+
+    <!-- 删除元素 -->
+    <div class="removes">
+      <span class="removed">元素1</span>
+      <span class="removed">元素2</span>
+      <span>元素3</span>
+    </div>
+    <br>
+
+    <!-- 数据匹配  -->
+    <div class="data">
+      <div class="enter"></div>
+      <div class="exit">
+        <span>元素1</span>
+        <span>元素2</span>
+        <span>元素3</span>
+        <span>元素4</span>
+      </div>
+    </div>
+    <br>
+
+    <!-- 筛选 -->
+    <div class="filter">
+      <div>未绑定数据</div>
+      <div>绑定数据为__data__</div>
+      <div>根据序号上色</div>
+      <div>元素4</div>
+    </div>
+    <br>
+
 
   </div>
   <script src="../d3.v5.js"></script>
@@ -64,6 +113,42 @@
         d3.select('.classedNode').classed('newClass', true)
       }
     }
+
+    // 设置单属性值
+    function printPro() {
+      console.log(d3.select('.property input[type=checkbox]').property('checked'))
+    }
+    function setProperty() {
+      var el = d3.select('.property input[type=checkbox]')
+      if(el.property('checked')) {
+        el.property('checked', false)
+      } else {
+        el.property('checked', true)
+      }
+    }
+
+    // 设置文本
+    d3.select('.text').text('<input type="text">')
+    d3.select('.html').html('<input type="html">')
+
+    // 插入元素（始终出现在页面脚本加载完成后，与脚本中d3的操作顺序无关）
+    d3.select('body').append('div').classed('append', true).text('插入的文本内容')
+    d3.select('body').insert('div', function() {
+      // 第二个参数为标签名或者node节点，不能为d3的选择对象
+      return document.querySelector('.append')
+    }).classed('insert', true).text('后面添加插入在插入内容之前的文本')
+
+    // 删除元素
+    d3.select('.removed').remove()
+
+    // 数据绑定，常搭配使用
+    var data = ['元素1', '元素2', 'OK3']
+    d3.select('.enter').selectAll('span').data(data).enter().append('span').text(item => item)
+    d3.selectAll('.exit>span').data(data).exit().remove().text(item => item)
+
+    // 元素过滤
+    d3.selectAll('.filter>div').filter((item, index) => index%2==0).style('color', 'blue')
+
   </script>
 </body>
 </html>
