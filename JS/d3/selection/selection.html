@@ -78,6 +78,11 @@
         <span>元素3</span>
         <span>元素4</span>
       </div>
+      <div class="each">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </div>
     <br>
 
@@ -101,6 +106,7 @@
     <!-- 事件绑定 -->
     <input type="button" value="事件绑定触发" class="onEvt">
 
+    <svg></svg>
 
   </div>
   <script src="../d3.v5.js"></script>
@@ -156,6 +162,10 @@
     var data = ['元素1', '元素2', 'OK3']
     d3.select('.enter').selectAll('span').data(data).enter().append('span').text(item => item)
     d3.selectAll('.exit>span').data(data).exit().remove().text(item => item)
+    var elSize = d3.selectAll('.each>span').data(data).each(function(a, b) {
+      console.log('绑定数据可以使用each获取：', a, b)
+    })
+    console.log('获取选择元素的个数', elSize.size())
 
     // 元素过滤，也可以通过select实现，filter如果使用数据，返回数据没有索引
     d3.selectAll('.filter>div').filter((item, index) => index%2==0).style('color', 'blue')
@@ -173,6 +183,15 @@
       console.log('使用d3.event获取当前事件对象', d3.event)
       console.log('使用d3.mouse获取当前事件对象容器的鼠标相对位置信息', d3.mouse(this))
     })
+
+    // 过渡效果
+    d3.select('svg').append('circle').
+      attr('cx', 100).
+      attr('cy', 100).
+      attr('r', 40).
+      attr('fill', 'orange')
+
+    d3.select('svg').select('circle').transition().duration(5000).attr('fill', 'blue')
 
   </script>
 </body>
