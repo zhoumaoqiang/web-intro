@@ -10,6 +10,10 @@
   <div class="wrapper">
     <!-- 一个过渡效果基础的方法 -->
     <svg class="basic"></svg>
+    <!-- 属性的过渡效果 -->
+    <svg class="attrtween"></svg>
+    <div class="styletween" style="width: 100px;height: 100px;"></div> 
+
 
   </div>
   <script src="../d3.v5.js"></script>
@@ -28,6 +32,20 @@
       return item
     }).attr('y', function(item, index) {
       return index * 20
+    })
+
+    // 属性过渡的补间函数
+    d3.select('.attrtween').transition()
+    .duration(1500)
+    .attrTween('r', function(d, i, a) {
+      return d3.interpolateNumber(a, 2*a)
+    })
+    // 样式的过渡效果
+    d3.select('.styletween')
+    .transition()
+    .duration(1500)
+    .styleTween('r', function(d, i, a) {
+      return d3.interpolate('green', 'orange')
     })
 
   </script>
