@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - FBX loader</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				font-family: Monospace;
+				background-color: #000;
+				color: #fff;
+				margin: 0px;
+				overflow: hidden;
+			}
+			#info {
+				color: #fff;
+				position: absolute;
+				top: 10px;
+				width: 100%;
+				text-align: center;
+				z-index: 100;
+				display:block;
+			}
+			#info a {
+				color: #046;
+				font-weight: bold;
+			}
+			.handle {
+				position: absolute;
+				right: 0;
+				top: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="handle">
+			<input id="top-switch" type="button" value="顶部" />
+			<input id="left-switch" type="button" value="床头左" />
+			<input id="right-switch" type="button" value="床头右" />
+			<input id="sofa-switch" type="button" value="沙发" />
+		</div>
+
+		<script src="../../lib/three.js"></script>
+
+		<script src="../../lib/inflate.min.js"></script>
+        <script src="../../lib/FBXLoader.js"></script>
+        <script src="../../lib/TGALoader.js"></script>
+
+		<script src="../../lib/OrbitControl.js"></script>
+
+		<script src="../../lib/stats.min.js"></script>
+
+		<script>
+
+			var container, stats, controls;
+			var camera, scene, renderer, light, lightPointTexture;
+			var clock = new THREE.Clock();
+			var mixer;
+			init();
+			animate();
+			function init() {
+				container = document.createElement( 'div' );
+                document.body.appendChild( container );
+                // 设置相机和相机的控制
+				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
+				camera.position.set( -259, 75, -58 );
+				controls = new THREE.OrbitControls( camera );
+				controls.target.set( 0, 50, 0 );
+                controls.update();
+                // 新建场景
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0xa0a0a0 );
+				// 灯光
+				light = new THREE.HemisphereLight( 0xcccccc, 0x444444 );
+				light.position.set( 0, 200, 0 );
+				scene.add( light );
+				
+
+				// 加载房间模型
+				var loader = new THREE.FBXLoader();
+				loader.load('./hotel-v48.FBX', function ( object ) {
+					mixer = new THREE.AnimationMixer( object );
+					var action = mixer.clipAction( object.animations[ 0 ] );
+                    action.play();
+                    // 允许模型设置阴影
+					object.traverse( function ( child ) {
+						if ( child.isMesh ) {
+							child.castShadow = true;
+							child.receiveShadow = true;
+						}
+                    } );
+					// 由于添加光源的光照距离，需要设置
+                    // object.scale.set(0.1,0.1,0.1)
+					object.scale.set(0.05, 0.05, 0.05)
+					scene.add( object );
+                } );
+                
+                // 创建形黄色粒子物体模拟灯光
+                lightPointTexture = createPoint()
+
+                let lightGroup = new THREE.Group()
+				lightGroup.name = 'lightGroup'
+                scene.add(lightGroup)
+
+                let topLight = getSphereLight()
+                topLight.name = 'top'
+                lightGroup.add(topLight)
+				// topLight.position.set(-20, 230, 20)
+				topLight.position.set(-10, 115, 10)
+            	//    -20,230,20
+
+				let leftLight = getSphereLight()
+				leftLight.name = 'left'
+				lightGroup.add(leftLight)
+				leftLight.position.set(52, 50, 82)
+                
+				let rightLight = getSphereLight()
+				rightLight.name = 'right'
+				lightGroup.add(rightLight)
+
+				let sofaLight = getSphereLight()
+				sofaLight.name = 'sofa'
+				lightGroup.add(sofaLight)
+				sofaLight.position.set(145, 60, 75)
+
+                // 渲染器，调整像素、尺寸
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+                renderer.setSize( window.innerWidth, window.innerHeight );
+                // 设置阴影效果有效
+                renderer.shadowMap.enabled = true;
+                
+				container.appendChild( renderer.domElement );
+				window.addEventListener( 'resize', onWindowResize, false );
+				// 帧数
+				stats = new Stats();
+				container.appendChild( stats.dom );
+				handle()
+            }
+
+			// 获取球形光源
+            function getSphereLight(size) {
+                let group = new THREE.Group()
+                if(!size) {
+                    size = 120
+                }
+                // 设置能够照射出阴影的光源
+                let light = new THREE.PointLight(0xfdf18d, 1, 0, 0.5);
+                light.castShadow = true;
+                light.target = scene;
+                light.shadow.mapSize.width = 800;
+                light.shadow.mapSize.height = 800;
+                
+                // 设置发光体
+                let geometry = new THREE.SphereGeometry( 1, 1, 1);
+                let material = new THREE.PointsMaterial({
+                    size: size,
+                    color: 0xffffff,
+                    transparent: true,
+                    blending: THREE.AdditiveBlending,
+                    map: lightPointTexture,
+                    depthTest: false  
+                });
+                let cloud = new THREE.Points(geometry, material);
+                cloud.sortParticle = true;
+
+                group.add(light)
+                group.add(cloud)
+
+                return group
+            }
+			// 创建发光体形状
+            function createPoint() {
+                let canvas = document.createElement('canvas');
+                canvas.width = 16;
+                canvas.height = 16;
+                let cx = canvas.getContext('2d');
+                
+                // 创建圆形渐变，最后必须填充参数：x,y,r,x1,y1,r1
+                let gradient = cx.createRadialGradient(8, 8, 0, 8, 8, 8); 
+                gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+                gradient.addColorStop(0.25, 'rgba(164, 125, 20, 0.8)');
+                gradient.addColorStop(0.5, 'rgba(80, 60, 0, 0.4)');
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
+
+                cx.fillStyle = gradient;
+                cx.fillRect(0, 0, canvas.width, canvas.height);
+
+                let texture = new THREE.Texture(canvas);
+                texture.needsUpdate = true;
+                return texture;
+            }
+
+			function handle() {
+				let lights = scene.getObjectByName('lightGroup')
+				let topLight = lights.getObjectByName('top')
+				let leftLight = lights.getObjectByName('left')
+				let rightLight = lights.getObjectByName('right')
+				let sofaLight = lights.getObjectByName('sofa')
+				document.querySelector('#top-switch').addEventListener('click', () => {
+					topLight.visible = !topLight.visible
+				})
+				document.querySelector('#left-switch').addEventListener('click', () => {
+					leftLight.visible = !leftLight.visible
+				})
+				document.querySelector('#right-switch').addEventListener('click', () => {
+					rightLight.visible = !rightLight.visible
+				})
+				document.querySelector('#sofa-switch').addEventListener('click', () => {
+					sofaLight.visible = !sofaLight.visible
+				})
+			}
+
+
+
+			function onWindowResize() {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			}
+			
+			function animate() {
+				requestAnimationFrame( animate );
+				var delta = clock.getDelta();
+				if ( mixer ) mixer.update( delta );
+				renderer.render( scene, camera );
+				stats.update();
+			}
+		</script>
+
+	</body>
+</html>

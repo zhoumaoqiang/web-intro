@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>完整跟随滚动，刷新背景</title>
+  <link rel="stylesheet" href="./reset.css">
+  <link rel="stylesheet" href="bgScroll.css">
+</head>
+<body>
+  <div class="full-bg-wrapper">
+    <!-- <div class="full-bg">
+      <div class="first"></div>
+      <div class="second"></div>
+      <div class="third"></div>
+      <div class="last"></div>
+    </div> -->
+    <section class="equal-height">
+      <div class="placeholder"></div>
+      <div class="par">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit asperiores repellendus veniam excepturi fugiat blanditiis perferendis ullam accusantium alias repudiandae delectus ex magni et minima eligendi velit, modi cum reprehenderit.
+      Modi vitae distinctio dolorem, facilis eaque consequatur, beatae enim ipsa tempore amet excepturi expedita fugit, consectetur id vel quidem. Debitis eligendi sed hic tenetur suscipit, minima commodi aliquid dignissimos optio!
+      Deserunt fugiat dicta illo! Temporibus rerum hic distinctio est reiciendis, ex esse impedit quam aliquid repellat nostrum cupiditate similique, expedita, provident doloremque deserunt earum consectetur. Reiciendis incidunt vel quod unde.</div>
+    </section>
+    <section class="equal-height">
+      <div class="placeholder"></div>
+      <div class="par">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit asperiores repellendus veniam excepturi fugiat blanditiis perferendis ullam accusantium alias repudiandae delectus ex magni et minima eligendi velit, modi cum reprehenderit.
+      Modi vitae distinctio dolorem, facilis eaque consequatur, beatae enim ipsa tempore amet excepturi expedita fugit, consectetur id vel quidem. Debitis eligendi sed hic tenetur suscipit, minima commodi aliquid dignissimos optio!
+      Deserunt fugiat dicta illo! Temporibus rerum hic distinctio est reiciendis, ex esse impedit quam aliquid repellat nostrum cupiditate similique, expedita, provident doloremque deserunt earum consectetur. Reiciendis incidunt vel quod unde.</div>
+    </section>
+    <section class="equal-height">
+      <div class="placeholder"></div>
+      <div class="par">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit asperiores repellendus veniam excepturi fugiat blanditiis perferendis ullam accusantium alias repudiandae delectus ex magni et minima eligendi velit, modi cum reprehenderit.
+      Modi vitae distinctio dolorem, facilis eaque consequatur, beatae enim ipsa tempore amet excepturi expedita fugit, consectetur id vel quidem. Debitis eligendi sed hic tenetur suscipit, minima commodi aliquid dignissimos optio!
+      Deserunt fugiat dicta illo! Temporibus rerum hic distinctio est reiciendis, ex esse impedit quam aliquid repellat nostrum cupiditate similique, expedita, provident doloremque deserunt earum consectetur. Reiciendis incidunt vel quod unde.</div>
+    </section>
+    <section class="equal-height">
+      <div class="placeholder"></div>
+      <div class="par">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit asperiores repellendus veniam excepturi fugiat blanditiis perferendis ullam accusantium alias repudiandae delectus ex magni et minima eligendi velit, modi cum reprehenderit.
+      Modi vitae distinctio dolorem, facilis eaque consequatur, beatae enim ipsa tempore amet excepturi expedita fugit, consectetur id vel quidem. Debitis eligendi sed hic tenetur suscipit, minima commodi aliquid dignissimos optio!
+      Deserunt fugiat dicta illo! Temporibus rerum hic distinctio est reiciendis, ex esse impedit quam aliquid repellat nostrum cupiditate similique, expedita, provident doloremque deserunt earum consectetur. Reiciendis incidunt vel quod unde.</div>
+    </section>
+  </div>
+  <script>
+    window.onload = function() {
+      let images = [
+      '../assets/CSS3/bgScroll/img1.jpg',
+      '../assets/CSS3/bgScroll/img2.jpg',
+      '../assets/CSS3/bgScroll/img3.jpg',
+      '../assets/CSS3/bgScroll/img4.jpg'
+      ];
+      new BgBrush('.full-bg-wrapper', images)
+      // let wrapper = document.querySelector('.full-bg');
+      // let first = document.querySelector('.first'), second = document.querySelector('.second'), third = document.querySelector('.third'), last = document.querySelector('.last');
+
+      // first.style.backgroundImage = `url(${images[0]})`;
+      // second.style.backgroundImage = `url(${images[1]})`;
+      // third.style.backgroundImage = `url(${images[2]})`;
+      // last.style.backgroundImage = `url(${images[3]})`;
+
+      // document.onscroll = function() {
+      //   if(window.scrollY < window.innerHeight) {
+      //     first.style.height = window.innerHeight - window.scrollY + 'px';
+      //     second.style.height = window.scrollY + 'px';
+      //     second.style.backgroundPosition = '0 -' + (window.innerHeight - window.scrollY + 'px');
+      //     return;
+      //   }
+      //   first.style.height = 0;
+      //   if(window.innerHeight < window.scrollY && window.scrollY < window.innerHeight * 2) {
+      //     second.style.height = window.innerHeight - (window.scrollY - window.innerHeight) + 'px';
+      //     third.style.height = (window.scrollY - window.innerHeight) + 'px';
+      //     third.style.backgroundPosition = '0 -' + (window.innerHeight - (window.scrollY - window.innerHeight) + 'px');
+      //     return;
+      //   }
+      //   second.style.height = 0;
+      //   if(window.innerHeight * 2 < window.scrollY && window.scrollY < window.innerHeight * 3) {
+      //     third.style.height = window.innerHeight - (window.scrollY - window.innerHeight * 2) + 'px';
+      //     last.style.height = (window.scrollY - window.innerHeight * 2) + 'px';
+      //     last.style.backgroundPosition = '0 -' + (window.innerHeight - (window.scrollY - window.innerHeight * 2) + 'px');
+      //   }
+        
+      // }
+
+ 
+    }
+
+    function BgBrush(dom, images) {
+      let container = document.querySelector(dom);
+      let elChildren = container.children;
+      let elLength = container.children.length;
+      let bgContainer, bgChildren = [];
+      let currentIndex = 0;
+
+      init();
+
+      Object.defineProperty(this, 'index', {
+        get: function() {
+          return currentIndex;
+        }
+      });  
+      
+      function init() {
+        bgContainer = document.createElement('div');
+        bgContainer.style.position = 'fixed';
+        bgContainer.style.left = '0';
+        bgContainer.style.top = '0';
+        bgContainer.style.width = '100%';
+        bgContainer.style.height = '100%';
+        bgContainer.style.zIndex = '-1';
+        document.body.appendChild(bgContainer);
+
+        for(let i = 0; i < elLength; i ++) {
+          let bgEl = document.createElement('div');
+          bgEl.style.width = '100%';
+          bgEl.style.height = '0';
+          bgEl.style.className = 'bg-brush-child' + i;
+          bgEl.style.backgroundImage = `url(${images[i]})`;
+          bgContainer.appendChild(bgEl);
+          bgChildren.push(bgEl);
+        }
+        bgChildren[0].style.height = '100%';
+
+        onScroll();
+      }
+      // 滚动事件
+      function onScroll() {
+        window.onscroll = function() {
+
+          for(let i = 0; i < elLength; i++) {
+            
+            // 下面不应该是innerHeight，而是当前显示元素高度和(待修改)
+            if(getComputedHeight(i) < window.scrollY && window.scrollY < getComputedHeight(i+1)) {
+              currentIndex = i;
+              if(i > 0) {
+                bgChildren[i-1].style.height = 0;
+              }
+              let changes = window.scrollY - getComputedHeight(i);
+              bgChildren[i].style.height = window.innerHeight - changes + 'px';
+              bgChildren[i+1].style.height = changes + 'px';
+              bgChildren[i+1].style.backgroundPosition = '0 -' + 
+                (window.innerHeight - changes) + 'px';
+            }
+          }
+        }
+      }
+      // 获得累计高度
+      function getComputedHeight(index) {
+        let nodeHeight = 0;
+        for(let i = 0; i < index; i++) {
+          nodeHeight += elChildren[i].offsetHeight;
+        }
+        return nodeHeight;
+      }
+      // 验证滚动规则
+      function validHeight() {
+        let isValid = true;
+        elChildren.reduce((a, b) => {
+          if(a.offsetHeight + b.offsetHeight < window.innerHeight) {
+            isValid = false;
+          }
+          return b;
+        });
+
+        return isValid;
+      }
+
+    }
+
+
+    
+  </script>
+</body>
+</html>

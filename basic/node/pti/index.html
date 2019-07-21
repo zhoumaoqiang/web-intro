@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>我的应用</title>
+  <style>
+    html,body {
+      height: 100%;
+    }
+    .loadding {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <input id="getReport" type="button" value="点击右键显示菜单上下文">
+  <div class="os-info"></div>
+  <div class="loadding">加载中。。。</div>
+  <script>
+    const fs = require('fs');
+    const { exec } = require('child_process')
+
+    // 创建一个空的有件上下文菜单
+    var menu = new nw.Menu();
+
+    // 向菜单中添加一些标签
+    menu.append(new nw.MenuItem({
+      label: '生成报告',
+      click: async function () {
+        document.querySelector('.loadding').style.display = 'block'
+        delDir('./coverage')
+        await exec('npm test')
+        let time = 0;
+        let intervalId = setInterval((time) => {
+          time += 0.1
+          if(time > 10) {
+            clearInterval(intervalId)
+            document.querySelector('.loadding').style.display = 'none'
+            alert('time out')
+          }
+          if(fs.existsSync('./coverage/index.html')) {
+            clearInterval(intervalId)
+            document.querySelector('.loadding').style.display = 'none'
+            setTimeout(() => {
+              window.location.href = window.location.origin + '/coverage/index.html'
+            }, 1000)
+          }
+        }, 100)
+        
+      }
+    }));
+    menu.append(new nw.MenuItem({
+      label: 'Item B'
+    }));
+    menu.append(new nw.MenuItem({
+      type: 'separator'
+    }));
+    menu.append(new nw.MenuItem({
+      label: 'Item C'
+    }));
+
+    // 对菜单上下文添加钩子
+    document.body.addEventListener('contextmenu', function (ev) {
+      // 阻止默认事件
+      ev.preventDefault();
+      // 显示，锁定位置在x、y
+      menu.popup(ev.x, ev.y);
+
+      return false;
+    }, false);
+
+    var os = require('os');
+    document.querySelector('.os-info').innerHTML = '通过nodejs获取系统信息：\nYou are running on ' + os.platform()
+
+
+
+
+
+    function delDir(path, isChild) {
+      let files = [];
+      if (fs.existsSync(path)) {
+        files = fs.readdirSync(path);
+        files.forEach((file, index) => {
+          let curPath = path + "/" + file;
+          if (fs.statSync(curPath).isDirectory()) {
+            delDir(curPath, isChild); //递归删除文件夹
+          } else {
+            fs.unlinkSync(curPath); //删除文件
+          }
+        });
+        if(isChild) {
+          fs.rmdirSync(path);
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>

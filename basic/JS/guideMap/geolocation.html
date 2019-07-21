@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- <base href="http://127.0.0.1:3000/" /> -->
+  <title>高德开发接口定位</title>
+  <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+  <link rel="stylesheet" href="./geolocation.css">
+  <script src="./key.js"></script>
+  <script>
+    (() => {
+      var apiScript = document.createElement('script')
+      // apiScript.src =  "http://127.0.0.1:3000/maps?v=1.4.13&key=" + KEY.key + "&plugin=AMap.MarkerClusterer"
+      apiScript.src = 'https://webapi.amap.com/maps?v=1.4.13&key=' + KEY.key + "&plugin=AMap.MarkerClusterer"
+      document.head.appendChild(apiScript)
+    })()
+  </script>
+</head>
+<body>
+  <div id="container"></div>
+  <script src="./geolocation.js"></script>
+</body>
+</html>

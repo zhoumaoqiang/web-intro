@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>选择器</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-size: 14px;
+      font-family: serif;
+    }
+    .newClass {
+      font-size: 30px;
+      color: blue;
+    }
+    .newClass::before {
+      content: '新增元素类名的伪元素';
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div id="wrapper">
+    <!-- 选择器 -->
+    <div class="node1">根据选择器选择</div>
+    <div class="node2">根据node节点选择</div>
+    <div class="nodes1">
+      <!-- 设置元素属性 -->
+      <span>选择器子元素1 </span>
+      <span>选择器子元素2 </span>
+      <span>选择器子元素3 </span>
+    </div>
+    <div class="nodes2">
+      <span>node子元素1 </span>
+      <span>node子元素2 </span>
+      <span>node子元素3 </span>
+    </div>
+    <br>
+    
+    <!-- 读写元素类名 -->
+    <div class="classedNode" onclick="modifyClass()">（修改元素类名，点击生效）</div>
+    <br>
+
+    <!-- 单属性 -->
+    <div class="property">
+      <label>
+        <input type="checkbox" name="property" onclick="printPro()">
+        <span>选中输出状态</span>
+      </label>
+      <input type="button" value="设置选中状态" onclick="setProperty()">
+    </div>
+    <br>
+
+    <!-- 文本填充 -->
+    <div>
+      <div class="text"></div>
+      <div class="html"></div>
+    </div>
+    <br>
+
+    <!-- 删除元素 -->
+    <div class="removes">
+      <span class="removed">元素1</span>
+      <span class="removed">元素2</span>
+      <span>元素3</span>
+    </div>
+    <br>
+
+    <!-- 数据匹配  -->
+    <div class="data">
+      <div class="enter"></div>
+      <div class="exit">
+        <span>元素1</span>
+        <span>元素2</span>
+        <span>元素3</span>
+        <span>元素4</span>
+      </div>
+      <div class="each">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <br>
+
+    <!-- 筛选 -->
+    <div class="filter">
+      <div>未绑定数据</div>
+      <div>绑定数据为__data__</div>
+      <div>根据序号上色</div>
+      <div>元素4</div>
+    </div>
+    <br>
+
+    <!-- 获取数据 -->
+    <div class="datum" data-username="datum-test"></div>
+    <br>
+
+    <!-- 排序 -->
+    <div class="sort"></div>
+    <br>
+
+    <!-- 事件绑定 -->
+    <input type="button" value="事件绑定触发" class="onEvt">
+
+    <svg></svg>
+
+  </div>
+  <script src="../d3.v5.js"></script>
+  <script>
+    // 选择元素
+    d3.select('.node1').style('color', 'red')
+    d3.select(document.querySelector('.node2')).style('color', 'green')
+    // 选择多个元素
+    var els = d3.selectAll('.nodes1 span').style('color', 'yellow')
+    d3.selectAll(document.querySelectorAll('.nodes2 span')).style('color', 'purple')
+
+    // 读写元素属性
+    els.attr('data-name', 'setAttr')
+    console.log('获取d3选择对象数据名称：', els.attr('data-name'))
+
+    // 控制元素类名
+    function modifyClass() {
+      if(d3.select('.classedNode').classed('newClass')) {
+        d3.select('.classedNode').classed('newClass', false)
+      } else {
+        d3.select('.classedNode').classed('newClass', true)
+      }
+    }
+
+    // 设置单属性值
+    function printPro() {
+      console.log(d3.select('.property input[type=checkbox]').property('checked'))
+    }
+    function setProperty() {
+      var el = d3.select('.property input[type=checkbox]')
+      if(el.property('checked')) {
+        el.property('checked', false)
+      } else {
+        el.property('checked', true)
+      }
+    }
+
+    // 设置文本
+    d3.select('.text').text('<input type="text">')
+    d3.select('.html').html('<input type="html">')
+
+    // 插入元素（始终出现在页面脚本加载完成后，与脚本中d3的操作顺序无关）
+    d3.select('body').append('div').classed('append', true).text('插入的文本内容')
+    d3.select('body').insert('div', function() {
+      // 第二个参数为标签名或者node节点，不能为d3的选择对象
+      return document.querySelector('.append')
+    }).classed('insert', true).text('后面添加插入在插入内容之前的文本')
+
+    // 删除元素
+    d3.select('.removed').remove()
+
+    // 数据绑定，常搭配使用
+    var data = ['元素1', '元素2', 'OK3']
+    d3.select('.enter').selectAll('span').data(data).enter().append('span').text(item => item)
+    d3.selectAll('.exit>span').data(data).exit().remove().text(item => item)
+    var elSize = d3.selectAll('.each>span').data(data).each(function(a, b) {
+      console.log('绑定数据可以使用each获取：', a, b)
+    })
+    console.log('获取选择元素的个数', elSize.size())
+
+    // 元素过滤，也可以通过select实现，filter如果使用数据，返回数据没有索引
+    d3.selectAll('.filter>div').filter((item, index) => index%2==0).style('color', 'blue')
+
+    // 读写属性数据，不传值返回第一个非空元素绑定数据
+    d3.select('.datum').datum(function() {
+      return this.dataset
+    }).text(data => data.username)
+
+    // 排序
+    d3.selectAll('.sort').selectAll('div').data([5,2,20,1,3]).enter().append('div').text(item => item).sort((a, b) => a - b)
+
+    // 事件绑定
+    d3.select('.onEvt').on('click', function() {
+      console.log('使用d3.event获取当前事件对象', d3.event)
+      console.log('使用d3.mouse获取当前事件对象容器的鼠标相对位置信息', d3.mouse(this))
+    })
+
+    // 过渡效果
+    d3.select('svg').append('circle').
+      attr('cx', 100).
+      attr('cy', 100).
+      attr('r', 40).
+      attr('fill', 'orange')
+
+    d3.select('svg').select('circle').transition().duration(5000).attr('fill', 'blue')
+
+  </script>
+</body>
+</html>

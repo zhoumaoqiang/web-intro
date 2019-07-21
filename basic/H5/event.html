@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <input type="text" id="text">
+  <script>
+    document.getElementById('text').addEventListener('blur', () => {
+      console.log('blur',this.event)
+      setTimeout(() => {
+      console.log('event',this.event)
+      }, 0)
+    })
+    document.getElementById('text').addEventListener('click', () => {
+      console.log('click', this.event)
+    })
+    document.querySelector('body').addEventListener('click', () => {
+      console.log('click body', this.event)
+    })
+  </script>
+</body>
+</html>

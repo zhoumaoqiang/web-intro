@@ -1,33 +1,17 @@
 # 杂项规整
 
-## H5
+## basic
 
-尝试了H5的一些新特性，或者比较冷僻却很实用的知识点。  
-包括新的表单元素，语义化元素，图片映射，拖拽事件，数学元素，画布中图形、曲线、动画的实现，SVG的绘制，webrtc在线视频，websocket实时通信。
+There are some basic skills about `HTML`, `CSS` and `JS` in this folder, and those unusual but special skills are including:
 
-## CSS3
+- fullscreen dom, calculated size, fliter, gradient colors
+- canvas, svg, drag event, webrtc
+- d3 lib, three lib, ES6
 
-CSS3尝试了一些较新颖的特性，有较为深入的使用。渐变图形作为图片模块使用，文本样式的新特性，CSS变量，计算属性，滤镜，模拟一个全屏滚动替换背景。
+## builds
 
-## MySQL
+Guides for build a project with babel and webpack.
 
-从MySQL安装，启动服务，创建用户、授权，表和数据的CRUD和拓展完成了简单了解。由于找到的文档和实际版本不对应，部分功能未做最终尝试。
+## effects
 
-## JS
-
-回顾ES6的用法，对接触的一些问题，尝试寻找相应的库解决问题或者写一些方法。  
-使用高德地图接口和提供的API，实现一些功能。  
-根据threejs提供的API，将其中涉及的简单模块都使用一遍。  
-学习d3.js，由于库十分复杂，包含模块过多，且中文API已经过时，所以目录结构对应的内容较为复杂。
-
-## ts
-
-TypeScript学习代码
-
-## node
-
-node的基本操作，读取数据流、开启http服务、读写文件等，使用node框架提供服务，express、koa2等。
-
-## pack
-
-打包和编译工具。babel的使用和webpack的使用。
+Some cool effects, trying draw.

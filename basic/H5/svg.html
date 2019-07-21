@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>SVG 基础图形</title>
+  <style>
+    section {
+      margin: 30px 0;
+    }
+
+    h1 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #222;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    h2 {
+      font-size: 16px;
+      color: #333;
+      margin: 20px 0;
+    }
+    div,ul {
+      font-size: 14px;
+      color: #444;
+    }
+    pre {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="wrapper">
+    <section>
+      <h1>一、概述</h1>
+      <div>
+        <p>SVG 是一种基于 XML 语法的图像格式，全称是可缩放矢量图（Scalable Vector Graphics）。其他图像格式都是基于像素处理的，SVG
+          则是属于对图像的形状描述，所以它本质上是文本文件，体积较小，且不管放大多少倍都不会失真。</p>
+      </div>
+    </section>
+    <section>
+      <h1>二、语法</h1>
+
+      <div>
+        <h2>1. svg标签</h2>
+        <div>
+<pre>
+&lt;svg width="100%" height="100%" viewbox="10 10 80 80"&gt;
+  &lt;circle id="mycircle" cx="50" cy="50" r="50" /&gt;
+&lt;/svg&gt;
+</pre>
+          <svg width="100" height="100" viewbox="10 10 80 80">
+            <circle id="mycircle" cx="50" cy="50" r="50" />
+          </svg>
+          <p>viewbox属性用于裁剪svg图像，值为x起始点、y起始点、x视口占比、y视口占比。</p>
+        </div>
+      </div>
+
+      <div>
+        <h2>2. 圆形</h2>
+        <div>
+<pre>
+&lt;svg width="300" height="180"&gt;
+  &lt;circle cx="30"  cy="50" r="25" /&gt;
+  &lt;circle cx="90"  cy="50" r="25" style="fill: red;" /&gt;
+  &lt;circle cx="150" cy="50" r="25" style="stroke: green;stroke-width: 3px;" /&gt;
+  &lt;circle cx="210" cy="50" r="25" style="fill: none;stroke: blue;stroke-width: 3px;" /&gt;
+&lt;/svg&gt;
+</pre>
+          <svg width="300" height="100">
+            <circle cx="30"  cy="50" r="25" />
+            <circle cx="90"  cy="50" r="25" style="fill: red;" />
+            <circle cx="150" cy="50" r="25" style="stroke: green;stroke-width: 3px;" />
+            <circle cx="210" cy="50" r="25" style="fill: none;stroke: blue;stroke-width: 3px;" />
+          </svg>
+          <p>circle中cx和cy分别是圆心的x、y轴坐标，r为半径，fill是填充颜色，默认#000，stroke描边颜色，配合stroke-width指定描边宽度。</p>
+        </div>
+      </div>
+
+      <div>
+        <h2>3. 直线</h2>
+        <div>
+<pre>
+&lt;svg width="300" height="30"&gt;
+  &lt;line x1="0" y1="0" x2="200" y2="0" style="stroke:#000;stroke-width:5" /&gt;
+&lt;/svg&gt;
+</pre>
+          <svg width="300" height="30">
+            <line x1="0" y1="0" x2="200" y2="0" style="stroke:#000;stroke-width:5" />
+          </svg>
+          <p>x1、x2是线段x方向的起始坐标，y1、y2是线段y方向的起始坐标，线段没有fill，只能使用stroke。</p>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+  <div>
+    <h2>4. 折线</h2>
+    <div>
+<pre>
+&lt;svg width="300" height="50"&gt;
+  &lt;polyline points="3,3 30,28 3,53" fill="none" stroke="black" /&gt;
+&lt;/svg&gt;
+</pre>
+      <svg width="300" height="50">
+        <polyline points="3,3 30,28 3,53" fill="none" stroke="black" />
+      </svg>
+      <p>points为多组x、y坐标的组合</p>
+    </div>
+  </div>
+
+  <div>
+    <h2>5. 矩形</h2>
+    <div>
+<pre>
+&lt;svg width="300" height="100"&gt;
+  &lt;rect x="0" y="0" height="100" width="200" style="stroke: #70d5dd; fill: #dd524b" /&gt;
+&lt;/svg&gt;
+</pre>
+      <svg width="300" height="180">
+        <rect x="0" y="0" height="100" width="200" style="stroke: #0000ff; fill: #dd524b" />
+      </svg>
+      <p>x、y为起始坐标，需要指定宽高和颜色</p>
+    </div>
+  </div>
+
+  <div>
+    <h2>6. 椭圆</h2>
+    <div>
+<pre>
+&lt;svg width="300" height="100"&gt;
+  &lt;ellipse cx="120" cy="50" ry="40" rx="100" stroke="black" stroke-width="5" fill="silver"/&gt;
+&lt;/svg&gt;
+</pre>
+      <svg width="300" height="100">
+        <ellipse cx="120" cy="50" ry="40" rx="100" stroke="black" stroke-width="5" fill="silver"/>
+      </svg>
+      <p>cx、cy是椭圆中心坐标，rx和ry是椭圆x和y轴半径</p>
+    </div>
+  </div>
+
+  <div>
+    <h2>7. 多边形</h2>
+    <div>
+<pre>
+&lt;svg width="300" height="125"&gt;
+  &lt;polygon fill="green" stroke="orange" stroke-width="1" points="60,0 120,0 144,50 90,100 36,50 60,0"/&gt;
+&lt;/svg&gt;
+</pre>
+      <svg width="300" height="125">
+        <polygon fill="green" stroke="orange" stroke-width="1" points="60,0 120,0 144,50 90,100 36,50 60,0"/>
+      </svg>
+      <p>与折线polyline不同的是，多边形的图形是闭合的</p>
+    </div>
+  </div>
+
+  <div>
+    <h2>8. 路径</h2>
+    <div>
+<pre>
+&lt;svg width="300" height="70"&gt;
+  &lt;path d="
+    M 18,3
+    L 46,3
+    L 46,40
+    L 61,40
+    L 32,68
+    L 3,40
+    L 18,40
+    Z
+  "&gt;&lt;/path&gt;
+&lt;/svg&gt;
+</pre>
+      <svg width="300" height="70">
+        <path d="
+          M 18,3
+          L 46,3
+          L 46,40
+          L 61,40
+          L 32,68
+          L 3,40
+          L 18,40
+          Z
+        "></path>
+      </svg>
+      <p>
+        <p>path的d属性是命令+参数的形式表示的，命令大写表示绝对定位，小写表示相对定位(对于当前画笔位置)</p>
+        <ul>
+          <li>M = moveto(x,y)： 移动画笔至(x、y)点</li>
+          <li>L = lineto(x,y)： 从画笔当前位置画一条直线至(x、y)点</li>
+          <li>H = horizontal lineto(x)： 绘制一条水平线至x轴坐标为(x)的点</li>
+          <li>V = vertical lineto(y)： 绘制一条水平线至y轴坐标为(y)的点</li>
+          <li>C = curveto(x1 y1, x2 y2, x3 y3)： 三次贝塞尔曲线，需要定义两个控制点(起点控制点(x1,y1) 和终点控制点(x2,y2))和终点(x3,y3)，加上起点曲线呈现对称对应的关系</li>
+          <li>S = smooth curveto(x1 y1, x2 y2)：平滑曲线，也是简写的贝塞尔曲线，只需要起点控制点(x1,y1)设置固定的斜率后，直至终点(x2,y2)</li>
+          <li>Q = quadratic Bezier curveto(x1 y1, x2 y2)： 二次贝塞尔曲线，需要一个控制点(x1,y1)控制起点和终点，以及最后的终点坐标(x2,y2)</li>
+          <li>T = smooth quadratic Bezier curveto(x y)： 曲线，也是简写的二次贝塞尔曲线，会使用上一个Q或者T的斜率绘制后面的曲线，只需要传入终点(x,y)</li>
+          <li>A = elliptical Arc(rx ry angle flag sweep x y)： 弧线，前两个参数为x轴半径和y轴半径，第三个参数是弧度角度度数，第四个参数为使用大弧度角(1)还是小弧度角(0)，第五个参数为逆时针画弧(0)还是顺时针画弧(1)，最后是终点坐标(x,y)</li>
+          <li>Z = closePath()： 绘制一条直线至图形起点</li>
+        </ul>
+      </p>
+    </div>
+  </div>
+
+  <div>
+    <h2>9. 文本</h2>
+    <div>
+<pre>
+&lt;svg width="300" height="20"&gt;
+  &lt;text x="50" y="25"&gt;Hello World&lt;/text&gt;
+&lt;/svg&gt;
+</pre>
+      <svg width="300" height="20">
+        <text x="50" y="16">Hello World</text>
+      </svg>
+      <p>x、y是文本基线的起点坐标</p>
+    </div>
+  </div>
+
+  <div>
+    <h2>10. 引用形状</h2>
+    <div>
+<pre>
+&lt;svg viewBox="0 0 30 8"&gt;
+  &lt;circle id="myCircle" cx="4" cy="4" r="3"/&gt;
+
+  &lt;use href="#myCircle" x="7" y="0" fill="blue" /&gt;
+  &lt;use href="#myCircle" x="15" y="0" fill="white" stroke="blue" stroke-width=".1"/&gt;
+&lt;/svg&gt;
+</pre>
+      <svg viewBox="0 0 30 8">
+        <circle id="myCircle" cx="4" cy="4" r="3"/>
+
+        <use href="#myCircle" x="7" y="0" fill="blue" />
+        <use href="#myCircle" x="15" y="0" fill="white" stroke="blue" stroke-width=".1"/>
+      </svg>
+      <p>href指向要引用的节点，x和y是引用图像的起点坐标，这里使用视口单位，3占据整个body的宽度，由此计算0.8/3的高度值</p>
+    </div>
+  </div>
+
+  <div>
+    <h2>11. 分组</h2>
+    <div>
+<pre>
+&lt;svg width="300" height="100"&gt;
+  &lt;g&gt;
+    &lt;path d="M 20,80 H 200" stroke="#000"&gt;&lt;/path&gt;
+    &lt;path d="M 20,80 V 0"  stroke="#000"&gt;&lt;/path&gt;
+    &lt;text x="8" y="92" style="font-size: 14px;"&gt;0&lt;/text&gt;
+  &lt;/g&gt;
+&lt;/svg&gt;
+</pre>
+      <svg width="300" height="100">
+        <defs>  
+          <g id="axe">
+            <path d="M 20,80 H 200" stroke="#000"></path>
+            <path d="M 20,80 V 0" stroke="#000"></path>
+            <text x="8" y="92" style="font-size: 14px;">0</text>
+          </g>
+        </defs>
+        <use href="#axe" x="0" y="0" fill="blue" />
+      </svg>
+      <p>分组使用的g元素并没有什么实际的意义，只是为了便于管理，如移动变形等操作。defs表示自定义形状，定义内容只能被引用，不会显示</p>
+    </div>
+  </div>
+
+  <div>
+    <h2>12. 可被引用的自定义形状</h2>
+    <div>
+<pre>
+&lt;svg width="100" height="100"&gt;
+    &lt;defs&gt;
+      &lt;pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"&gt;
+        &lt;circle fill="#bee9e8" cx="10" cy="10" r="5" /&gt;
+      &lt;/pattern&gt;
+    &lt;/defs&gt;
+    &lt;rect x="0" y="0" width="100%" height="100%" fill="url(#dots)" /&gt;
+  &lt;/svg&gt;
+</pre>
+    <svg width="100" height="100">
+        <defs>
+          <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+            <circle fill="#bee9e8" cx="10" cy="10" r="5" />
+            <circle fill="#000" cx="10" cy="10" r="1"> 
+          </pattern>
+        </defs>
+        <rect x="0" y="0" width="100%" height="100%" fill="url(#dots)" />
+      </svg>
+      <p>使用pattern定义的形状，可以作为填充材料被其余图形引用</p>
+    </div>
+  </div>
+
+  <div>
+    <h2>13. 图像</h2>
+    <div>
+<pre>
+&lt;svg width="100" height="100"&gt;
+  &lt;image xlink:href="../assets/demo.jpg" width="80%" height="80%"/&gt;
+&lt;/svg&gt;
+</pre>
+      <svg width="100" height="100">
+        <image xlink:href="../assets/demo.jpg" width="80%" height="80%"/>
+      </svg>
+      <p>xlink:href指向图片的地址</p>
+    </div>
+  </div>
+
+  <div>
+    <h2>14. 动画</h2>
+    
+    <div>
+<pre>
+&lt;svg width="300" height="100"&gt;
+  &lt;rect x="0" y="0" width="100" height="100" fill="#feac5e"&gt;
+    &lt;set attributeName="x" attributeType="XML" to="150" begin="3s"/&gt;
+    &lt;set attributeName="x" attributeType="XML" to="20" begin="6s"/&gt;
+  &lt;/rect&gt;
+&lt;/svg&gt;
+</pre>
+      <svg width="300" height="100">
+        <rect x="0" y="0" width="100" height="100" fill="#feac5e">
+          <set attributeName="x" attributeType="XML" to="150" begin="3s"/>
+          <set attributeName="x" attributeType="XML" to="20" begin="6s"/>
+        </rect>
+      </svg>
+      <p>set： 类似于setTimeout，可以设置图形位置的不连续变化，只有页面每次加载才会运动</p>
+    </div>
+    <br><br>
+
+    <div>
+<pre>
+&lt;svg width="300" height="100"&gt;
+  &lt;rect x="0" y="0" width="100" height="100" fill="#feac5e"&gt;
+    &lt;animate attributeName="x" from="0" to="300" begin="0" dur="3s" repeatCount="indefinite"/&gt;
+  &lt;/rect&gt;
+&lt;/svg&gt;
+</pre>
+      <svg width="300" height="100">
+        <rect x="0" y="0" width="100" height="100" fill="#feac5e">
+          <animate attributeName="x" from="-100" to="300" begin="0" dur="3s" repeatCount="indefinite"/>
+        </rect>
+      </svg>
+      <p>动画，设置repeatCount="indefinite"会重复一直运动</p>
+    </div>
+    <br><br>
+
+    <div>
+<pre>
+&lt;svg width="300" height="200"&gt;
+  &lt;rect x="0" y="0" width="20" height="20" fill="#feac5e"&gt;
+    &lt;animateMotion path="M10,80 q100,120 120,20 q140,-50 160,0" rotate="auto"  begin="0" dur="3s" repeatCount="indefinite"/&gt;
+  &lt;/rect&gt;
+  &lt;path d="M10,80 q100,120 120,20 q140,-50 160,0" stroke="#cd5214" fill="none"&gt;&lt;/path&gt;
+&lt;/svg&gt;
+</pre>
+      <svg width="300" height="200">
+        <rect x="0" y="0" width="20" height="20" fill="#feac5e">
+          <animateMotion path="M10,80 q100,120 120,20 q140,-50 160,0" rotate="auto" begin="0" dur="3s" repeatCount="indefinite"/>
+        </rect>
+        <path d="M10,80 q100,120 120,20 q140,-50 160,0" stroke="#cd5214" fill="none"></path>
+      </svg>
+    </div>
+    <p>沿指定的路径完成动画，添加rotate="auto"可以使方块在运动时，跟随路径的斜率自动旋转</p>
+  </div>
+  <br><br>
+
+  <p>
+    <h3>总结：</h3>
+     <ul>
+       <li>attributeName：值有两种，第一种是运动元素的属性值，第二种是CSS属性。</li>
+       <li>attributeType：值固定为 XML | CSS | auto，对应attributeName的值，auto的处理是先当做CSS处理，无法识别是采用XML。</li>
+       <li>from：attributeName设定值的起点值。</li>
+       <li>to：attributeName设定值的终点值。</li>
+       <li>by：attributeName设定值的相对变化值（上面两个是绝对值）。</li>
+       <li>values：定义关键帧，使用分号分隔。</li>
+       <li>begin：动画每次开始的时间，使用分号分隔每个开始值。同时这个值可以由计算获得，或者事件绑定触发等一系列的用法。</li>
+       <li>end：动画结束的时间，没有设置也可以从元素上获取计算完成后的结束时间。</li>
+       <li>dur：动画完成设定路径的时间。</li>
+       <li>calcMode(keyTimes、keySplines)：计算动画的运动模式，值为 discrete | linear| paced | spline，表示离散、线性、踏步、样条，离散的运动是直接完成，线性则是保持恒定的速度，踏步是通过插入关键帧值保持线性运动，样条是定义关键帧的贝塞尔曲线。插值需要使用keyTimes属性和keySplines属性，是定义关键的时间点和控制点。</li>
+       <li>repeatCount/repeatDur：动画执行册数和重复动画的时间，使用indefinite表示无限长。</li>
+       <li>fill：动画间隙的填充方法，值为 freeze | remove。remove是默认值，运动体回到动画起点，freeze则会将运动体保持在结束点。</li>
+       <li>accumulate/additive：结合冻结的属性，将动画累计的位置和动画附加控制设为 sum，可以得到停留动画后保持衔接的运动曲线</li>
+       <li>restart：值为 always | whenNotActive | never，由于动画的begin可以通过事件控制，always重视重新播放，whenNotActive只有停止的动画才会重播，never只会播放一次。</li>
+       <li>min/max：动画执行的最短和最长时间。</li>
+     </ul>
+
+  </p>
+ 
+</body>
+
+</html>

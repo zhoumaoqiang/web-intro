@@ -1,0 +1,236 @@
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* ============================  返回按钮  ==================================== */
+.back {
+  width: 5rem;
+  height: 2.2rem;
+  line-height: 2.2rem;  
+  padding-right: 1rem;
+  border-radius: 1rem;
+  font-size: 1rem;
+  text-align: right;
+  box-sizing: border-box;
+  position: fixed;
+  top: 1rem;
+  left: 0.8rem;
+  z-index: 1000;
+  text-decoration: none;
+  background: rgba(0, 0, 0, .3);
+  color: #ffffff;
+  display: none;
+}
+.back::before {
+  content: "";
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  background: url('getLocalFile.action?fileName=filesystem/forever/vcip/renting/back-icon.png') no-repeat;
+  background-size: cover;
+  position: relative;
+  top: 0.1rem;
+  left: -0.4rem;
+}
+
+
+#main {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    position: relative;
+    overflow: hidden;
+}
+#container {
+    width: 100%;
+    height: 100%;
+}
+#thumbnail {
+    position: absolute;
+    z-index: 90;
+    bottom: 50px;
+    height: 20%;
+    max-height: 120px;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    margin: 0;
+    padding: 8px 50px;
+    box-sizing: border-box;
+}
+#thumbnail .swiper-container {
+    width: 100%;
+    height: 100%;
+}
+#thumbnail .swiper-slide {
+	cursor: pointer;
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+	/* Center slide text vertically */
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+}
+#thumbnail .swiper-slide-active-css {
+	box-sizing: border-box;
+	border: 2px solid orange;
+}
+#thumbnail .swiper-arrow{
+	color: #ceccca;
+	position: absolute;
+	height: 100%;
+	line-height: 100%;
+	top: 0;
+}
+#thumbnail .swiper-next{
+	right: 15px;
+}
+#thumbnail .swiper-prev{
+	left: 15px;
+}
+#thumbnail .swiper-btn-disabled{
+	color: rgba(206, 204, 202, 0.5);
+}
+.briefInfo {
+    padding: 0;
+    width: 32px;
+}
+.briefInfo span {
+    display: block;
+    text-align: center;
+    font-size: 12px;
+    color: #ceccca;
+    height: 100%;
+    line-height: 40px;
+}
+.swiper-slide-content {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	position: relative;
+}
+.swiper-slide-content img{
+	width: 100%;
+	height: 100%;
+}
+.swiper-slide-name{
+	height: 20px;
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+	line-height: 20px;
+	font-size: 14px;
+	color: #fff;
+	text-align: center;
+	letter-spacing: 2px;
+	text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3)
+}
+.room{
+  color: white;
+  font-size: 14px;
+  font-family: Helvetica, sans-serif;
+  text-align: center;
+  background: rgba(0,0,0,0.3);
+  padding: 3px 8px;
+  border-radius: 5px;
+  margin: 0;
+}
+.room-pointer-div {
+    text-align: center;
+    padding: 5px 0 0;
+}
+.room-pointer-div i {
+    color: rgba(255, 255, 255, 0.8);
+}
+.backContainer{
+    border-radius: 50%;
+    position: fixed;
+    top:3px;
+    left:3px;
+    width:80px;
+    height:50px;
+    z-index:99;
+    font-size:30px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 50px;
+    text-decoration:none;
+}
+.backContainer em{
+    display: inline-block;
+    font-size:18px;
+    font-style:normal;
+    color:#000;
+    vertical-align: top;
+}
+.fa-chevron-left{
+    color:rgba(255, 255, 255, 0.8);
+}
+.icon{
+    display: inline-block;
+    width: 50px;
+    height: 34px;
+    background-size:50px auto; 
+    background-position: 0px -8px;
+    overflow: hidden;
+}
+/* 户型图 */
+#house-icon {
+	position: absolute;
+	top: 2rem;
+	right: 2rem;
+	width: 2rem;
+	height: 2rem;
+	z-index: 100;
+	background: url('getLocalFile.action?fileName=filesystem/forever/vcip/renting/house-icon.png') no-repeat center;
+	background-size: contain;
+	display: none;
+}
+.house-type-box {
+	width: 162px;
+	height: 162px;
+	z-index: 100;
+	display: none;
+	position: absolute;
+	top: 100px;
+	right: 0;
+	background: rgba(0, 0, 0, 0.5);
+}
+#house-type {
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+#direction {
+  position: absolute;
+  width: 1.2rem;
+  height: 1.1rem;
+  background: url('getLocalFile.action?fileName=filesystem/forever/vcip/renting/camera.png') no-repeat center;
+  background-size: cover;
+  transform-origin: 50% 90%;
+  transition: top 1s, left 1s;
+}
+.spot {
+  width : 0.5rem;
+  height: 0.5rem;
+  border-radius : 0.5rem;
+  background-color : #7DD4FC;
+  position : absolute;
+  transform : translate(0.45rem, 0.8rem);
+  z-index : 100;
+}
+

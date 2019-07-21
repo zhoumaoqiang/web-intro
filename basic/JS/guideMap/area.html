@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>面积绘制</title>
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+    <style>
+        #container {
+            width: 800px;
+            height: 600px;
+            margin: auto;
+        }
+    </style>
+    <script src="./key.js"></script>
+    <script>
+        (() => {
+            var apiScript = document.createElement('script')
+            apiScript.src = 'https://webapi.amap.com/maps?v=1.4.13&key=' + KEY.key
+            document.head.appendChild(apiScript)
+        })()
+    </script>
+</head>
+
+<body>
+    <div class="handlers">
+        <input type="button" value="distance" id="distance">
+        <input type="button" value="area" id="area">
+        <input type="button" value="point" id="point">
+    </div>
+    <div id="container"></div>
+    <script>
+        window.onload = init
+        let num = 0
+        navigator.geolocation.getCurrentPosition(pos => {
+            num += pos.coords.latitude
+            console.log(num)
+        })
+        
+        function init() {
+            // 功能1：标记点，并作为下次进入的地图中心
+            // 功能2：测量直线距离
+            // 功能3：测量图形面积
+            var marker, distanceMeasurement, areaMeasurement;
+            var markerFlag = false;
+            var measureImage = './biaoji.png';
+
+            // 根据是否存在标记点，以作为中心点进入
+            var measureMarker
+            if(localStorage.measureMarker) {
+                measureMarker = JSON.parse(localStorage.measureMarker)
+                marker = new AMap.Marker({
+                    position: measureMarker,
+                    title: '标记点'
+                });
+            }
+
+            var map = new AMap.Map('container', {
+                center: measureMarker || undefined,
+                zoom:10,
+                layers:[
+                    new AMap.TileLayer.Satellite(),
+                    new AMap.TileLayer.RoadNet()
+                ]
+            });
+            if(measureMarker) {
+                map.add(marker)
+            }
+
+            // 引入测量的插件
+            map.plugin(["AMap.RangingTool"], function() {
+                var startMarker = {
+                    icon: new AMap.Icon({
+                        size: new AMap.Size(20, 28), 
+                        image: measureImage,
+                        imageOffset: new AMap.Pixel(0, 0)
+                    })
+                };
+                var endMarker = {
+                    icon: new AMap.Icon({
+                        size: new AMap.Size(20, 28), 
+                        image: measureImage,
+                        imageOffset: new AMap.Pixel(0, 0)
+                    })
+                };
+                var lineOptions = {
+                    strokeStyle: "solid",
+                    strokeColor: "#ff6600",
+                    strokeOpacity: 1,
+                    strokeWeight: 2,
+                };
+                var rulerOptions = {
+                    startMarkerOptions: startMarker,
+                    endMarkerOptions: endMarker,
+                    lineOptions: lineOptions,
+                };
+                distanceMeasurement = new AMap.RangingTool(map, rulerOptions);
+             
+                map.plugin(["AMap.MouseTool"], function() {
+                    areaMeasurement = new AMap.MouseTool(map);
+                    //鼠标工具插件添加draw事件监听
+                    AMap.event.addListener(areaMeasurement, "draw", function callback(e) {
+                        var eObject = e.obj; //obj属性就是鼠标事件完成所绘制的覆盖物对象。
+                    });
+
+                });
+
+            });
+
+            map.on('click', function(evt) {
+                if(!markerFlag) {
+                    return
+                }
+                var clickedPoint = [evt.lnglat.lng, evt.lnglat.lat]
+                if(marker) {
+                    map.remove(marker);
+                }
+                marker = new AMap.Marker({
+                    position: clickedPoint,
+                    title: '标记点'
+                });
+                localStorage.measureMarker = JSON.stringify(clickedPoint)
+                map.add(marker)
+            })
+            // 标记点
+            document.getElementById('point').addEventListener('click', function() {
+                map.clearMap(areaMeasurement);
+                areaMeasurement.close();
+                map.clearMap(distanceMeasurement);
+                distanceMeasurement.turnOff();
+                markerFlag = true;
+            })
+            //启用自定义样式测距
+            document.getElementById('distance').addEventListener('click', function() {
+                markerFlag = false;
+                map.clearMap(areaMeasurement);
+                areaMeasurement.close();
+                distanceMeasurement.turnOn();
+            });
+            //测面积
+            document.getElementById('area').addEventListener('click', function() {
+                markerFlag = false;
+                map.clearMap(distanceMeasurement);
+                distanceMeasurement.turnOff();
+                areaMeasurement.measureArea(); //调用鼠标工具的面积量测功能
+            });
+
+        }
+    </script>
+</body>
+
+</html>
